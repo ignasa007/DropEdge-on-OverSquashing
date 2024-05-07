@@ -1,27 +1,15 @@
-# ML-Template
+# Dropout in GNNs
 
-This is a template for Machine Learning projects.
-
-## How to use
-
-To instantiate your project using this template, on the [template's GitHub page](https://github.com/ignasa007/ML-Template.git), click `Use this template`, then `Create a new repository`.
-
-Otheriwse, if you already have a local git repository, run
-```bash
-cd <local-git-repo>
-git remote add ml-template https://github.com/ignasa007/ML-Template.git
-git fetch ml-template
-git merge --allow-unrelated-histories ml-template/main
-git remote remove ml-template
-```
+This is the code repository for a study on behavior of dropout techniques in GNNs, being worked on towards partial fulfilment of the requirements for the degree of Master of Science in Machine Learning from University College London.
 
 ## Directory Structure
 
 - `assets` - plots generated from different experiments.
 - `config` - configuration files for different datasets and models.
 - `data` - raw datasets store.
-- `data_classes` - Python classes to handle different datasets, and make them suitable for training.
-- `model_classes` - Python classes to handle different models.
+- `data_classes` - Classes for handling different datasets, and make them suitable for training, eg. Cora, Citeseer, PubMed, etc.
+- `dropout_classes` - Classes defining layers corresponding to different dropout methods, eg. Dropout, DropNode, DropEdge, etc.
+- `model_classes` - Classes defining blocks of GNN layers, eg. GCN, GAT, etc.
 - `results` - results of the different runs. <br>
     - `directory structure` - `<dataset>` -> `<model>` -> `<run-date>` -> `logs` and `<data-split>_results`
 - `utils` - utility functions for running the transformer experiments.
