@@ -12,7 +12,7 @@ map = {
 }
 
 
-def dataclass_map(dataset_name):
+def data_map(dataset_name):
 
     '''
     Function to map dataset name to data class.

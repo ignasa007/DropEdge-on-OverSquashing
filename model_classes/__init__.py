@@ -4,15 +4,15 @@ imports all the model classes and creates a function to map the
     model name to the model class.
 '''
 
-# import model classes
+from .gcn import GCNLayer
 
 
-map = {
-    # model name: model class
+model_map = {
+    'GCN': GCNLayer,
 }
 
 
-def modelclass_map(model_name):
+def model_map(model_name):
 
     '''
     Function to map model name to model class.
