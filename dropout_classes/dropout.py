@@ -11,3 +11,11 @@ class Dropout(BaseDropout):
     def apply_feature_mat(self, x, training=True):
         
         return dropout(x, self.dropout_prob, training=training)
+    
+    def apply_adj_mat(self, edge_index, training=True):
+
+        return super(Dropout, self).apply_adj_mat(edge_index, training)
+    
+    def apply_message_mat(self, messages, training=True):
+
+        return super(Dropout, self).apply_message_mat(messages, training)
