@@ -4,17 +4,17 @@ This is the code repository for a study on behavior of dropout techniques in GNN
 
 ## Directory Structure
 
-- `assets` - plots generated from different experiments.
-- `config` - configuration files for different datasets and models.
-- `data` - raw datasets store.
-- `data_classes` - Classes for handling different datasets, and make them suitable for training, eg. Cora, Citeseer, PubMed, etc.
-- `dropout_classes` - Classes defining layers corresponding to different dropout methods, eg. Dropout, DropNode, DropEdge, etc.
-- `model_classes` - Classes defining blocks of GNN layers, eg. GCN, GAT, etc.
-- `results` - results of the different runs. <br>
-    - `directory structure` - `<dataset>` -> `<model>` -> `<run-date>` -> `logs` and `<data-split>_results`
-- `utils` - utility functions for running the transformer experiments.
-- `main.py` - main file for training the models.
-- `inference.py` - main file for testing the models.
+- `assets` &minus; plots generated from different experiments.
+- `config` &minus; configuration files for different datasets and models.
+- `data` &minus; raw datasets store.
+- `data_classes` &minus; classes for handling different datasets, and make them suitable for training, eg. Cora, Citeseer, PubMed, etc.
+- `dropout_classes` &minus; classes defining layers corresponding to different dropout methods, eg. Dropout, DropNode, DropEdge, etc.
+- `model_classes` &minus; classes defining blocks of GNN layers, eg. GCN, GAT, etc.
+- `results` &minus; results of the different runs. <br>
+    - `directory structure` &minus; `<dataset>` &#8594; `<model>` &#8594; `<run-date>` &#8594; `logs` and `<data-split>_results`
+- `utils` &minus; utility functions for running the transformer experiments.
+- `main.py` &minus; main file for training the models.
+- `inference.py` &minus; main file for testing the models.
 
 ## Setup
 
@@ -25,7 +25,7 @@ conda activate <env-name>
 
 ## Execution
 
-To run the transformer experiments, execute
+To run the experiments, execute
 ```bash
 python3 -B main.py \
     --dataset <dataset> \
