@@ -1,4 +1,4 @@
-from torch_geometric.utils import drop_node
+from torch_geometric.utils import dropout_node
 from .base import BaseDropout
 
 
@@ -10,4 +10,4 @@ class DropNode(BaseDropout):
 
     def apply_adj_mat(self, edge_index, training=True):
         
-        return drop_node(edge_index, p=self.dropout_prob, training=training)[0]
+        return dropout_node(edge_index, p=self.dropout_prob, training=training)[0]

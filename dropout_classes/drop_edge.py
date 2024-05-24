@@ -1,4 +1,4 @@
-from torch_geometric.utils import drop_edge
+from torch_geometric.utils import dropout_edge
 from .base import BaseDropout
 
 
@@ -15,4 +15,4 @@ class DropEdge(BaseDropout):
             https://pytorch-geometric.readthedocs.io/en/latest/modules/utils.html#torch_geometric.utils.dropout_adj
         ''' 
         
-        return drop_edge(edge_index, p=self.dropout_prob, training=training)[0]
+        return dropout_edge(edge_index, p=self.dropout_prob, training=training)[0]
