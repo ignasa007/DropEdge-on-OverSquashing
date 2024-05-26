@@ -12,9 +12,9 @@ class DropMessage(BaseDropout):
 
         return super(DropMessage, self).apply_feature_mat(x, training)
     
-    def apply_adj_mat(self, edge_index, training=True):
+    def apply_adj_mat(self, edge_index, edge_attr=None, training=True):
 
-        return super(DropMessage, self).apply_adj_mat(edge_index, training)
+        return super(DropMessage, self).apply_adj_mat(edge_index, edge_attr, training)
     
     def apply_message_mat(self, messages, training=True):
         

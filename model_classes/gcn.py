@@ -1,34 +1,47 @@
+from typing import Optional
+from torch import Tensor
+from torch_geometric.typing import Adj, OptTensor
 from torch_geometric.nn.conv import GCNConv
+from ..dropout_classes.base import BaseDropout
+from .pretreatment import ModelPretreatment
 
-'''
-Graph Drop Connect needs an implementation of the aggregation function (after the message step)
-'''
+
+# TODO: Graph Drop Connect needs an implementation of the aggregation function (after the message step)
 
 class GCNLayer(GCNConv):
 
-    def __init__(self):
+    def __init__(self, drop_strategy: BaseDropout, add_self_loops: bool = True, normalize: bool = True):
 
         super(GCNLayer, self).__init__()
+        self.drop_strategy = drop_strategy
+        self.pt = ModelPretreatment(add_self_loops, normalize)
 
-    def __call__(self, x, edge_index):
+    def forward(self, x: Tensor, edge_index: Adj):
 
-        '''
-        Drop whatever you want from the input:
-            1. Dropout
-                https://github.com/zjunet/DropMessage/blob/1b52da82daf52a426fb7364fea60eb90b38d0b8b/src/layer.py#L31
-            2. DropNode
-                https://github.com/zjunet/DropMessage/blob/1b52da82daf52a426fb7364fea60eb90b38d0b8b/src/layer.py#L21
-            3. DropEdge -- perturb the adjacency matrix once in each forward pass?
-                https://github.com/zjunet/DropMessage/blob/1b52da82daf52a426fb7364fea60eb90b38d0b8b/src/layer.py#L24
-        '''
+        # TODO: when to multiply by weight matrix and when to add bias is a design choice
+        # could transform the features before dropping them, or after,
+        # or even propagate the messages first and transform the features after the update step
         
-        pass
+        # drop from feature matrix -- dropout and drop node
+        x = self.drop_strategy.apply_feature_mat(x, self.training)
+        x = self.lin(x)
 
-    def message(self):
+        # drop from adj matrix -- drop edge, drop gnn and drop agg -- and normalize it
+        edge_index = self.drop_strategy.apply_adj_mat(edge_index, self.training)
+        edge_index, edge_weight = self.pt.pretreatment(x.size(0), edge_index, x.dtype)
 
-        '''
-        Drop whatever you want from the message matrix:
-            1. DropMessage
-        '''
+        out = self.propagate(edge_index, x=x, edge_weight=edge_weight)
+        if self.bias is not None:
+            out = out + self.bias
 
-        pass
+        return out
+
+    def message(self, x_j: Tensor, edge_weight: OptTensor):
+
+        if edge_weight is not None:
+            x_j = x_j * edge_weight.view(-1, 1)
+
+        # drop from message matrix -- drop message
+        x_j = self.drop_strategy.apply_message_mat(x_j, self.training)
+
+        return x_j

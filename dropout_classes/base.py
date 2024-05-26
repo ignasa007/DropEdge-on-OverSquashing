@@ -24,7 +24,7 @@ class BaseDropout(nn.Module):
 
         return x
     
-    def apply_adj_mat(self, edge_index, training=True):
+    def apply_adj_mat(self, edge_index, edge_attr=None, training=True):
 
         '''
         Dropout methods applied to the adjacency matrix, eg.
@@ -35,7 +35,7 @@ class BaseDropout(nn.Module):
             edge_index (Adj): adjacency matrix, eg. shape (2, |E|)
         '''
 
-        return edge_index
+        return edge_index, edge_attr
     
     def apply_message_mat(self, messages, training=True):
 

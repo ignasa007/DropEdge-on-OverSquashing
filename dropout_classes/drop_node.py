@@ -16,13 +16,13 @@ class DropNode(BaseDropout):
         unif_samples = rand(x.size(0), 1, device=x.device)
         node_mask = unif_samples > self.dropout_prob
 
-        x = x * node_mask
+        x = (x*node_mask) / (1-self.dropout_prob)
 
         return x
 
-    def apply_adj_mat(self, edge_index, training=True):
+    def apply_adj_mat(self, edge_index, edge_attr=None, training=True):
         
-        return super(DropNode, self).apply_adj_mat(edge_index, training)
+        return super(DropNode, self).apply_adj_mat(edge_index, edge_attr, training)
     
     def apply_message_mat(self, messages, training=True):
 

@@ -12,14 +12,14 @@ class DropEdge(BaseDropout):
 
         return super(DropEdge, self).apply_feature_mat(x, training)
     
-    def apply_adj_mat(self, edge_index, training=True):
+    def apply_adj_mat(self, edge_index, edge_attr=None, training=True):
 
-        '''
-        when we have edge attributes, will need
-            https://pytorch-geometric.readthedocs.io/en/latest/modules/utils.html#torch_geometric.utils.dropout_adj
-        ''' 
-        
-        return dropout_edge(edge_index, p=self.dropout_prob, training=training)[0]
+        # TODO: check about rescaling by (1-p) -- how does it work for drop edge?
+
+        edge_index, edge_mask = dropout_edge(edge_index, p=self.dropout_prob, training=training)
+        edge_attr = edge_attr[edge_mask] if edge_attr is not None else None
+
+        return edge_index, edge_attr
     
     def apply_message_mat(self, messages, training=True):
 
