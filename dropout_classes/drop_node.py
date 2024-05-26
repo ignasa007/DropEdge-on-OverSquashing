@@ -1,4 +1,4 @@
-from torch_geometric.utils import dropout_node
+from torch import rand
 from .base import BaseDropout
 
 
@@ -10,11 +10,19 @@ class DropNode(BaseDropout):
     
     def apply_feature_mat(self, x, training=True):
 
-        return super(DropNode, self).apply_feature_mat(x, training)
-    
+        if not training or self.dropout_prob == 0.0:
+            return x
+        
+        unif_samples = rand(x.size(0), 1, device=x.device)
+        node_mask = unif_samples > self.dropout_prob
+
+        x = x * node_mask
+
+        return x
+
     def apply_adj_mat(self, edge_index, training=True):
         
-        return dropout_node(edge_index, p=self.dropout_prob, training=training)[0]
+        return super(DropNode, self).apply_adj_mat(edge_index, training)
     
     def apply_message_mat(self, messages, training=True):
 
