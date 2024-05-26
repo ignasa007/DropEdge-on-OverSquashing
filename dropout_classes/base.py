@@ -6,6 +6,10 @@ class BaseDropout(nn.Module):
     def __init__(self, dropout_prob=0.):
 
         super(BaseDropout, self).__init__()
+        
+        if dropout_prob < 0. or dropout_prob > 1.:
+            raise ValueError(f'Dropout probability has to be between 0 and 1 (got {dropout_prob})')
+        
         self.dropout_prob = dropout_prob
 
     def apply_feature_mat(self, x, training=True):
