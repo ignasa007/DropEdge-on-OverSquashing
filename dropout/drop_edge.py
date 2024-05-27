@@ -4,7 +4,7 @@ from .base import BaseDropout
 
 class DropEdge(BaseDropout):
 
-    def __init__(self, dropout_prob=0.):
+    def __init__(self, dropout_prob=0.5):
 
         super(DropEdge, self).__init__(dropout_prob)
     

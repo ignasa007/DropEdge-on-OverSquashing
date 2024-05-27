@@ -4,7 +4,7 @@ from .base import BaseDropout
 
 class DropMessage(BaseDropout):
 
-    def __init__(self, dropout_prob=0.):
+    def __init__(self, dropout_prob=0.5):
 
         super(DropMessage, self).__init__(dropout_prob)
     

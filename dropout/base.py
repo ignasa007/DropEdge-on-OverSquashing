@@ -3,11 +3,11 @@ import torch.nn as nn
 
 class BaseDropout(nn.Module):
 
-    def __init__(self, dropout_prob=0.):
+    def __init__(self, dropout_prob=0.5):
 
         super(BaseDropout, self).__init__()
         
-        if dropout_prob < 0. or dropout_prob > 1.:
+        if dropout_prob < 0.0 or dropout_prob > 1.0:
             raise ValueError(f'Dropout probability has to be between 0 and 1 (got {dropout_prob})')
         
         self.dropout_prob = dropout_prob

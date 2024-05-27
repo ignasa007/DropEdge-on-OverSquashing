@@ -1,8 +1,7 @@
-from typing import Optional
 from torch import Tensor
 from torch_geometric.typing import Adj, OptTensor
 from torch_geometric.nn.conv import GCNConv
-from ..dropout_classes.base import BaseDropout
+from ..dropout.base import BaseDropout
 from .pretreatment import ModelPretreatment
 
 
@@ -10,9 +9,16 @@ from .pretreatment import ModelPretreatment
 
 class GCNLayer(GCNConv):
 
-    def __init__(self, drop_strategy: BaseDropout, add_self_loops: bool = True, normalize: bool = True):
+    def __init__(
+        self,
+        drop_strategy: BaseDropout,
+        in_channels: int,
+        out_channels: int,
+        add_self_loops: bool = True,
+        normalize: bool = True
+    ):
 
-        super(GCNLayer, self).__init__()
+        super(GCNLayer, self).__init__(in_channels, out_channels, add_self_loops=add_self_loops, normalize=normalize)
         self.drop_strategy = drop_strategy
         self.pt = ModelPretreatment(add_self_loops, normalize)
 

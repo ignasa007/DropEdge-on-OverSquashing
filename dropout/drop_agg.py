@@ -5,7 +5,7 @@ from .base import BaseDropout
 
 class DropAgg(BaseDropout):
 
-    def __init__(self, dropout_prob=0.):
+    def __init__(self, dropout_prob=0.5):
 
         super(DropAgg, self).__init__(dropout_prob)
     
@@ -31,4 +31,5 @@ class DropAgg(BaseDropout):
     
     def apply_message_mat(self, messages, training=True):
 
+        # TODO: what to do? :(
         return super(DropAgg, self).apply_message_mat(messages, training)

@@ -5,8 +5,8 @@ import sys
 import torch
 from torch.utils.data import DataLoader
 
-from data_classes import dataclass_map
-from model_classes import modelclass_map
+from dataset import get_
+from model import Model
 from utils.config import Config
 from utils.logger import Logger
 from utils.metrics import Results
