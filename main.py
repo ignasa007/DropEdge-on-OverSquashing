@@ -5,7 +5,7 @@ import torch
 from torch.optim import Adam
 
 from dataset import get_dataset
-from model import Model
+from gnn import Model
 from utils.config import Config
 from utils.logger import Logger
 from utils.format import *
@@ -75,35 +75,38 @@ logger.log(f'Number of layers: {len(cfg.h_layer_sizes)+1}', date=False)
 logger.log(f"Layers' sizes: {[dataset.num_features] + cfg.h_layer_sizes + [dataset.num_classes]}", date=False)
 logger.log(f'Activation: {format_activation_name.get(cfg.activation)}', date=False)
 
-logger.log(f'Drop probability: {cfg.dropout_prob}\n', date=False)
+logger.log(f'Dropout probability: {cfg.dropout_prob}\n', date=False)
 
 
 logger.log(f'Starting training...', print_text=True)
 results = Results()
 
-def train():
-    model.train()
-    optimizer.zero_grad()
-    out = model(dataset.x, dataset.edge_index)
-    loss = F.cross_entropy(out[dataset.train_mask], dataset.y[dataset.train_mask])
-    loss.backward()
-    optimizer.step()
+
+# def train():
+
+#     model.train()
+
+#     for 
+#     optimizer.zero_grad()
+#     out = model(dataset.x, dataset.edge_index)
+#     loss = F.cross_entropy(out[dataset.train_mask], dataset.y[dataset.train_mask])
+#     loss.backward()
+#     optimizer.step()
 
 
-@torch.no_grad()
-def test():
-    model.eval()
-    out = model(dataset.x, dataset.edge_index)
-    _, pred = out.max(dim=1)
-    train_correct = int(pred[dataset.train_mask].eq(dataset.y[dataset.train_mask]).sum().item())
-    train_acc = train_correct / int(dataset.train_mask.sum())
-    validate_correct = int(pred[dataset.val_mask].eq(dataset.y[dataset.val_mask]).sum().item())
-    validate_acc = validate_correct / int(dataset.val_mask.sum())
-    test_correct = int(pred[dataset.test_mask].eq(dataset.y[dataset.test_mask]).sum().item())
-    test_acc = test_correct / int(dataset.test_mask.sum())
-    return train_acc, validate_acc, test_acc
+# @torch.no_grad()
+# def test():
+#     model.eval()
+#     out = model(dataset.x, dataset.edge_index)
+#     _, pred = out.max(dim=1)
+#     train_correct = int(pred[dataset.train_mask].eq(dataset.y[dataset.train_mask]).sum().item())
+#     train_acc = train_correct / int(dataset.train_mask.sum())
+#     validate_correct = int(pred[dataset.val_mask].eq(dataset.y[dataset.val_mask]).sum().item())
+#     validate_acc = validate_correct / int(dataset.val_mask.sum())
+#     test_correct = int(pred[dataset.test_mask].eq(dataset.y[dataset.test_mask]).sum().item())
+#     test_acc = test_correct / int(dataset.test_mask.sum())
+#     return train_acc, validate_acc, test_acc
 
-model.train()
 for epoch in tqdm(range(1, cfg.n_epochs+1)):
 
     
