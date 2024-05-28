@@ -1,4 +1,3 @@
-from typing import Union
 from yacs.config import CfgNode as CN
 
 
@@ -9,28 +8,29 @@ def default_cfg():
         - Need to register all configurations that are expected.
 
     Return:
-        _C: A confiduration object with placeholder values.
+        _C: A configuration object with placeholder values.
     '''
 
     _C = CN()
-    # _C.property = None
 
-    _C.DATA = CN() # base dataset parameters
-    # _C.DATA.property = None
-    _C.DATA.args = CN() # run-specific dataset parameters
-    # _C.DATA.args.property = None
+    _C.device_index = None
 
-    _C.MODEL = CN() # base model parameters
-    # _C.MODEL.property = None
-    _C.MODEL.args = CN() # run-specific model parameters
-    # _C.MODEL.args.property = None
+    _C.add_self_loops = None
+    _C.normalize = None
+    
+    _C.h_layer_sizes = None
+    _C.dropout_prob = None
+    _C.activation = None
+    
+    _C.lr = None
+    _C.n_epochs = None
 
     return _C.clone()
 
 
 class Config:
     
-    def __init__(self, root, dataset, model, override=None):
+    def __init__(self, root, override=None):
 
         '''
         Initialization of the configuration object used by the main file.
@@ -47,8 +47,6 @@ class Config:
 
         self.cfg = default_cfg()
         self.cfg.merge_from_file(f'{root}/config.yaml')
-        self.cfg.DATA.merge_from_file(f'{root}/datasets/{dataset}.yaml')
-        self.cfg.MODEL.merge_from_file(f'{root}/models/{model}.yaml')
 
         if isinstance(override, list):
             self.cfg.merge_from_list(override)

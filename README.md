@@ -33,12 +33,4 @@ python3 -B main.py \
 ```
 You can also override default configurations using the command line.<br>
 
-For inference, execute
-```bash
-python3 -B inference.py \
-    --dataset <dataset> \
-    --model <model> \
-    --weights <path-to-weights>
-```
-
 Note: Make sure to set the device index to <i>None</i> if you do not wish to use the GPU.

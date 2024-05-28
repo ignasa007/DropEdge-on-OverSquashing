@@ -1,3 +1,5 @@
+from torch import stack
+from torch_sparse import SparseTensor
 from torch_geometric.utils import dropout_edge
 from .base import BaseDropout
 
@@ -14,7 +16,9 @@ class DropEdge(BaseDropout):
     
     def apply_adj_mat(self, edge_index, edge_attr=None, training=True):
 
-        # TODO: check about rescaling by (1-p) -- how does it work for drop edge?
+        if isinstance(edge_index, SparseTensor):
+            row, col, _ = edge_index.coo()
+            edge_index = stack((row, col))
 
         edge_index, edge_mask = dropout_edge(edge_index, p=self.dropout_prob, training=training)
         edge_attr = edge_attr[edge_mask] if edge_attr is not None else None

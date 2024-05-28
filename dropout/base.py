@@ -8,7 +8,7 @@ class BaseDropout(nn.Module):
         super(BaseDropout, self).__init__()
         
         if dropout_prob < 0.0 or dropout_prob > 1.0:
-            raise ValueError(f'Dropout probability has to be between 0 and 1 (got {dropout_prob})')
+            raise ValueError(f'Dropout probability has to be between 0 and 1 (got {dropout_prob}).')
         
         self.dropout_prob = dropout_prob
 

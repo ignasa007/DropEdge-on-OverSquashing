@@ -4,6 +4,10 @@ format_dataset_name = {
     'pubmed': 'PubMed',
 }
 
+format_task_name = {
+    'node-c': 'Node-C', 'node_c': 'Node-C',
+}
+
 format_layer_name = {
     'gcn': 'GCN',
     'gat': 'GAT',

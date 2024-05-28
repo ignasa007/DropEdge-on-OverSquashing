@@ -6,20 +6,21 @@ from .drop_gnn import DropGNN
 from .drop_agg import DropAgg
 
 
-dropout_map = {
-    'dropout': Dropout,
-    'drop-node': DropNode, 'dropnode': DropNode,
-    'drop-edge': DropEdge, 'dropedge': DropEdge,
-    'drop-message': DropMessage, 'dropmessage': DropMessage,
-    'drop-gnn': DropGNN, 'dropgnn': DropGNN,
-    'drop-agg': DropAgg, 'dropagg': DropAgg,
-}
-
-
 def get_dropout(dropout_name: str):
 
-    if dropout_name.lower() not in dropout_map:
-        raise ValueError(f'Dropout name not recognised (got {dropout_name}).')
-    dropout_class = dropout_map.get(dropout_name.lower())
+    dropout_map = {
+        'dropout': Dropout,
+        'dropnode': DropNode,
+        'dropedge': DropEdge,
+        'dropmessage': DropMessage,
+        'dropgnn': DropGNN,
+        'dropagg': DropAgg,
+    }
+
+    formatted_name = dropout_name.replace('-', '').lower()
+    if formatted_name not in dropout_map:
+        raise ValueError(f'Dropout name not recognised (got `{dropout_name}`).')
+    
+    dropout_class = dropout_map.get(formatted_name)
     
     return dropout_class

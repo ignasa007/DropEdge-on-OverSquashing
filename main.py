@@ -12,12 +12,14 @@ from utils.format import *
 from utils.metrics import Results
 
 
-# TODO: add options for all remaining model parameters
-
 parser = argparse.ArgumentParser()
 parser.add_argument(
     '--dataset', type=str,
     help='The dataset to be trained on [Cora, CiteSeer, PubMed].'
+)
+parser.add_argument(
+    '--task', type=str,
+    help='The task to perform with the chosen dataset [Node-C, Graph-C, Graph-R].'
 )
 parser.add_argument(
     '--gnn_layer', type=str,
@@ -25,7 +27,7 @@ parser.add_argument(
 )
 parser.add_argument(
     '--drop_strategy', type=str,
-    help='The dropping method [Dropout, DropEdge, DropNode, DropMessage, DropGNN].'
+    help='The dropping method [Dropout, Drop-Edge, Drop-Node, Drop-Message, Drop-GNN].'
 )
 parser.add_argument(
     'opts', default=None, nargs=argparse.REMAINDER, 
@@ -35,9 +37,6 @@ args = parser.parse_args()
 
 cfg = Config(
     root='config',
-    dataset=args.dataset,
-    gnn_layer=args.gnn_layer,
-    drop_strategy=args.drop_strategy,
     override=args.opts,
 )
 
@@ -64,28 +63,53 @@ logger = Logger(
     drop_strategy=args.drop_strategy,
 )
 
-logger.log(f'Dataset: {format_dataset_name(args.dataset)}')
-logger.log(f'Add self-loops: {cfg.add_self_loops}')
-logger.log(f'Normalize edge weights: {cfg.normalize}')
-logger.log(f'GNN type: {format_layer_name(args.gnn_layer)}')
-logger.log(f'Number of layers: {len(cfg.h_layer_sizes)+1}')
-logger.log(f"Layers' sizes: {[dataset.num_features] + cfg.h_layer_sizes + [dataset.num_classes]}")
-logger.log(f'Activation: {format_activation_name(cfg.activation)}')
-logger.log(f'Dropout method: {format_dropout_name(args.dropout_strategy)}')
-logger.log(f'Dropout probability: {cfg.dropout_prob}\n')
-# TODO: add task type -- node classification, graph classification, node regression, ...
+logger.log(f'Dataset: {format_dataset_name.get(args.dataset)}', date=False)
+logger.log(f'Task: {format_task_name.get(args.task)}', date=False)
+logger.log(f'GNN: {format_layer_name.get(args.gnn_layer)}', date=False)
+logger.log(f'Dropout: {format_dropout_name.get(args.dropout_strategy)}', date=False)
+
+logger.log(f'Add self-loops: {cfg.add_self_loops}', date=False)
+logger.log(f'Normalize edge weights: {cfg.normalize}', date=False)
+
+logger.log(f'Number of layers: {len(cfg.h_layer_sizes)+1}', date=False)
+logger.log(f"Layers' sizes: {[dataset.num_features] + cfg.h_layer_sizes + [dataset.num_classes]}", date=False)
+logger.log(f'Activation: {format_activation_name.get(cfg.activation)}', date=False)
+
+logger.log(f'Drop probability: {cfg.dropout_prob}\n', date=False)
 
 
 logger.log(f'Starting training...', print_text=True)
 results = Results()
-log_train = log_val = log_test = True
-save_model = False
+
+def train():
+    model.train()
+    optimizer.zero_grad()
+    out = model(dataset.x, dataset.edge_index)
+    loss = F.cross_entropy(out[dataset.train_mask], dataset.y[dataset.train_mask])
+    loss.backward()
+    optimizer.step()
 
 
-for epoch in tqdm(range(cfg.n_epochs)):
+@torch.no_grad()
+def test():
+    model.eval()
+    out = model(dataset.x, dataset.edge_index)
+    _, pred = out.max(dim=1)
+    train_correct = int(pred[dataset.train_mask].eq(dataset.y[dataset.train_mask]).sum().item())
+    train_acc = train_correct / int(dataset.train_mask.sum())
+    validate_correct = int(pred[dataset.val_mask].eq(dataset.y[dataset.val_mask]).sum().item())
+    validate_acc = validate_correct / int(dataset.val_mask.sum())
+    test_correct = int(pred[dataset.test_mask].eq(dataset.y[dataset.test_mask]).sum().item())
+    test_acc = test_correct / int(dataset.test_mask.sum())
+    return train_acc, validate_acc, test_acc
 
-    if save_model:
-        ckpt_fn = f'{logger.SAVE_DIR}/ckpt.pth'
+model.train()
+for epoch in tqdm(range(1, cfg.n_epochs+1)):
+
+    
+
+    if isinstance(cfg.save_every, int) and epoch % cfg.save_every == 0:
+        ckpt_fn = f'{logger.EXP_DIR}/ckpt-{epoch}.pth'
         logger.log(f'Saving model at {ckpt_fn}.', print_text=True)
         torch.save(model.state_dict(), ckpt_fn)
 

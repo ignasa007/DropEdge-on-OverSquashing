@@ -3,17 +3,18 @@ from .citeseer import citeseer
 from .pubmed import pubmed
 
 
-dataset_map = {
-    'cora': cora,
-    'citeseer': citeseer,
-    'pubmed': pubmed,
-}
-
-
 def get_dataset(dataset_name: str):
+
+    dataset_map = {
+        'cora': cora,
+        'citeseer': citeseer,
+        'pubmed': pubmed,
+    }
     
-    if dataset_name.lower() not in dataset_map:
-        raise ValueError(f'Dataset name not recognised (got {dataset_name}).')
-    dataset_func = dataset_map.get(dataset_name.lower())
+    formatted_name = dataset_name.lower()
+    if formatted_name not in dataset_map:
+        raise ValueError(f'Dataset name not recognised (got `{dataset_name}`).')
     
-    return dataset_func()
+    dataset = dataset_map.get(formatted_name)
+    
+    return dataset()

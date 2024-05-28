@@ -24,21 +24,17 @@ class GCNLayer(GCNConv):
 
     def forward(self, x: Tensor, edge_index: Adj):
 
-        # TODO: when to multiply by weight matrix and when to add bias is a design choice
-        # could transform the features before dropping them, or after,
-        # or even propagate the messages first and transform the features after the update step
-        
         # drop from feature matrix -- dropout and drop node
         x = self.drop_strategy.apply_feature_mat(x, self.training)
         x = self.lin(x)
+        if self.bias is not None:
+            x = x + self.bias
 
         # drop from adj matrix -- drop edge, drop gnn and drop agg -- and normalize it
         edge_index = self.drop_strategy.apply_adj_mat(edge_index, self.training)
         edge_index, edge_weight = self.pt.pretreatment(x.size(0), edge_index, x.dtype)
 
         out = self.propagate(edge_index, x=x, edge_weight=edge_weight)
-        if self.bias is not None:
-            out = out + self.bias
 
         return out
 

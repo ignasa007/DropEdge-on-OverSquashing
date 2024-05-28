@@ -5,30 +5,33 @@ import numpy as np
 import torch
 
 
+def get_time():
+
+    return datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
+
+
 class Logger:
 
-    def __init__(self, dataset, model, *args, **kwargs):
+    def __init__(self, dataset, gnn_layer, drop_strategy):
 
         '''
         Initialize the logging directory:
-            ./results/<dataset>/<model>/.../<datetime>/
+            ./results/<dataset>/<gnn_layer>/<drop_strategy>/<datetime>/
 
         Args:
             dataset (str): dataset name.
             model (str): model name.
         '''
         
-        self.EXP_DIR = f'./results/{dataset}/{model}'
-        self.EXP_DIR += f"/{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}"
-        self.PICKLE_DIR = f'{self.EXP_DIR}/pickle'
-        self.ARRAY_DIR = f'{self.EXP_DIR}/arrays'
-        self.TENSOR_DIR = f'{self.EXP_DIR}/tensors'
-        os.makedirs(self.EXP_DIR)
+        self.exp_dir = f'./results/{dataset}/{gnn_layer}/{drop_strategy}/{get_time()}'
+        self.pickle_dir = f'{self.exp_dir}/pickle'; os.makedirs(self.pickle_dir)
+        self.array_dir = f'{self.exp_dir}/arrays'; os.makedirs(self.array_dir)
+        self.tensor_dir = f'{self.exp_dir}/tensors'; os.makedirs(self.tensor_dir)
 
     def log(self, text, with_time=True, print_text=False):
 
         '''
-        Write logs to the the logging file: ./<EXP_DIR>/logs
+        Write logs to the the logging file: ./<exp_dir>/logs
 
         Args:
             text (str): text to write to the log file.
@@ -40,8 +43,8 @@ class Logger:
         if print_text:
             print(text)
         if with_time:
-            text = f"{datetime.now().strftime('%Y-%m-%d-%H-%M-%S')}: {text}"
-        with open(f'{self.EXP_DIR}/logs', 'a') as f:
+            text = f"{get_time()}: {text}"
+        with open(f'{self.exp_dir}/logs', 'a') as f:
             f.write(text + '\n')
 
     def save_pickle(self, fn, obj):
@@ -56,7 +59,7 @@ class Logger:
 
         if not fn.endswith('.pkl'):
             fn = os.path.splitext(fn)[0] + '.pkl'
-        with open(f'{self.PICKLE_DIR}/{fn}', 'wb') as f:
+        with open(f'{self.pickle_dir}/{fn}', 'wb') as f:
             pickle.dump(obj, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     def save_arrays(self, fn, *args, **kwargs):
@@ -75,13 +78,13 @@ class Logger:
             assert all([isinstance(ar, np.ndarray) for ar in args]), \
                 f'Expected NumPy arrays, instead received {set((type(ar) for ar in args))}.'
             unnamed_fn = os.path.splitext(fn)[0] + '_unnamed.npz'
-            with open(f'{self.ARRAY_DIR}/{unnamed_fn}', 'wb') as f:
+            with open(f'{self.array_dir}/{unnamed_fn}', 'wb') as f:
                 np.savez(f, *args)
         if kwargs:
             assert all([isinstance(ar, np.ndarray) for ar in kwargs.keys()]), \
                 f'Expected NumPy arrays, instead received {set((type(ar) for ar in kwargs.keys()))}.'
             named_fn = os.path.splitext(fn)[0] + '_named.npz'
-            with open(f'{self.ARRAY_DIR}/{named_fn}', 'wb') as f:
+            with open(f'{self.array_dir}/{named_fn}', 'wb') as f:
                 np.savez(f, **kwargs)
 
     def save_tensors(self, fn, tensor):
@@ -98,4 +101,4 @@ class Logger:
             f'Expected Torch tensor, instead received {type(tensor)}.'
         if not fn.endswith('.pt'):
             fn = os.path.splitext(fn)[0] + '.pt'
-        torch.save(tensor, f'{self.TENSOR_DIR}/fn')
+        torch.save(tensor, f'{self.tensor_dir}/fn')
