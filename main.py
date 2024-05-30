@@ -5,35 +5,38 @@ import torch
 from torch.optim import Adam
 
 from dataset import get_dataset
-from gnn import Model
+from model import Model
+from model.heads import verify_task
 from utils.config import Config
 from utils.logger import Logger
 from utils.format import *
-from utils.metrics import Results
+from utils.results import Results
 
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    '--dataset', type=str,
+    '--dataset', type=str, required=True,
     help='The dataset to be trained on [Cora, CiteSeer, PubMed].'
 )
 parser.add_argument(
-    '--task', type=str,
+    '--task', type=str, required=True,
     help='The task to perform with the chosen dataset [Node-C, Graph-C, Graph-R].'
 )
 parser.add_argument(
-    '--gnn_layer', type=str,
+    '--gnn_layer', type=str, required=True,
     help='The backbone model [GCN, ].'
 )
 parser.add_argument(
-    '--drop_strategy', type=str,
+    '--drop_strategy', type=str, required=True,
     help='The dropping method [Dropout, Drop-Edge, Drop-Node, Drop-Message, Drop-GNN].'
 )
 parser.add_argument(
-    'opts', default=None, nargs=argparse.REMAINDER, 
+    'opts', default=None, nargs=argparse.REMAINDER,
     help='Modify any other experiment configurations using the command-line.'
 )
 args = parser.parse_args()
+
+verify_task(args.dataset, args.task)
 
 cfg = Config(
     root='config',
@@ -42,11 +45,17 @@ cfg = Config(
 
 
 DEVICE = torch.device(f'cuda:{cfg.device_index}' if torch.cuda.is_available() and cfg.device_index is not None else 'cpu')
+# TODO: unify data loaders for 
+#   1. node level tasks -- one graph + split masks
+#   2. graph level tasks -- several graphs in each split
+# REMINDER: num_classes = 2 => model head has a single output; loss is binary cross-entropy
+#           num_classes > 2 => model has $num_classes outputs; loss is cross-entropy
 dataset = get_dataset(args.dataset).to(device=DEVICE)
+# train_loader, val_loader, test_loader = get_dataset(args.dataset, device=DEVICE)
 model = Model(
     input_dim=dataset.num_features,
     h_layer_sizes=cfg.h_layer_sizes,
-    output_dim=dataset.num_classes,
+    output_dim=dataset.num_classes, # TODO: what is this for regression tasks?
     gnn_layer=args.gnn_layer,
     add_self_loops=cfg.add_self_loops,
     normalize=cfg.normalize,
@@ -75,41 +84,32 @@ logger.log(f'Number of layers: {len(cfg.h_layer_sizes)+1}', date=False)
 logger.log(f"Layers' sizes: {[dataset.num_features] + cfg.h_layer_sizes + [dataset.num_classes]}", date=False)
 logger.log(f'Activation: {format_activation_name.get(cfg.activation)}', date=False)
 
-logger.log(f'Dropout probability: {cfg.dropout_prob}\n', date=False)
+logger.log(f'Dropout probability: {cfg.dropout_prob}', date=False)
 
 
-logger.log(f'Starting training...', print_text=True)
 results = Results()
-
-
-# def train():
-
-#     model.train()
-
-#     for 
-#     optimizer.zero_grad()
-#     out = model(dataset.x, dataset.edge_index)
-#     loss = F.cross_entropy(out[dataset.train_mask], dataset.y[dataset.train_mask])
-#     loss.backward()
-#     optimizer.step()
-
-
-# @torch.no_grad()
-# def test():
-#     model.eval()
-#     out = model(dataset.x, dataset.edge_index)
-#     _, pred = out.max(dim=1)
-#     train_correct = int(pred[dataset.train_mask].eq(dataset.y[dataset.train_mask]).sum().item())
-#     train_acc = train_correct / int(dataset.train_mask.sum())
-#     validate_correct = int(pred[dataset.val_mask].eq(dataset.y[dataset.val_mask]).sum().item())
-#     validate_acc = validate_correct / int(dataset.val_mask.sum())
-#     test_correct = int(pred[dataset.test_mask].eq(dataset.y[dataset.test_mask]).sum().item())
-#     test_acc = test_correct / int(dataset.test_mask.sum())
-#     return train_acc, validate_acc, test_acc
 
 for epoch in tqdm(range(1, cfg.n_epochs+1)):
 
-    
+    logger.log(f'\nEpoch {epoch}:')
+
+    model.train()
+    for inputs, target, mask in train_loader:
+        optimizer.zero_grad()
+        loss, metrics = model(*inputs, target, mask)
+        loss.backward()
+        optimizer.step()
+        logger.log_metrics(metrics, prefix='Training', with_time=False, print_text=True)
+
+    if epoch % cfg.test_every == 0:
+        model.eval()
+        with torch.no_grad():
+            for inputs, target, mask in val_loader:
+                loss, metrics = model(*inputs, target, mask)
+                logger.log_metrics(metrics, prefix='Validation', with_time=False, print_text=True)
+            for inputs, target, mask in test_loader:
+                loss, metrics = model(*inputs, target, mask)
+                logger.log_metrics(metrics, prefix='Testing', with_time=False, print_text=True)
 
     if isinstance(cfg.save_every, int) and epoch % cfg.save_every == 0:
         ckpt_fn = f'{logger.EXP_DIR}/ckpt-{epoch}.pth'

@@ -1,5 +1,5 @@
 from torch import rand
-from .base import BaseDropout
+from model.dropout.base import BaseDropout
 
 
 class DropNode(BaseDropout):

@@ -1,6 +1,6 @@
 from torch_geometric.datasets import Planetoid
 from torch_geometric.transforms import NormalizeFeatures
-from .constants import root
+from dataset.constants import root
 
 
 def pubmed():

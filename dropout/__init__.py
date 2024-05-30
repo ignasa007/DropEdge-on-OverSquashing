@@ -1,9 +1,9 @@
-from .dropout import Dropout
-from .drop_node import DropNode
-from .drop_edge import DropEdge
-from .drop_message import DropMessage
-from .drop_gnn import DropGNN
-from .drop_agg import DropAgg
+from model.dropout.dropout import Dropout
+from model.dropout.drop_node import DropNode
+from model.dropout.drop_edge import DropEdge
+from model.dropout.drop_message import DropMessage
+from model.dropout.drop_gnn import DropGNN
+from model.dropout.drop_agg import DropAgg
 
 
 def get_dropout(dropout_name: str):
@@ -19,7 +19,7 @@ def get_dropout(dropout_name: str):
 
     formatted_name = dropout_name.replace('-', '').lower()
     if formatted_name not in dropout_map:
-        raise ValueError(f'Dropout name not recognised (got `{dropout_name}`).')
+        raise ValueError(f'Parameter `dropout_name` not recognised (got `{dropout_name}`).')
     
     dropout_class = dropout_map.get(formatted_name)
     

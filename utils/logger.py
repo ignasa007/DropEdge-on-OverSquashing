@@ -1,6 +1,7 @@
 import os
 from datetime import datetime
 import pickle
+from typing import List, Tuple
 import numpy as np
 import torch
 
@@ -12,7 +13,12 @@ def get_time():
 
 class Logger:
 
-    def __init__(self, dataset, gnn_layer, drop_strategy):
+    def __init__(
+        self,
+        dataset: str,
+        gnn_layer: str,
+        drop_strategy: str
+    ):
 
         '''
         Initialize the logging directory:
@@ -28,7 +34,12 @@ class Logger:
         self.array_dir = f'{self.exp_dir}/arrays'; os.makedirs(self.array_dir)
         self.tensor_dir = f'{self.exp_dir}/tensors'; os.makedirs(self.tensor_dir)
 
-    def log(self, text, with_time=True, print_text=False):
+    def log(
+        self,
+        text: str,
+        with_time: bool = True,
+        print_text: bool = False
+    ):
 
         '''
         Write logs to the the logging file: ./<exp_dir>/logs
@@ -46,6 +57,18 @@ class Logger:
             text = f"{get_time()}: {text}"
         with open(f'{self.exp_dir}/logs', 'a') as f:
             f.write(text + '\n')
+
+    def log_metrics(
+        self,
+        metrics: List[Tuple[str, float]],
+        prefix: str = '',
+        with_time: bool = True,
+        print_text: bool = False
+    ):
+
+        formatted_metrics = prefix + ': ' if prefix != '' else ''
+        formatted_metrics += ', '.join(f'{metric} = {value:.6e}' for metric, value in metrics)
+        self.log(formatted_metrics, with_time, print_text)
 
     def save_pickle(self, fn, obj):
 

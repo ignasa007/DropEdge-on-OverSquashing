@@ -1,5 +1,5 @@
 from torch.nn.functional import dropout
-from .base import BaseDropout
+from model.dropout.base import BaseDropout
 
 
 class DropMessage(BaseDropout):

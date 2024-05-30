@@ -1,6 +1,6 @@
 import torch
 from torch_geometric.utils.num_nodes import maybe_num_nodes
-from .base import BaseDropout
+from model.dropout.base import BaseDropout
 
 
 class DropAgg(BaseDropout):
