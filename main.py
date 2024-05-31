@@ -14,14 +14,12 @@ from utils.results import Results
 args = parse_arguments()
 
 DEVICE = torch.device(f'cuda:{args.device_index}' if torch.cuda.is_available() and args.device_index is not None else 'cpu')
-# TODO: unify data loaders for 
-#   1. node level tasks -- one graph + split masks
-#   2. graph level tasks -- several graphs in each split
+# TODO: unify data loaders for node level tasks and graph level tasks
 # train_loader, val_loader, test_loader = get_dataset(args.dataset, device=DEVICE)
 dataset = get_dataset(args.dataset).to(device=DEVICE)
 model = Model(
     input_dim=dataset.num_features,
-    output_dim=dataset.num_classes, # TODO: what is this for regression tasks?
+    output_dim=dataset.num_classes,
     args=args
 ).to(device=DEVICE)
 optimizer = Adam(model.parameters(), lr=args.learning_rate)
@@ -59,15 +57,10 @@ for epoch in tqdm(range(1, args.n_epochs+1)):
 
     logger.log(f'\nEpoch {epoch}:')
 
-    # TODO: loading the datasets will be very different for node-level and graph-level tasks
-    # can implement training and evaluation in the dataset class instead of having a loader for each split
-    #   - train takes the model as the argument and outputs the metrics for the train set
-    #   - test/eval takes the model as argument and outputs the metrics for the val and test sets
-
     model.train()
-    for inputs, target, mask in train_loader:
+    for x, edge_index, target, mask in train_loader:
         optimizer.zero_grad()
-        loss = model(*inputs, target, mask)
+        loss = model(x, edge_index, target, mask)
         loss.backward()
         optimizer.step()
     logger.log_metrics(model.compute_metrics(), prefix='\tTraining', with_time=False, print_text=True)
@@ -75,11 +68,11 @@ for epoch in tqdm(range(1, args.n_epochs+1)):
     if epoch % args.test_every == 0:
         model.eval()
         with torch.no_grad():
-            for inputs, target, mask in val_loader:
-                loss = model(*inputs, target, mask)
+            for x, edge_index, target, mask in val_loader:
+                loss = model(x, edge_index, target, mask)
             logger.log_metrics(model.compute_metrics(), prefix='\tValidation', with_time=False, print_text=True)
-            for inputs, target, mask in test_loader:
-                loss = model(*inputs, target, mask)
+            for x, edge_index, target, mask in test_loader:
+                loss = model(x, edge_index, target, mask)
             logger.log_metrics(model.compute_metrics(), prefix='\tTesting', with_time=False, print_text=True)
 
     if args.save_every is not None and epoch % args.save_every == 0:

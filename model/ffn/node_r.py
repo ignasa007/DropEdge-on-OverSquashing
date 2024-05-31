@@ -3,12 +3,12 @@ from torch import Tensor, BoolTensor
 from model.ffn.base import BaseHead
 
 
-class NodeClassification(BaseHead):
+class NodeRegression(BaseHead):
 
     def __init__(self, layer_sizes, activation):
 
-        super(NodeClassification, self).__init__(
-            task_name='classification',
+        super(NodeRegression, self).__init__(
+            task_name='regression',
             layer_sizes=layer_sizes,
             activation=activation
         )
@@ -19,7 +19,7 @@ class NodeClassification(BaseHead):
         Preprocess the input -- compute the mean of the node embeddings from each graph.
 
         Args:
-            node_repr: tensor of shape (N, H), where $N is the number of nodes in the graph, and 
+            node_repr: tensor of shape (N, H), where $N is the number of nodes in the graph, and
                 $H is the dimension of messages.
             target: true labels.
             mask: boolean tensor of shape (N,) indicating which nodes to compute metrics over.

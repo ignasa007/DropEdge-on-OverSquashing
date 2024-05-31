@@ -3,19 +3,16 @@ from typing import Union
 
 from torch import Tensor, BoolTensor
 from torch.nn import Module, Sequential
+from torch_geometric.typing import Adj
 
 from model.gnn import get_activation, get_layer
-from model.ffn import BaseHead, get_head
+from model.ffn import get_head
 from dropout import get_dropout
 
 
 class Model(Module):
 
-    def __init__(self, input_dim: int, output_dim: int, args: Namespace):
-
-        # TODO: resolve the argument output_dim -- how to receive for regression tasks?
-        # REMINDER: num_classes = 2 => model head has a single output; loss is binary cross-entropy
-        #           num_classes > 2 => model has $num_classes outputs; loss is cross-entropy
+    def __init__(self, input_dim: int, num_classes: int, args: Namespace):
         
         super(Model, self).__init__()
         
@@ -35,21 +32,23 @@ class Model(Module):
         self.message_passing = Sequential(*module_list)
 
         ffn_head = get_head(args.task)
-        ffn_layer_sizes = args.gnn_layer_sizes[-1:] + args.ffn_layer_sizes + [output_dim]
+        ffn_layer_sizes = args.gnn_layer_sizes[-1:] + args.ffn_layer_sizes
         self.readout = ffn_head(
             layer_sizes=ffn_layer_sizes,
+            num_classes=num_classes,
             activation=get_activation(args.ffn_activation)(),
+            task=args.task,
         )
 
     def forward(
         self,
-        *inputs,
+        x: Tensor,
+        edge_index: Adj,
         target: Tensor,
         mask: Union[BoolTensor, None] = None
     ):
 
-        # TODO: check what the input format should be graph level tasks
-        node_embeddings = self.message_passing(*inputs)
+        node_embeddings = self.message_passing(x, edge_index)
         loss = self.readout(node_embeddings, target, mask)
 
         return loss

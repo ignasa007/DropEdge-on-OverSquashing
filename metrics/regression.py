@@ -5,7 +5,11 @@ from metrics.base import Metrics
 
 class Regression(Metrics):
 
-    def __init__(self):
+    def __init__(self, num_classes: int):
+
+        # TODO: problem is that we want to compute the metrics dimension-wise
+        #   in case of multi-ouput regression (like QM9)
+        # TODO: also gotta think about logging in this case
 
         super(Regression, self).__init__()
 
@@ -23,7 +27,6 @@ class Regression(Metrics):
 
         input = input.reshape(target.shape)
         
-        # TODO: forward is supposed to update the states and compute on the current batch -- verify
         mse = self.mean_squared_error.forward(input, target)
         self.mean_absolute_error.update(input, target)
         self.mean_absolute_percentage_error.update(input, target)
