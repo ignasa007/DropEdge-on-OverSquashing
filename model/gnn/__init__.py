@@ -1,5 +1,5 @@
 from torch.nn import Identity, ReLU, ELU, Sigmoid, Tanh
-from model.layers.gcn import GCNLayer
+from model.gnn.gcn import GCNLayer
 
 
 def get_activation(activation_name: str):

@@ -23,9 +23,12 @@ class Regression(Metrics):
 
         input = input.reshape(target.shape)
         
+        # TODO: forward is supposed to update the states and compute on the current batch -- verify
+        mse = self.mean_squared_error.forward(input, target)
         self.mean_absolute_error.update(input, target)
         self.mean_absolute_percentage_error.update(input, target)
-        self.mean_squared_error.update(input, target)
+
+        return mse
     
     def compute(self):
 

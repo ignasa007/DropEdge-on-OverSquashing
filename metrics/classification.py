@@ -14,26 +14,24 @@ class Classification(Metrics):
         if not isinstance(num_classes, int):
             raise TypeError(f'Expected `num_classes` to be an instance of `int` (got {type(num_classes)}).')
         
-        # TODO: update + compute for cross-entropy loss. torch.nn classes don't support.
-
         if num_classes == 2:
-            self.loss_fn = BCEWithLogitsLoss(reduction=None)
+            self.loss_fn = BCEWithLogitsLoss(reduction='sum')
             self.accuracy_fn = BinaryAccuracy()
             self.f1score_fn = BinaryF1Score()
             self.auroc_fn = BinaryAUROC()
-
         elif num_classes > 2:
-            self.loss_fn = CrossEntropyLoss(reduction=None)
+            self.loss_fn = CrossEntropyLoss(reduction='sum')
             self.accuracy_fn = MulticlassAccuracy()
             self.f1score_fn = MulticlassF1Score(num_classes)
             self.auroc_fn = MulticlassAUROC(num_classes)
-
         else:
             raise ValueError(f'Expected `num_classes` to be >1 (got {num_classes}).')
         
+        self.reset()
+        
     def reset(self):
 
-        self.loss_fn.reset()
+        self.n_samples = self.total_ce_loss = 0
         self.accuracy_fn.reset()
         self.f1score_fn.reset()
         self.auroc_fn.reset()
@@ -41,16 +39,20 @@ class Classification(Metrics):
     def update(self, input: Tensor, target: Tensor):
 
         input = input.reshape(target.shape)
-        preds = sigmoid(input)
+        batch_ce_loss = self.loss_fn(input, target)
+        self.total_ce_loss += batch_ce_loss
+        self.n_samples += target.size(0)
 
-        self.loss_fn.update(preds, target)
+        preds = sigmoid(input)
         self.accuracy_fn.update(preds, target)
         self.f1score_fn.update(preds, target)
         self.auroc_fn.update(preds, target)
 
+        return batch_ce_loss / target.size(0)
+
     def compute(self):
 
-        cross_entropy = self.loss_fn.compute()
+        cross_entropy = self.total_ce_loss / self.n_samples
         accuracy = self.accuracy_fn.compute().item()
         f1_score = self.f1score_fn.compute().item()
         auroc = self.auroc_fn.compute().item()

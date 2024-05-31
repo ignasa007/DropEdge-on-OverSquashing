@@ -1,60 +1,100 @@
-from yacs.config import CfgNode as CN
+import argparse
 
 
-def default_cfg():
+def validate_task(dataset_name, task_name):
 
-    '''
-    The default configuration object for the experiments.
-        - Need to register all configurations that are expected.
+    valid_tasks = {
+        'cora': ['node-c', ],
+        'citeseer': ['node-c', ],
+        'pubmed': ['node-c', ],
+    }
 
-    Return:
-        _C: A configuration object with placeholder values.
-    '''
+    formatted_name = dataset_name.lower()
+    if formatted_name not in valid_tasks:
+        raise ValueError(f'Parameter `dataset_name` not recognized (got `{dataset_name}`).')
 
-    _C = CN()
-
-    _C.device_index = None
-
-    _C.add_self_loops = None
-    _C.normalize = None
-    
-    _C.h_layer_sizes = None
-    _C.dropout_prob = None
-    _C.activation = None
-    
-    _C.lr = None
-    _C.n_epochs = None
-
-    return _C.clone()
+    formatted_name = task_name.replace('_', '-').lower()
+    if formatted_name not in valid_tasks.get(dataset_name):
+        raise ValueError('Parameter `task_name` not recognised for the passed `dataset_name`' \
+            f'(got task `{task_name}` for dataset `{dataset_name}`).')
 
 
-class Config:
-    
-    def __init__(self, root, override=None):
+def parse_arguments():
 
-        '''
-        Initialization of the configuration object used by the main file.
+    parser = argparse.ArgumentParser()
 
-        Args:
-            root (str): file path for the default configurations.
-            dataset (str): file path for the dataset configurations used in
-                the experiment.
-            model (str): file path for the model configurations used in the
-                experiment.
-            override (Union[list, None]): key-value pairs with command-line
-                arguments indicating the configurations to override.
-        '''
+    parser.add_argument(
+        '--dataset', type=str, required=True,
+        help='The dataset to be trained on: [Cora, CiteSeer, PubMed].'
+    )
+    parser.add_argument(
+        '--add_self_loops', type=bool, default=True,
+        help='Boolean value indicating whether to add self-loops during message passing.'
+    )
+    parser.add_argument(
+        '--normalize', type=bool, default=True,
+        help='Boolean value indicating whether to normalize edge weights during message passing.'
+    )
 
-        self.cfg = default_cfg()
-        self.cfg.merge_from_file(f'{root}/config.yaml')
+    parser.add_argument(
+        '--gnn', type=str, required=True,
+        help='The backbone model: [GCN, ].'
+    )
+    parser.add_argument(
+        '--gnn_layer_sizes', type=list, default=[16, 16],
+        help="Hidden layers' sizes for the GNN."
+    )
+    parser.add_argument(
+        '--gnn_activation', type=str, default='ReLU',
+        help='The non-linearity to use for message-passing: [Identity, ReLU, ELU, GeLU, Sigmoid, Tanh].'
+    )
 
-        if isinstance(override, list):
-            self.cfg.merge_from_list(override)
+    parser.add_argument(
+        '--task', type=str, required=True,
+        help='The task to perform with the chosen dataset: [Node-C, Graph-C, Graph-R].'
+    )
+    parser.add_argument(
+        '--ffn_layer_sizes', type=list, default=[],
+        help="Hidden layers' sizes for the readout FFN."
+    )
+    parser.add_argument(
+        '--ffn_activation', type=str, default='ReLU',
+        help='The non-linearity to use for readout: [Identity, ReLU, ELU, GeLU, Sigmoid, Tanh].'
+    )
 
-    def __getattr__(self, name: str):
+    parser.add_argument(
+        '--dropout', type=str, required=True,
+        help='The dropping method [Dropout, Drop-Edge, Drop-Node, Drop-Message, Drop-GNN].'
+    )
+    parser.add_argument(
+        '--drop_p', type=float, default=0.5,
+        help='The dropping probability used with the dropout method.'
+    )
 
-        '''
-        Method for returning configurations using dot operator.
-        '''
+    parser.add_argument(
+        '--n_epochs', type=int, default=500,
+        help='Number of epochs to train the model for.'
+    )
+    parser.add_argument(
+        '--learning_rate', type=float, default=5e-3,
+        help='Learning rate for Adam optimizer.'
+    )
 
-        return self.cfg.__getattr__(name)
+    parser.add_argument(
+        '--device_index', type=int, default=None,
+        help="Index of the GPU to use; skip if you're using CPU."
+    )
+    parser.add_argument(
+        '--test_every', type=int, default=1,
+        help='Number of epochs of training to test after.'
+    )
+    parser.add_argument(
+        '--save_every', type=int, default=None,
+        help='Number of epochs of training to save the model after.'
+    )
+
+    args = parser.parse_args()
+
+    assert validate_task(args.dataset, args.task)
+
+    return args
