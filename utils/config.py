@@ -68,11 +68,13 @@ def parse_arguments():
     )
     parser.add_argument(
         '--test_every', type=int, default=1,
-        help='Number of epochs of training to test after.'
+        help='Number of epochs of training to test after.\n' \
+            '\tSpecial cases: -1 to test only at the last epoch.'
     )
     parser.add_argument(
         '--save_every', type=int, default=None,
-        help='Number of epochs of training to save the model after.'
+        help='Number of epochs of training to save the model after.\n' \
+            '\tSpecial cases: skip to never save and -1 to save at the last epoch.'
     )
 
     args = parser.parse_args()

@@ -11,10 +11,10 @@ class Metrics:
 
         raise NotImplementedError
     
-    def update(self, input: Tensor, target: Tensor):
+    def compute_loss(self, input: Tensor, target: Tensor):
 
         raise NotImplementedError
     
-    def compute(self):
+    def compute_metrics(self):
 
         raise NotImplementedError

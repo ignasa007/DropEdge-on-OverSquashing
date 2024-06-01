@@ -23,7 +23,7 @@ class Regression(Metrics):
         self.mean_absolute_percentage_error.reset()
         self.mean_squared_error.reset()
     
-    def update(self, input: Tensor, target: Tensor):
+    def compute_loss(self, input: Tensor, target: Tensor):
 
         input = input.reshape(target.shape)
         
@@ -33,18 +33,18 @@ class Regression(Metrics):
 
         return mse
     
-    def compute(self):
+    def compute_metrics(self):
 
-        mean_sq_error = self.mean_squared_error.compute()
+        mean_sq_error = self.mean_squared_error.compute().item()
         mean_abs_error = self.mean_absolute_error.compute().item()
         mean_abs_perc_error = self.mean_absolute_percentage_error.compute().item()
 
         self.reset()
 
         metrics = [
-            ('Mean Squared Error', mean_sq_error.item()),
+            ('Mean Squared Error', mean_sq_error),
             ('Mean Absolute Error', mean_abs_error),
             ('Mean Absolute Percentage Error', mean_abs_perc_error),
         ]
 
-        return mean_sq_error, metrics
+        return metrics

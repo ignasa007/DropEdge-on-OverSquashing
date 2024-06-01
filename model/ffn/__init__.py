@@ -5,7 +5,7 @@ from model.ffn.graph_r import GraphRegression
 from model.ffn.graph_c import GraphClassification 
 
 
-def get_head(task_name):
+def get_head(task_name: str) -> BaseHead:
 
     head_map = {
         'node-r': NodeRegression,

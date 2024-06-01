@@ -5,15 +5,7 @@ from model.ffn.base import BaseHead
 
 class GraphRegression(BaseHead):
 
-    def __init__(self, layer_sizes, activation):
-
-        super(GraphRegression, self).__init__(
-            task_name='regression',
-            layer_sizes=layer_sizes,
-            activation=activation
-        )
-
-    def preprocess(self, node_repr: Tensor, target: Tensor, mask: Tensor):
+    def preprocess(self, node_repr: Tensor, mask: Tensor):
 
         '''
         Preprocess the input -- compute the mean of the node embeddings from each graph.
@@ -21,8 +13,7 @@ class GraphRegression(BaseHead):
         Args:
             node_repr: tensor of shape (N_1+...+N_B, H), where $N_i is the number of nodes in graph $i,
                 $B is the batch size, and $H is the dimension of messages.
-            target: true labels.
             mask: tensor (N_1, N_2, ..., N_B) of shape (B,)
         '''
 
-        return global_mean_pool(x=node_repr, batch=mask), target
+        return global_mean_pool(x=node_repr, batch=mask)

@@ -30,3 +30,11 @@ format_activation_name = {
     'sigmoid': 'Sigmoid',
     'tanh': 'Tanh',
 }
+
+class FormatEpoch:
+
+    def __init__(self, n_epochs: int):
+        self.adj_len = len(str(n_epochs))
+
+    def __call__(self, epoch: int):
+        return str(epoch).rjust(self.adj_len, '0')

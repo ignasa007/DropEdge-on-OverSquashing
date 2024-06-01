@@ -12,7 +12,7 @@ from dropout import get_dropout
 
 class Model(Module):
 
-    def __init__(self, input_dim: int, num_classes: int, args: Namespace):
+    def __init__(self, input_dim: int, output_dim: int, args: Namespace):
         
         super(Model, self).__init__()
         
@@ -32,12 +32,10 @@ class Model(Module):
         self.message_passing = Sequential(*module_list)
 
         ffn_head = get_head(args.task)
-        ffn_layer_sizes = args.gnn_layer_sizes[-1:] + args.ffn_layer_sizes
+        ffn_layer_sizes = args.gnn_layer_sizes[-1:] + args.ffn_layer_sizes + [output_dim]
         self.readout = ffn_head(
             layer_sizes=ffn_layer_sizes,
-            num_classes=num_classes,
             activation=get_activation(args.ffn_activation)(),
-            task=args.task,
         )
 
     def forward(
@@ -49,10 +47,6 @@ class Model(Module):
     ):
 
         node_embeddings = self.message_passing(x, edge_index)
-        loss = self.readout(node_embeddings, target, mask)
+        out = self.readout(node_embeddings, target, mask)
 
-        return loss
-    
-    def compute_metrics(self):
-
-        return self.readout.metrics.compute()
+        return out

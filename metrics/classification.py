@@ -36,11 +36,11 @@ class Classification(Metrics):
         self.f1score_fn.reset()
         self.auroc_fn.reset()
     
-    def update(self, input: Tensor, target: Tensor):
+    def compute_loss(self, input: Tensor, target: Tensor):
 
         input = input.reshape(target.shape)
         batch_ce_loss = self.loss_fn(input, target)
-        self.total_ce_loss += batch_ce_loss
+        self.total_ce_loss += batch_ce_loss.item()
         self.n_samples += target.size(0)
 
         preds = sigmoid(input)
@@ -50,7 +50,7 @@ class Classification(Metrics):
 
         return batch_ce_loss / target.size(0)
 
-    def compute(self):
+    def compute_metrics(self):
 
         cross_entropy = self.total_ce_loss / self.n_samples
         accuracy = self.accuracy_fn.compute().item()
@@ -60,10 +60,10 @@ class Classification(Metrics):
         self.reset()
 
         metrics = [
-            ('Cross Entropy Loss', cross_entropy.item()),
+            ('Cross Entropy Loss', cross_entropy),
             ('Accuracy', accuracy),
             ('F1 Score', f1_score),
             ('AU-ROC', auroc),
         ]
 
-        return cross_entropy, metrics
+        return metrics

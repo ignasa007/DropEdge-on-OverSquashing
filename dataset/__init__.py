@@ -1,14 +1,13 @@
+from dataset.base import BaseDataset
 from dataset.cora import Cora
-from dataset.citeseer import CiteSeer
-from dataset.pubmed import PubMed
+from dataset.qm9 import QM9
 
 
-def get_dataset(dataset_name: str, task_name: str):
+def get_dataset(dataset_name: str, task_name: str) -> BaseDataset:
 
     dataset_map = {
         'cora': Cora,
-        'citeseer': CiteSeer,
-        'pubmed': PubMed,
+        'qm9': QM9,
     }
     
     formatted_name = dataset_name.lower()
