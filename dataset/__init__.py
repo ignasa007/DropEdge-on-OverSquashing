@@ -1,14 +1,14 @@
-from dataset.cora import cora
-from dataset.citeseer import citeseer
-from dataset.pubmed import pubmed
+from dataset.cora import Cora
+from dataset.citeseer import CiteSeer
+from dataset.pubmed import PubMed
 
 
-def get_dataset(dataset_name: str):
+def get_dataset(dataset_name: str, task_name: str):
 
     dataset_map = {
-        'cora': cora,
-        'citeseer': citeseer,
-        'pubmed': pubmed,
+        'cora': Cora,
+        'citeseer': CiteSeer,
+        'pubmed': PubMed,
     }
     
     formatted_name = dataset_name.lower()
@@ -17,4 +17,4 @@ def get_dataset(dataset_name: str):
     
     dataset = dataset_map.get(formatted_name)
     
-    return dataset()
+    return dataset(task_name)
