@@ -8,7 +8,6 @@ from model import Model
 from utils.config import parse_arguments
 from utils.logger import Logger
 from utils.format import *
-from utils.results import Results
 
 
 args = parse_arguments()
@@ -37,7 +36,7 @@ logger.log(f"GNN activation: {args.gnn_activation}\n", date=False)
 
 logger.log(f'Task: {format_task_name.get(args.task)}', date=False)
 logger.log(f"Number of layers in the readout FFN: {len(args.ffn_layer_sizes)+1}", date=False)
-logger.log(f"FFN layers' sizes: {args.ffn_layer_sizes + [dataset.num_classes]}", date=False)
+logger.log(f"FFN layers' sizes: {args.ffn_layer_sizes + [dataset.output_dim]}", date=False)
 logger.log(f"FFN activation: {args.ffn_activation}\n", date=False)
 
 logger.log(f'Dropout: {format_dropout_name.get(args.dropout)}', date=False)
@@ -48,11 +47,10 @@ logger.log(f'Learning rate: {args.learning_rate}\n', date=False)
 
 
 format_epoch = FormatEpoch(args.n_epochs)
-results = Results()
 
 for epoch in tqdm(range(1, args.n_epochs+1)):
 
-    logger.log(f'\nEpoch {epoch}:')
+    logger.log(f'\nEpoch {format_epoch(epoch)}:')
     train_metrics = dataset.train(model, optimizer)
     logger.log_metrics(train_metrics, prefix='\tTraining', with_time=False, print_text=True)
 
@@ -65,7 +63,3 @@ for epoch in tqdm(range(1, args.n_epochs+1)):
         ckpt_fn = f'{logger.exp_dir}/ckpt-{format_epoch(epoch)}.pth'
         logger.log(f'Saving model at {ckpt_fn}.', print_text=True)
         torch.save(model.state_dict(), ckpt_fn)
-
-
-for dataset in ('training', 'validation', 'testing'):
-    logger.save(f'{dataset}_results', results.get(dataset))
