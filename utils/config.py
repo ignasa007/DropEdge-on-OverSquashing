@@ -1,24 +1,6 @@
 import argparse
 
 
-def validate_task(dataset_name, task_name):
-
-    valid_tasks = {
-        'cora': ['node-c', ],
-        'citeseer': ['node-c', ],
-        'pubmed': ['node-c', ],
-    }
-
-    formatted_name = dataset_name.lower()
-    if formatted_name not in valid_tasks:
-        raise ValueError(f'Parameter `dataset_name` not recognized (got `{dataset_name}`).')
-
-    formatted_name = task_name.replace('_', '-').lower()
-    if formatted_name not in valid_tasks.get(dataset_name):
-        raise ValueError('Parameter `task_name` not recognised for the passed `dataset_name`' \
-            f'(got task `{task_name}` for dataset `{dataset_name}`).')
-
-
 def parse_arguments():
 
     parser = argparse.ArgumentParser()
@@ -94,7 +76,5 @@ def parse_arguments():
     )
 
     args = parser.parse_args()
-
-    assert validate_task(args.dataset, args.task)
 
     return args

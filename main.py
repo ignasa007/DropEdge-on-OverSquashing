@@ -16,13 +16,10 @@ args = parse_arguments()
 DEVICE = torch.device(f'cuda:{args.device_index}' if torch.cuda.is_available() and args.device_index is not None else 'cpu')
 # TODO: unify data loaders for node level tasks and graph level tasks
 # train_loader, val_loader, test_loader = get_dataset(args.dataset, device=DEVICE)
-dataset = get_dataset(args.dataset).to(device=DEVICE)
-model = Model(
-    input_dim=dataset.num_features,
-    output_dim=dataset.num_classes,
-    args=args
-).to(device=DEVICE)
+dataset = get_dataset(args.dataset, args.task).to(device=DEVICE)
+model = Model(dataset.num_features, dataset.output_dim, args=args).to(device=DEVICE)
 optimizer = Adam(model.parameters(), lr=args.learning_rate)
+
 
 logger = Logger(
     dataset=args.dataset,

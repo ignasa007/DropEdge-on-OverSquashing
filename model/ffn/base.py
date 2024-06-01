@@ -20,7 +20,7 @@ class BaseHead(Module):
             self.metrics = Regression(num_classes)
         else:
             raise ValueError('Parameter `task_name` not identified.' \
-                f'Expected `classification` or `regression`, but got `{task_name}`.')
+                ' ', f'Expected `classification` or `regression`, but got `{task_name}`.')
         
         layer_sizes = layer_sizes + [output_dim]
         module_list = []

@@ -45,7 +45,7 @@ class Model(Module):
         x: Tensor,
         edge_index: Adj,
         target: Tensor,
-        mask: Union[BoolTensor, None] = None
+        mask: Union[Tensor, BoolTensor, None] = None,
     ):
 
         node_embeddings = self.message_passing(x, edge_index)
