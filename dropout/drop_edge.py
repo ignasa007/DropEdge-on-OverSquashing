@@ -1,7 +1,7 @@
 from torch import stack
 from torch_sparse import SparseTensor
 from torch_geometric.utils import dropout_edge
-from model.dropout.base import BaseDropout
+from dropout.base import BaseDropout
 
 
 class DropEdge(BaseDropout):

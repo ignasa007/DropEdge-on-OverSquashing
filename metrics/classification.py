@@ -21,7 +21,7 @@ class Classification(Metrics):
             self.auroc_fn = BinaryAUROC()
         elif num_classes > 2:
             self.loss_fn = CrossEntropyLoss(reduction='sum')
-            self.accuracy_fn = MulticlassAccuracy()
+            self.accuracy_fn = MulticlassAccuracy(num_classes)
             self.f1score_fn = MulticlassF1Score(num_classes)
             self.auroc_fn = MulticlassAUROC(num_classes)
         else:
@@ -38,7 +38,6 @@ class Classification(Metrics):
     
     def compute_loss(self, input: Tensor, target: Tensor):
 
-        input = input.reshape(target.shape)
         batch_ce_loss = self.loss_fn(input, target)
         self.total_ce_loss += batch_ce_loss.item()
         self.n_samples += target.size(0)

@@ -7,7 +7,6 @@ import torch
 
 
 def get_time():
-
     return datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
 
 
@@ -16,8 +15,8 @@ class Logger:
     def __init__(
         self,
         dataset: str,
-        gnn_layer: str,
-        drop_strategy: str
+        gnn: str,
+        dropout: str
     ):
 
         '''
@@ -29,7 +28,7 @@ class Logger:
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/{dataset}/{gnn_layer}/{drop_strategy}/{get_time()}'
+        self.exp_dir = f'./results/{dataset}/{gnn}/{dropout}/{get_time()}'
         self.pickle_dir = f'{self.exp_dir}/pickle'; os.makedirs(self.pickle_dir)
         self.array_dir = f'{self.exp_dir}/arrays'; os.makedirs(self.array_dir)
         self.tensor_dir = f'{self.exp_dir}/tensors'; os.makedirs(self.tensor_dir)
@@ -38,7 +37,7 @@ class Logger:
         self,
         text: str,
         with_time: bool = True,
-        print_text: bool = False
+        print_text: bool = False,
     ):
 
         '''
@@ -66,7 +65,7 @@ class Logger:
         print_text: bool = False
     ):
 
-        formatted_metrics = prefix + ': ' if prefix != '' else ''
+        formatted_metrics = prefix
         formatted_metrics += ', '.join(f'{metric} = {value:.6e}' for metric, value in metrics)
         self.log(formatted_metrics, with_time, print_text)
 

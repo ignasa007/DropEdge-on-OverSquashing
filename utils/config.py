@@ -23,7 +23,7 @@ def parse_arguments():
         help='The backbone model: [GCN, ].'
     )
     parser.add_argument(
-        '--gnn_layer_sizes', type=list, default=[16, 16],
+        '--gnn_layer_sizes', type=int, nargs='+', default=[16, 16],
         help="Hidden layers' sizes for the GNN."
     )
     parser.add_argument(
@@ -36,7 +36,7 @@ def parse_arguments():
         help='The task to perform with the chosen dataset: [Node-C, Graph-C, Graph-R].'
     )
     parser.add_argument(
-        '--ffn_layer_sizes', type=list, default=[],
+        '--ffn_layer_sizes', type=int, nargs='*', default=[],
         help="Hidden layers' sizes for the readout FFN."
     )
     parser.add_argument(

@@ -1,6 +1,6 @@
 import torch
 from torch_geometric.utils.num_nodes import maybe_num_nodes
-from model.dropout.base import BaseDropout
+from dropout.base import BaseDropout
 
 
 class DropAgg(BaseDropout):
@@ -25,7 +25,8 @@ class DropAgg(BaseDropout):
         # the edges (j, i) imply a directed edge j -> i
         edge_mask = node_mask[edge_index[1]]
         edge_index = edge_index[:, edge_mask]
-        edge_attr = edge_attr[edge_mask] if edge_attr is not None else None
+        if edge_attr is not None:
+            edge_attr = edge_attr[edge_mask]
 
         return edge_index, edge_attr
     

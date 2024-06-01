@@ -2,6 +2,7 @@ format_dataset_name = {
     'cora': 'Cora',
     'citeseer': 'CiteSeer',
     'pubmed': 'PubMed',
+    'qm9': 'QM9',
 }
 
 format_task_name = {

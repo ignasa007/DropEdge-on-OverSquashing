@@ -1,9 +1,9 @@
-from model.dropout.dropout import Dropout
-from model.dropout.drop_node import DropNode
-from model.dropout.drop_edge import DropEdge
-from model.dropout.drop_message import DropMessage
-from model.dropout.drop_gnn import DropGNN
-from model.dropout.drop_agg import DropAgg
+from dropout.dropout import Dropout
+from dropout.drop_node import DropNode
+from dropout.drop_edge import DropEdge
+from dropout.drop_message import DropMessage
+from dropout.drop_gnn import DropGNN
+from dropout.drop_agg import DropAgg
 
 
 def get_dropout(dropout_name: str):

@@ -1,5 +1,5 @@
 from typing import Tuple, Dict
-from torch import no_grad
+from torch import no_grad, device as Device
 from torch_geometric.datasets import Planetoid
 from torch_geometric.transforms import NormalizeFeatures
 from torch.optim import Optimizer
@@ -11,11 +11,11 @@ from model import Model
 
 class Cora(BaseDataset):
 
-    def __init__(self, task_name: str):
+    def __init__(self, task_name: str, device: Device):
 
         # TODO: check if the transform parameters are computed using
         #       the entire dataset or only the training split
-        dataset = Planetoid(root=root, name='Cora', transform=NormalizeFeatures())
+        dataset = Planetoid(root=root, name='Cora', transform=NormalizeFeatures()).to(device)
         
         self.x = dataset.x
         self.edge_index = dataset.edge_index
@@ -43,7 +43,7 @@ class Cora(BaseDataset):
         train_metrics = self.compute_metrics()
         return train_metrics
     
-    @no_grad
+    @no_grad()
     def eval(self, model: Model) -> Tuple[Dict[str, float], Dict[str, float]]:
 
         model.eval()

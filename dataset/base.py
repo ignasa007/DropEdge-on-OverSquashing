@@ -1,4 +1,5 @@
 from typing import Tuple, Iterable
+from torch import no_grad, device as Device
 from metrics import Metrics, Classification, Regression
 
 
@@ -6,8 +7,8 @@ def validate_task(task_name: str, valid_tasks: Iterable, class_name: str = None)
 
     formatted_name = task_name.replace('_', '-').lower()
     if formatted_name not in valid_tasks:
-        raise ValueError('Parameter `task_name` not recognised for the given dataset' \
-            ' ', f'(got task `{task_name}` for dataset {class_name}).')
+        raise ValueError('Parameter `task_name` not recognised for the given dataset' +
+            + ' ' + f'(got task `{task_name}` for dataset {class_name}).')
     
 def set_metrics(task_name: str, num_classes: int) -> Tuple[Metrics, int]:
 
@@ -17,11 +18,11 @@ def set_metrics(task_name: str, num_classes: int) -> Tuple[Metrics, int]:
     if formatted_name.endswith('-c'):
         metrics = Classification(num_classes)
         if num_classes == 2: output_dim = 1
-    elif formatted_name == 'regression':
+    elif formatted_name.endswith('-r'):
         metrics = Regression(num_classes)
     else:
-        raise ValueError('Parameter `task_name` not identified.' \
-            ' ', f'Expected `classification` or `regression`, but got `{task_name}`.')
+        raise ValueError('Parameter `task_name` not identified.' +
+            ' ' + f'Expected `classification` or `regression`, but got `{task_name}`.')
     
     return metrics, output_dim
 
@@ -49,7 +50,7 @@ class BaseDataset:
 
         raise NotImplementedError
     
-    @no_grad
+    @no_grad()
     def eval(self, model):
 
         raise NotImplementedError

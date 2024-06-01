@@ -13,7 +13,7 @@ class GraphRegression(BaseHead):
         Args:
             node_repr: tensor of shape (N_1+...+N_B, H), where $N_i is the number of nodes in graph $i,
                 $B is the batch size, and $H is the dimension of messages.
-            mask: tensor (N_1, N_2, ..., N_B) of shape (B,)
+            mask: tensor {0, ..., B-1}^N of shape (N,) assigning each node to a graph
         '''
 
         return global_mean_pool(x=node_repr, batch=mask)

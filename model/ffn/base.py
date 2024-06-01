@@ -21,11 +21,11 @@ class BaseHead(Module):
         # the output layer does not use any activation
         self.ffn = Sequential(*module_list[:-1])
 
-    def preprocess(self, node_repr: Tensor, target: Tensor, mask: Union[Tensor, BoolTensor, None] = None):
+    def preprocess(self, node_repr: Tensor, mask: Union[Tensor, BoolTensor, None] = None):
 
         '''
         Preprocess the input:
-            - for node-level tasks, filter out the embeddings and corresponding labels using $mask.
+            - for node-level tasks, filter out the embeddings using $mask.
             - for graph-level tasks, compute the mean of the node embeddings from each graph.
         '''
 

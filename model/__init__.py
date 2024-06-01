@@ -2,7 +2,7 @@ from argparse import Namespace
 from typing import Union
 
 from torch import Tensor, BoolTensor
-from torch.nn import Module, Sequential
+from torch.nn import Module, ModuleList
 from torch_geometric.typing import Adj
 
 from model.gnn import get_activation, get_layer
@@ -16,12 +16,12 @@ class Model(Module):
         
         super(Model, self).__init__()
         
-        drop_strategy = get_dropout(args.dropout)(args.dropout_prob)
-        gnn_layer = get_layer(gnn_layer)
+        drop_strategy = get_dropout(args.dropout)(args.drop_p)
+        gnn_layer = get_layer(args.gnn)
         gnn_layer_sizes = [input_dim] + args.gnn_layer_sizes
-        module_list = []
+        self.message_passing = ModuleList()
         for in_channels, out_channels in zip(gnn_layer_sizes[:-1], gnn_layer_sizes[1:]):
-            module_list.append(gnn_layer(
+            self.message_passing.append(gnn_layer(
                 in_channels=in_channels,
                 out_channels=out_channels,
                 drop_strategy=drop_strategy,
@@ -29,7 +29,6 @@ class Model(Module):
                 add_self_loops=args.add_self_loops,
                 normalize=args.normalize,
             ))
-        self.message_passing = Sequential(*module_list)
 
         ffn_head = get_head(args.task)
         ffn_layer_sizes = args.gnn_layer_sizes[-1:] + args.ffn_layer_sizes + [output_dim]
@@ -42,11 +41,12 @@ class Model(Module):
         self,
         x: Tensor,
         edge_index: Adj,
-        target: Tensor,
         mask: Union[Tensor, BoolTensor, None] = None,
     ):
 
-        node_embeddings = self.message_passing(x, edge_index)
-        out = self.readout(node_embeddings, target, mask)
+        for mp_layer in self.message_passing:
+            x = mp_layer(x, edge_index)
+               
+        out = self.readout(x, mask)
 
         return out

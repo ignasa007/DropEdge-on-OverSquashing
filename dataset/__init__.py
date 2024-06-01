@@ -1,9 +1,10 @@
+from torch import device as Device
 from dataset.base import BaseDataset
 from dataset.cora import Cora
 from dataset.qm9 import QM9
 
 
-def get_dataset(dataset_name: str, task_name: str) -> BaseDataset:
+def get_dataset(dataset_name: str, task_name: str, device: Device) -> BaseDataset:
 
     dataset_map = {
         'cora': Cora,
@@ -16,4 +17,4 @@ def get_dataset(dataset_name: str, task_name: str) -> BaseDataset:
     
     dataset = dataset_map.get(formatted_name)
     
-    return dataset(task_name)
+    return dataset(task_name, device)

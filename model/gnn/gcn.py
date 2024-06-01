@@ -22,7 +22,7 @@ class GCNLayer(GCNConv):
 
         super(GCNLayer, self).__init__(in_channels, out_channels, add_self_loops=add_self_loops, normalize=normalize)
         self.pt = ModelPretreatment(add_self_loops, normalize)
-        self.activation = activation()
+        self.activation = activation
         self.drop_strategy = drop_strategy
         
     def forward(self, x: Tensor, edge_index: Adj):
@@ -37,7 +37,7 @@ class GCNLayer(GCNConv):
 
         # MESSAGE PASSING
         # drop from adj matrix -- drop edge, drop gnn and drop agg -- and normalize it
-        edge_index = self.drop_strategy.apply_adj_mat(edge_index, self.training)
+        edge_index, _ = self.drop_strategy.apply_adj_mat(edge_index, None, self.training)
         edge_index, edge_weight = self.pt.pretreatment(x.size(0), edge_index, x.dtype)
         out = self.propagate(edge_index, x=x, edge_weight=edge_weight)
 

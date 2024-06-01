@@ -1,5 +1,5 @@
 from torch_geometric.utils import dropout_node
-from model.dropout.base import BaseDropout
+from dropout.base import BaseDropout
 
 
 class DropGNN(BaseDropout):
