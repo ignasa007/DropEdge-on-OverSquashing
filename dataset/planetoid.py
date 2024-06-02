@@ -1,6 +1,6 @@
 from typing import Tuple, Dict
 from torch import no_grad, device as Device
-from torch_geometric.datasets import Planetoid
+from torch_geometric.datasets import Planetoid as PlanetoidTorch
 from torch_geometric.transforms import NormalizeFeatures
 from torch.optim import Optimizer
 
@@ -9,11 +9,11 @@ from dataset.base import BaseDataset
 from model import Model
 
 
-class Cora(BaseDataset):
+class Planetoid(BaseDataset):
 
-    def __init__(self, task_name: str, device: Device):
+    def __init__(self, name: str, task_name: str, device: Device):
 
-        dataset = Planetoid(root=root, name='Cora', transform=NormalizeFeatures()).to(device)
+        dataset = PlanetoidTorch(root=root, name=name, transform=NormalizeFeatures()).to(device)
         
         self.x = dataset.x
         self.edge_index = dataset.edge_index
@@ -26,7 +26,7 @@ class Cora(BaseDataset):
         self.valid_tasks = {'node-c', }
         self.num_features = dataset.num_features
         self.num_classes = dataset.num_classes
-        super(Cora, self).__init__(task_name)
+        super(Planetoid, self).__init__(task_name)
 
     def train(self, model: Model, optimizer: Optimizer) -> Dict[str, float]:
 
@@ -53,3 +53,18 @@ class Cora(BaseDataset):
         test_metrics = self.compute_metrics()
 
         return val_metrics, test_metrics
+    
+
+class Cora(Planetoid):
+    def __init__(self, task_name: str, device: Device):
+        super(Cora, self).__init__(name='Cora', task_name=task_name, device=device)
+
+
+class CiteSeer(Planetoid):
+    def __init__(self, task_name: str, device: Device):
+        super(CiteSeer, self).__init__(name='CiteSeer', task_name=task_name, device=device)
+
+
+class PubMed(Planetoid):
+    def __init__(self, task_name: str, device: Device):
+        super(PubMed, self).__init__(name='PubMed', task_name=task_name, device=device)
