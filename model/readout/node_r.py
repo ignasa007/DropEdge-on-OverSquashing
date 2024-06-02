@@ -1,9 +1,9 @@
 from typing import Union
 from torch import Tensor, BoolTensor
-from model.ffn.base import BaseHead
+from model.readout.base import BaseHead
 
 
-class NodeClassification(BaseHead):
+class NodeRegression(BaseHead):
 
     def preprocess(self, node_repr: Tensor, mask: Union[BoolTensor, None] = None):
 
@@ -11,7 +11,7 @@ class NodeClassification(BaseHead):
         Preprocess the input -- filter out the masked nodes' embeddings.
 
         Args:
-            node_repr: tensor of shape (N, H), where $N is the number of nodes in the graph, and 
+            node_repr: tensor of shape (N, H), where $N is the number of nodes in the graph, and
                 $H is the dimension of messages.
             mask: boolean tensor of shape (N,) indicating which nodes to compute metrics over.
         '''

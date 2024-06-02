@@ -13,8 +13,6 @@ class Cora(BaseDataset):
 
     def __init__(self, task_name: str, device: Device):
 
-        # TODO: check if the transform parameters are computed using
-        #       the entire dataset or only the training split
         dataset = Planetoid(root=root, name='Cora', transform=NormalizeFeatures()).to(device)
         
         self.x = dataset.x

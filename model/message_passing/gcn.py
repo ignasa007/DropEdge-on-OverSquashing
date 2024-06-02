@@ -3,7 +3,7 @@ from torch.nn import Module
 from torch_geometric.typing import Adj, OptTensor
 from torch_geometric.nn.conv import GCNConv
 from dropout.base import BaseDropout
-from model.gnn.pretreatment import ModelPretreatment
+from model.message_passing.pretreatment import ModelPretreatment
 
 
 # TODO: Graph Drop Connect needs an implementation of the aggregation function (after the message step)

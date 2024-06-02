@@ -1,8 +1,8 @@
-from model.ffn.base import BaseHead
-from model.ffn.node_r import NodeRegression
-from model.ffn.node_c import NodeClassification
-from model.ffn.graph_r import GraphRegression
-from model.ffn.graph_c import GraphClassification 
+from model.readout.base import BaseHead
+from model.readout.node_r import NodeRegression
+from model.readout.node_c import NodeClassification
+from model.readout.graph_r import GraphRegression
+from model.readout.graph_c import GraphClassification 
 
 
 def get_head(task_name: str) -> BaseHead:

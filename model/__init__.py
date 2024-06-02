@@ -5,8 +5,8 @@ from torch import Tensor, BoolTensor
 from torch.nn import Module, ModuleList
 from torch_geometric.typing import Adj
 
-from model.gnn import get_activation, get_layer
-from model.ffn import get_head
+from model.message_passing import get_activation, get_layer
+from model.readout import get_head
 from dropout import get_dropout
 
 
