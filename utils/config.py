@@ -20,11 +20,15 @@ def parse_arguments():
 
     parser.add_argument(
         '--gnn', type=str, required=True,
-        help='The backbone model: [GCN, ].'
+        help='The backbone model: [GCN, GAT, ].'
     )
     parser.add_argument(
         '--gnn_layer_sizes', type=int, nargs='+', default=[16, 16],
         help="Hidden layers' sizes for the GNN."
+    )
+    parser.add_argument(
+        '--attention_heads', type=int, default=None,
+        help='Number of attention heads in case the GNN is GAT.'
     )
     parser.add_argument(
         '--gnn_activation', type=str, default='ReLU',

@@ -17,6 +17,7 @@ class Model(Module):
         super(Model, self).__init__()
         
         drop_strategy = get_dropout(args.dropout)(args.drop_p)
+        activation = get_activation(args.gnn_activation)()
         gnn_layer = get_layer(args.gnn)
         gnn_layer_sizes = [input_dim] + args.gnn_layer_sizes
         self.message_passing = ModuleList()
@@ -25,9 +26,8 @@ class Model(Module):
                 in_channels=in_channels,
                 out_channels=out_channels,
                 drop_strategy=drop_strategy,
-                activation=get_activation(args.gnn_activation)(),
-                add_self_loops=args.add_self_loops,
-                normalize=args.normalize,
+                activation=activation,
+                args=args,
             ))
 
         ffn_head = get_head(args.task)

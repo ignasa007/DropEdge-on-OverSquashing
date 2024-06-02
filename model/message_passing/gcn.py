@@ -1,7 +1,11 @@
+from typing import Union
+from argparse import Namespace
+
 from torch import Tensor
 from torch.nn import Module
 from torch_geometric.typing import Adj, OptTensor
 from torch_geometric.nn.conv import GCNConv
+
 from dropout.base import BaseDropout
 from model.message_passing.pretreatment import ModelPretreatment
 
@@ -16,12 +20,17 @@ class GCNLayer(GCNConv):
         out_channels: int,
         drop_strategy: BaseDropout,
         activation: Module,
-        add_self_loops: bool = True,
-        normalize: bool = True
+        args: Namespace,
     ):
 
-        super(GCNLayer, self).__init__(in_channels, out_channels, add_self_loops=add_self_loops, normalize=normalize)
-        self.pt = ModelPretreatment(add_self_loops, normalize)
+        super(GCNLayer, self).__init__(
+            in_channels,
+            out_channels,
+            add_self_loops=args.add_self_loops,
+            normalize=args.normalize
+        )
+        
+        self.pt = ModelPretreatment(args.add_self_loops, args.normalize)
         self.activation = activation
         self.drop_strategy = drop_strategy
         
@@ -31,8 +40,6 @@ class GCNLayer(GCNConv):
         # drop from feature matrix -- dropout and drop node
         x = self.drop_strategy.apply_feature_mat(x, self.training)
         x = self.lin(x)
-        if self.bias is not None:
-            x = x + self.bias
         x = self.activation(x)
 
         # MESSAGE PASSING
@@ -40,6 +47,9 @@ class GCNLayer(GCNConv):
         edge_index, _ = self.drop_strategy.apply_adj_mat(edge_index, None, self.training)
         edge_index, edge_weight = self.pt.pretreatment(x.size(0), edge_index, x.dtype)
         out = self.propagate(edge_index, x=x, edge_weight=edge_weight)
+
+        if self.bias is not None:
+            out = out + self.bias
 
         return out
 
