@@ -1,4 +1,4 @@
-root = '../data'
+root = './data'
 batch_size = 64
 
 class Splits:

@@ -13,7 +13,7 @@ class QM9(BaseDataset):
 
     def __init__(self, task_name: str, device: Device):
 
-        dataset = QM9Torch(root=root, transform=NormalizeFeatures()).to(device)
+        dataset = QM9Torch(root=f'{root}/QM9', transform=NormalizeFeatures()).to(device)
         dataset = dataset.shuffle()
 
         train_end = int(Splits.train_split*len(dataset))
