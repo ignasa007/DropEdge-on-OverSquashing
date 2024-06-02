@@ -16,7 +16,7 @@ DEVICE = torch.device(f'cuda:{args.device_index}' if torch.cuda.is_available() a
 
 dataset: BaseDataset = get_dataset(args.dataset, args.task, DEVICE)
 model = Model(dataset.num_features, dataset.output_dim, args=args).to(device=DEVICE)
-optimizer = Adam(model.parameters(), lr=args.learning_rate)
+optimizer = Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
 
 
 logger = Logger(

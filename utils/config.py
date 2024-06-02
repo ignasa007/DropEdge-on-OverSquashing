@@ -58,8 +58,12 @@ def parse_arguments():
         help='Number of epochs to train the model for.'
     )
     parser.add_argument(
-        '--learning_rate', type=float, default=5e-3,
+        '--learning_rate', type=float, default=1e-2,
         help='Learning rate for Adam optimizer.'
+    )
+    parser.add_argument(
+        '--weight_decay', type=float, default=5e-3,
+        help='Weight decay for Adam optimizer.'
     )
 
     parser.add_argument(
