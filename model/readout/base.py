@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, Optional
 from torch import Tensor, BoolTensor
 from torch.nn import Module, Linear, Sequential
 
@@ -21,7 +21,7 @@ class BaseHead(Module):
         # the output layer does not use any activation
         self.ffn = Sequential(*module_list[:-1])
 
-    def preprocess(self, node_repr: Tensor, mask: Union[Tensor, BoolTensor, None] = None):
+    def preprocess(self, node_repr: Tensor, mask: Optional[Union[Tensor, BoolTensor]] = None):
 
         '''
         Preprocess the input:
@@ -31,7 +31,7 @@ class BaseHead(Module):
 
         raise NotImplementedError
 
-    def forward(self, node_repr: Tensor, mask: Union[Tensor, BoolTensor, None] = None):
+    def forward(self, node_repr: Tensor, mask: Optional[Union[Tensor, BoolTensor]] = None):
 
         '''
         Process the node embeddings and compute the loss plus any other metrics.

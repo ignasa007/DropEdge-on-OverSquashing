@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Optional
 from torch import Tensor
 from torch_geometric.nn import global_mean_pool
 from model.readout.base import BaseHead
@@ -6,7 +6,7 @@ from model.readout.base import BaseHead
 
 class GraphClassification(BaseHead):
 
-    def preprocess(self, node_repr: Tensor, mask: Union[Tensor, None] = None):
+    def preprocess(self, node_repr: Tensor, mask: Optional[Tensor] = None):
 
         '''
         Preprocess the input -- compute the mean of the node embeddings from each graph.

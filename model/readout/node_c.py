@@ -1,11 +1,11 @@
-from typing import Union
+from typing import Optional
 from torch import Tensor, BoolTensor
 from model.readout.base import BaseHead
 
 
 class NodeClassification(BaseHead):
 
-    def preprocess(self, node_repr: Tensor, mask: Union[BoolTensor, None] = None):
+    def preprocess(self, node_repr: Tensor, mask: Optional[BoolTensor] = None):
 
         '''
         Preprocess the input -- filter out the masked nodes' embeddings.
