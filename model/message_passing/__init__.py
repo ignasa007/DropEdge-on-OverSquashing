@@ -1,6 +1,7 @@
 from torch.nn import Identity, ReLU, ELU, Sigmoid, Tanh
 from model.message_passing.gcn import GCNLayer
 from model.message_passing.gat import GATLayer
+from model.message_passing.appnp import APPNPLayer
 
 
 def get_activation(activation_name: str):
@@ -26,6 +27,7 @@ def get_layer(layer_name: str):
     layer_map = {
         'gcn': GCNLayer,
         'gat': GATLayer,
+        'appnp': APPNPLayer,
     }
     
     formatted_name = layer_name.lower()

@@ -1,5 +1,5 @@
 from argparse import Namespace
-from typing import Union
+from typing import Union, Optional
 
 from torch import Tensor, BoolTensor
 from torch.nn import Module, ModuleList
@@ -41,7 +41,7 @@ class Model(Module):
         self,
         x: Tensor,
         edge_index: Adj,
-        mask: Union[Tensor, BoolTensor, None] = None,
+        mask: Optional[Union[Tensor, BoolTensor]] = None,
     ):
 
         for mp_layer in self.message_passing:

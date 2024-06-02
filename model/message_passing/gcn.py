@@ -1,4 +1,3 @@
-from typing import Union
 from argparse import Namespace
 
 from torch import Tensor
@@ -33,23 +32,45 @@ class GCNLayer(GCNConv):
         self.pt = ModelPretreatment(args.add_self_loops, args.normalize)
         self.activation = activation
         self.drop_strategy = drop_strategy
-        
-    def forward(self, x: Tensor, edge_index: Adj):
 
-        # FEATURE TRANSFORMATION
-        # drop from feature matrix -- dropout and drop node
+    def feature_transformation(self, x):
+
         x = self.drop_strategy.apply_feature_mat(x, self.training)
         x = self.lin(x)
         x = self.activation(x)
 
-        # MESSAGE PASSING
-        # drop from adj matrix -- drop edge, drop gnn and drop agg -- and normalize it
+        return x
+    
+    def treat_adj_mat(self, edge_index, num_nodes, dtype):
+
         edge_index, _ = self.drop_strategy.apply_adj_mat(edge_index, None, self.training)
-        edge_index, edge_weight = self.pt.pretreatment(x.size(0), edge_index, x.dtype)
+        edge_index, edge_weight = self.pt.pretreatment(num_nodes, edge_index, dtype)
+
+        return edge_index, edge_weight
+    
+    def message_passing(self, edge_index, x, edge_weight):
+
         out = self.propagate(edge_index, x=x, edge_weight=edge_weight)
+        
+        return out
+    
+    def add_bias(self, out):
 
         if self.bias is not None:
             out = out + self.bias
+
+        return out
+    
+    def forward(self, x: Tensor, edge_index: Adj):
+
+        # FEATURE TRANSFORMATION
+        x = self.feature_transformation(x)
+        # TREAT ADJACENCY MATRIX
+        edge_index, edge_weight = self.treat_adj_mat(edge_index, num_nodes=x.size(0), dtype=x.dtype)
+        # MESSAGE PASSING
+        out = self.message_passing(edge_index, x, edge_weight)
+        # ADD BIAS
+        out = self.add_bias(out)
 
         return out
 

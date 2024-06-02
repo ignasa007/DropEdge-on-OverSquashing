@@ -33,28 +33,55 @@ class GATLayer(GATConv):
         self.pt = ModelPretreatment(args.add_self_loops, args.normalize)
         self.activation = activation
         self.drop_strategy = drop_strategy
-        
-    def forward(self, x: Tensor, edge_index: Adj):
+
+    def feature_transformation(self, x):
 
         x = self.drop_strategy.apply_feature_mat(x, self.training)
         x = self.lin(x)
         x = self.activation(x)
 
+        return x
+
+    def treat_adj_mat(self, edge_index, num_nodes, dtype):
+
+        edge_index, _ = self.drop_strategy.apply_adj_mat(edge_index, None, self.training)
+        edge_index, edge_weight = self.pt.pretreatment(num_nodes, edge_index, dtype)
+
+        return edge_index, edge_weight
+
+    def message_passing(self, edge_index, x, alpha):
+
+        out = self.propagate(edge_index, x=x, alpha=alpha)
+        out = out.mean(dim=1)   # average over heads
+        
+        return out
+    
+    def add_bias(self, out):
+
+        if self.bias is not None:
+            out = out + self.bias
+
+        return out
+    
+    def forward(self, x: Tensor, edge_index: Adj):
+
+        # FEATURE TRANSFORMATION
+        x = self.feature_transformation(x)
+
+        # SOURCE AND TARGET FEATURES
         x_src = x_dst = x.view(-1, self.heads, self.out_channels)
         x = (x_src, x_dst)
-
+        # SOURCE AND TARGET ATTENTION WEIGHTS
         alpha_src = (x_src*self.att_src).sum(dim=-1)
         alpha_dst = (x_dst*self.att_dst).sum(dim=-1)
         alpha = (alpha_src, alpha_dst)
 
-        edge_index, _ = self.drop_strategy.apply_adj_mat(edge_index, None, self.training)
-        edge_index, _ = self.pt.pretreatment(x_src.size(0), edge_index, x_src.dtype)
-
-        out = self.propagate(edge_index, x=x, alpha=alpha)
-        out = out.mean(dim=1)
-
-        if self.bias is not None:
-            out = out + self.bias
+        # TREAT ADJACENCY MATRIX
+        edge_index, _ = self.treat_adj_mat(edge_index, num_nodes=x_src.size(0), dtype=x_src.dtype)
+        # MESSAGE PASSING
+        out = self.message_passing(edge_index, x=x, alpha=alpha)
+        # ADD BIAS
+        out = self.add_bias(out)
 
         return out
 

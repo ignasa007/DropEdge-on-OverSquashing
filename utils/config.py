@@ -7,7 +7,7 @@ def parse_arguments():
 
     parser.add_argument(
         '--dataset', type=str, required=True,
-        help='The dataset to be trained on: [Cora, CiteSeer, PubMed].'
+        help='The dataset to be trained on: [Cora, CiteSeer, PubMed, QM9].'
     )
     parser.add_argument(
         '--add_self_loops', type=bool, default=True,
@@ -20,7 +20,7 @@ def parse_arguments():
 
     parser.add_argument(
         '--gnn', type=str, required=True,
-        help='The backbone model: [GCN, GAT, ].'
+        help='The backbone model: [GCN, GAT, APPNP, ].'
     )
     parser.add_argument(
         '--gnn_layer_sizes', type=int, nargs='+', default=[16, 16],
@@ -28,7 +28,15 @@ def parse_arguments():
     )
     parser.add_argument(
         '--attention_heads', type=int, default=None,
-        help='Number of attention heads in case the GNN is GAT.'
+        help='Number of attention heads (when GNN is GAT).'
+    )
+    parser.add_argument(
+        '--power_iter', type=int, default=None,
+        help='Number of power iteration steps (when GNN is APPNP).'
+    )
+    parser.add_argument(
+        '--teleport_p', type=float, default=None,
+        help='Teleport probability to use (when GNN is APPNP).'
     )
     parser.add_argument(
         '--gnn_activation', type=str, default='ReLU',
