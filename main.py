@@ -25,6 +25,8 @@ logger = Logger(
     dropout=format_dropout_name.get(args.dropout.lower()),
 )
 
+# TODO: log the new configuration options
+
 logger.log(f'Dataset: {format_dataset_name.get(args.dataset.lower())}', with_time=False)
 logger.log(f'Add self-loops: {args.add_self_loops}', with_time=False)
 logger.log(f'Normalize edge weights: {args.normalize}\n', with_time=False)

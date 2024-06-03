@@ -1,7 +1,26 @@
 from collections import defaultdict
 
 
-def parse_logs(fn):
+def parse_configs(fn):
+
+    f = open(fn, 'r')
+    configs = dict()
+
+    for line in f.readlines():
+    
+        line = line.strip()
+        if not line:
+            continue
+        elif 'Epoch' in line:
+            break
+        
+        config, value = line.split(': ')
+        configs[config] = value
+
+    return configs
+
+
+def parse_metrics(fn):
 
     f = open(fn, 'r')
     results = {
