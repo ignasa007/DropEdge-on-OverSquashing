@@ -13,7 +13,7 @@ class Planetoid(BaseDataset):
 
     def __init__(self, name: str, task_name: str, device: Device):
 
-        dataset = PlanetoidTorch(root=root, name=name, transform=NormalizeFeatures()).to(device)
+        dataset = PlanetoidTorch(root=root, name=name, split='full', transform=NormalizeFeatures()).to(device)
         
         self.x = dataset.x
         self.edge_index = dataset.edge_index
