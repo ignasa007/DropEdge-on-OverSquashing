@@ -1,0 +1,25 @@
+$datasets = 'Cora','CiteSeer','PubMed'
+$gnns = 'GCN','GAT','APPNP'
+$dropouts = 'Dropout','Drop-Node','Drop-Edge','Drop-Message','Drop-GNN'
+$drop_ps = 0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9
+foreach ($dataset in $datasets) {
+    foreach ($gnn in $gnns) {
+        foreach ($dropout in $dropouts) {
+            foreach ($drop_p in $drop_ps) {
+                python -B main.py --dataset $dataset --gnn $gnn --gnn_layer_sizes 128 128 --attention_heads 2 --power_iter 10 --teleport_p 0.1 --task Node-C --ffn_layer_sizes --dropout $dropout --drop_p $drop_p --n_epochs 200 --learning_rate 0.01 --weight_decay 0.005 --test_every 1
+            }
+        }
+    }
+}
+
+$dataset = 'QM9'
+$gnns = 'GCN','GAT', 'APPNP'
+$dropouts = 'Dropout','Drop-Node','Drop-Edge','Drop-Message','Drop-GNN'
+$drop_ps = 0.1,0.2,0.3,0.4,0.5
+foreach ($gnn in $gnns) {
+    foreach ($dropout in $dropouts) {
+        foreach ($drop_p in $drop_ps) {
+            python -B main.py --dataset $dataset --gnn $gnn --gnn_layer_sizes 128 128 --attention_heads 2 --power_iter 10 --teleport_p 0.1 --task Graph-R --ffn_layer_sizes --dropout $dropout --drop_p $drop_p --n_epochs 4 --learning_rate 0.01 --weight_decay 0.005 --test_every 1
+        }
+    }
+}
