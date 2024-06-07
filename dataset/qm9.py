@@ -49,12 +49,12 @@ class QM9(BaseDataset):
 
         model.eval()
         
-        for batch in self.train_loader:
+        for batch in self.val_loader:
             out = model(batch.x, batch.edge_index, batch.batch)
             self.compute_loss(out, batch.y)
         val_metrics = self.compute_metrics()
 
-        for batch in self.train_loader:
+        for batch in self.test_loader:
             out = model(batch.x, batch.edge_index, batch.batch)
             self.compute_loss(out, batch.y)
         test_metrics = self.compute_metrics()
