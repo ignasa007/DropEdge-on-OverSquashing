@@ -1,16 +1,11 @@
 from torch import device as Device
-from dataset.base import BaseDataset
-from dataset.planetoid import Cora, CiteSeer, PubMed
 from dataset.qm9 import QM9
 
 
-def get_dataset(dataset_name: str, task_name: str, device: Device) -> BaseDataset:
+def get_dataset(dataset_name: str, task_name: str, device: Device):
 
     dataset_map = {
         'qm9': QM9,
-        'cora': Cora,
-        'citeseer': CiteSeer,
-        'pubmed': PubMed,
     }
     
     formatted_name = dataset_name.lower()
