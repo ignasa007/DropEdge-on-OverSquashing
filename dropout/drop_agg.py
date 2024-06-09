@@ -32,5 +32,4 @@ class DropAgg(BaseDropout):
     
     def apply_message_mat(self, messages, training=True):
 
-        # TODO: what to do? :(
         return super(DropAgg, self).apply_message_mat(messages, training)
