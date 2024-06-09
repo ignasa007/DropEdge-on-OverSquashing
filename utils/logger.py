@@ -28,10 +28,10 @@ class Logger:
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/{dataset}/{gnn}/{dropout}/{get_time()}'
-        self.pickle_dir = f'{self.exp_dir}/pickle'; os.makedirs(self.pickle_dir)
-        self.array_dir = f'{self.exp_dir}/arrays'; os.makedirs(self.array_dir)
-        self.tensor_dir = f'{self.exp_dir}/tensors'; os.makedirs(self.tensor_dir)
+        self.exp_dir = f'./results/compare_dropout/{dataset}/{gnn}/{dropout}/{get_time()}'
+        self.pickle_dir = None
+        self.array_dir = None
+        self.tensor_dir = None
 
     def log(
         self,
@@ -79,6 +79,9 @@ class Logger:
             obj (Any): Python object to save.
         '''
 
+        if self.pickle_dir is None:
+            self.pickle_dir = f'{self.exp_dir}/pickle'; os.makedirs(self.pickle_dir)
+
         if not fn.endswith('.pkl'):
             fn = os.path.splitext(fn)[0] + '.pkl'
         with open(f'{self.pickle_dir}/{fn}', 'wb') as f:
@@ -95,6 +98,9 @@ class Logger:
             kwargs (Dict[str, np.ndarray]): arrays saved into <fn>_named.npz 
                 and can be queried using string indexing.
         '''
+
+        if self.array_dir is None:
+            self.array_dir = f'{self.exp_dir}/arrays'; os.makedirs(self.array_dir)
 
         if args:
             assert all([isinstance(ar, np.ndarray) for ar in args]), \
@@ -118,6 +124,9 @@ class Logger:
             fn (str): file name to save the tensor at.
             obj (torch.Tensor): Torch tensor to save.
         '''
+
+        if self.tensor_dir is None:
+            self.tensor_dir = f'{self.exp_dir}/tensors'; os.makedirs(self.tensor_dir)
 
         assert isinstance(tensor, torch.Tensor), \
             f'Expected Torch tensor, instead received {type(tensor)}.'
