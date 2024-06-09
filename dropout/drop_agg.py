@@ -22,7 +22,7 @@ class DropAgg(BaseDropout):
         unif_samples = torch.rand(num_nodes, device=edge_index.device)
         node_mask = unif_samples > self.dropout_prob
 
-        # the edges (j, i) imply a directed edge j -> i
+        # the edges (i, j) imply a directed edge i -> j
         edge_mask = node_mask[edge_index[1]]
         edge_index = edge_index[:, edge_mask]
         if edge_attr is not None:
