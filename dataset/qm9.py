@@ -1,14 +1,11 @@
-from numpy import mean
-from torch import cat, device as Device, cosine_similarity
+from typing import Iterable
+
+import numpy as np
+import torch
 from torch_geometric.datasets import QM9 as QM9Torch
 from torch_geometric.transforms import NormalizeFeatures
-from torch.optim import Optimizer
 
-from dataset.constants import root, batch_size, Splits
 from model import Model
-
-from typing import Tuple, Iterable
-from metrics import Regression
 
 
 def validate_task(task_name: str, valid_tasks: Iterable, class_name: str = None):
@@ -17,67 +14,68 @@ def validate_task(task_name: str, valid_tasks: Iterable, class_name: str = None)
     if formatted_name not in valid_tasks:
         raise ValueError('Parameter `task_name` not recognised for the given dataset' +
             + ' ' + f'(got task `{task_name}` for dataset {class_name}).')
-    
-def set_metrics(task_name: str, num_classes: int) -> Tuple[Regression, int]:
-
-    formatted_name = task_name.replace('_', '-').lower()
-    
-    output_dim = num_classes  # must be set in child classes
-    if formatted_name.endswith('-r'):
-        metrics = Regression(num_classes)
-    else:
-        raise ValueError('Parameter `task_name` not identified.' +
-            ' ' + f'Expected `regression`, but got `{task_name}`.')
-    
-    return metrics, output_dim
 
 
 class QM9:
 
-    def __init__(self, task_name: str, device: Device):
+    def __init__(self, task_name: str, device: torch.device):
 
-        dataset = QM9Torch(root=f'{root}/QM9', transform=NormalizeFeatures()).to(device)
-        dataset = dataset.shuffle()
+        dataset = QM9Torch(root=f'./data/QM9', pre_transform=NormalizeFeatures()).to(device)
+        dataset = dataset.shuffle()[:32_000]
+        # taking a small dataset to allow for overfitting
+        # (QM9 is too big, won't see the effect of dropout without restricting the size)
 
-        train_end = int(Splits.train_split*len(dataset))
-        
-        self.train_loader = dataset[:train_end].to_datapipe().batch_graphs(batch_size=batch_size)
+        self.train_loader = dataset.to_datapipe().batch_graphs(batch_size=64)
+        self.eval_loader = dataset.to_datapipe().batch_graphs(batch_size=64)
+        self.train_size = len(dataset)
 
         self.valid_tasks = {'graph-r', }
         self.num_features = dataset.num_features
-        self.num_classes = dataset.num_classes
+        self.output_dim = dataset.num_classes
         
         validate_task(task_name, valid_tasks=self.valid_tasks, class_name=self.__class__.__name__)
-        self.metrics, self.output_dim = set_metrics(task_name, num_classes=self.num_classes)
 
-    def train(self, model: Model, optimizer: Optimizer):
+        self.batches_trained = 0
+
+    def train(self, model: Model, optimizer: torch.optim.Optimizer):
 
         model.train()
+        means, stdevs = list(), list()
         for batch in self.train_loader:
             optimizer.zero_grad()
             out = model(batch.x, batch.edge_index, batch.batch)
-            train_loss = self.metrics.update_mse(out, batch.y)
+            train_loss = torch.mean(torch.square(out-batch.y))
             train_loss.backward()
             optimizer.step()
+            self.batches_trained += 1
+            if self.batches_trained % 200 == 0:
+                mean, stdev = self.eval(model, optimizer)
+                means.append(mean); stdevs.append(stdev)
+
+        return means, stdevs
     
-    def eval(self, model: Model, optimizer: Optimizer):
+    def eval(self, model: Model, optimizer: torch.optim.Optimizer):
 
         model.eval()
-        for batch in self.train_loader:
+        optimizer.zero_grad()
+        train_loss = torch.Tensor([0.])
+        for batch in self.eval_loader:
             out = model(batch.x, batch.edge_index, batch.batch)
-            self.metrics.update_mse(out, batch.y)
-        train_loss = self.metrics.compute_mse()
+            train_loss += torch.sum(torch.square(out-batch.y))
+        train_loss /= self.train_size
         train_loss.backward()
-        full_gradient = cat([param.grad.view(-1) for param in model.parameters()])
+        full_gradient = torch.cat([param.grad.view(-1) for param in model.parameters()])
 
         model.train()
         cos_sim = list()
-        for batch in self.train_loader:
+        for i, batch in enumerate(self.eval_loader):
+            if i > 100:
+                break
             optimizer.zero_grad()
             out = model(batch.x, batch.edge_index, batch.batch)
-            train_loss = self.metrics.update_mse(out, batch.y)
-            train_loss.backward()
-            mb_grad_sample = cat([param.grad.view(-1) for param in model.parameters()])
-            cos_sim.append(cosine_similarity(mb_grad_sample, full_gradient))
+            mb_loss = torch.mean(torch.square(out-batch.y))
+            mb_loss.backward()
+            mb_grad_sample = torch.cat([param.grad.view(-1) for param in model.parameters()])
+            cos_sim.append(torch.cosine_similarity(mb_grad_sample, full_gradient, dim=0))
 
-        return mean(cos_sim)
+        return np.mean(cos_sim), np.std(cos_sim)

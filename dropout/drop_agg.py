@@ -22,8 +22,8 @@ class DropAgg(BaseDropout):
         unif_samples = torch.rand(num_nodes, device=edge_index.device)
         node_mask = unif_samples > self.dropout_prob
 
-        # the edges (j, i) imply a directed edge j -> i
-        edge_mask = node_mask[edge_index[1]]
+        # the edges (i, j) imply a directed edge i -> j
+        edge_mask = node_mask[edge_index[1]]    # mask edges where the receiver is masked
         edge_index = edge_index[:, edge_mask]
         if edge_attr is not None:
             edge_attr = edge_attr[edge_mask]
@@ -32,5 +32,4 @@ class DropAgg(BaseDropout):
     
     def apply_message_mat(self, messages, training=True):
 
-        # TODO: what to do? :(
         return super(DropAgg, self).apply_message_mat(messages, training)
