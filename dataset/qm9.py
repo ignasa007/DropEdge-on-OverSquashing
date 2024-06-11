@@ -35,20 +35,18 @@ class QM9:
         
         validate_task(task_name, valid_tasks=self.valid_tasks, class_name=self.__class__.__name__)
 
-        self.batches_trained = 0
-
     def train(self, model: Model, optimizer: torch.optim.Optimizer):
 
         model.train()
-        means, stdevs = list(), list()
+        means, stdevs, batches_trained = list(), list(), 0
         for batch in self.train_loader:
             optimizer.zero_grad()
             out = model(batch.x, batch.edge_index, batch.batch)
             train_loss = torch.mean(torch.square(out-batch.y))
             train_loss.backward()
             optimizer.step()
-            self.batches_trained += 1
-            if self.batches_trained % 200 == 0:
+            batches_trained += 1
+            if batches_trained % 200 == 0:
                 mean, stdev = self.eval(model, optimizer)
                 means.append(mean); stdevs.append(stdev)
 
