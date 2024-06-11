@@ -36,14 +36,21 @@ class QM9:
     def train(self, model: Model, optimizer: torch.optim.Optimizer):
 
         model.train()
-        grad_norms = list()
+        param_norms, grad_norms = list(), list()
+        
         for batch in self.train_loader:
+        
             optimizer.zero_grad()
             out = model(batch.x, batch.edge_index, batch.batch)
             train_loss = torch.mean(torch.square(out-batch.y))
             train_loss.backward()
+        
+            param_norm = torch.cat([param.view(-1) for param in model.parameters()])
+            param_norms.append(torch.norm(param_norm).detach())
+        
             grad_norm = torch.cat([param.grad.view(-1) for param in model.parameters()])
             grad_norms.append(torch.norm(grad_norm))
+        
             optimizer.step()
             
-        return grad_norms
+        return param_norms, grad_norms

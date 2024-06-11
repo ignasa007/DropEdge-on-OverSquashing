@@ -19,12 +19,16 @@ model = Model(dataset.num_features, dataset.output_dim, args=args).to(device=DEV
 optimizer = Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
 
 
-grad_norms = list()
+param_norms, grad_norms = list(), list()
 for epoch in tqdm(range(1, args.n_epochs+1)):
-    grad_norms.extend(dataset.train(model, optimizer))
+    norms = dataset.train(model, optimizer)
+    param_norms.extend(norms[0])
+    grad_norms.extend(norms[1])
 
 EXP_DIR = f'./results/grad-norm/{args.dataset}/{args.gnn}/{args.dropout}/prob={int(100*args.drop_p)}'
 makedirs(EXP_DIR)
 
+with open(f'{EXP_DIR}/param-norms.pkl', 'wb') as f:
+    dump(param_norms, f, protocol=HIGHEST_PROTOCOL)
 with open(f'{EXP_DIR}/grad-norms.pkl', 'wb') as f:
     dump(grad_norms, f, protocol=HIGHEST_PROTOCOL)
