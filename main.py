@@ -28,6 +28,6 @@ EXP_DIR = f'./results/gradient_analysis/{args.dataset}/{args.gnn}/{args.dropout}
 makedirs(EXP_DIR, exist_ok=True)
 
 with open(f'{EXP_DIR}/means.pkl', 'wb') as f:
-    dump(means, f)
+    dump(means, f, protocol=HIGHEST_PROTOCOL)
 with open(f'{EXP_DIR}/std-devs.pkl', 'wb') as f:
     dump(stds, f, protocol=HIGHEST_PROTOCOL)
