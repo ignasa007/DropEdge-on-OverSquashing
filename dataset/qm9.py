@@ -1,6 +1,7 @@
 from typing import Tuple, Dict
 from torch import no_grad, device as Device
 from torch_geometric.datasets import QM9 as QM9Torch
+from torch_geometric.loader import DataLoader
 from torch_geometric.transforms import NormalizeFeatures
 from torch.optim import Optimizer
 
@@ -13,17 +14,19 @@ class QM9(BaseDataset):
 
     def __init__(self, task_name: str, device: Device):
 
-        dataset = QM9Torch(root=f'{root}/QM9', transform=NormalizeFeatures()).to(device)
+        dataset = QM9Torch(root=f'{root}/QM9', pre_transform=NormalizeFeatures()).to(device)
         dataset = dataset.shuffle()
 
         train_end = int(Splits.train_split*len(dataset))
         val_end = train_end + int(Splits.val_split*len(dataset))
         
-        # batch_graphs takes an additional named argument $drop_last (bool):
-        #       whether to drop the last batch (possibly smaller than $batch_size) or not
         self.train_loader = dataset[:train_end].to_datapipe().batch_graphs(batch_size=batch_size)
         self.val_loader = dataset[train_end:val_end].to_datapipe().batch_graphs(batch_size=batch_size)
         self.test_loader = dataset[val_end:].to_datapipe().batch_graphs(batch_size=batch_size)
+
+        # self.train_loader = DataLoader(dataset[:train_end].to_datapipe(), batch_size=batch_size, num_workers=4, pin_memory=True)
+        # self.val_loader = DataLoader(dataset[train_end:val_end].to_datapipe(), batch_size=batch_size, num_workers=4, pin_memory=True)
+        # self.test_loader = DataLoader(dataset[val_end:].to_datapipe(), batch_size=batch_size, num_workers=4, pin_memory=True)
 
         self.valid_tasks = {'graph-r', }
         self.num_features = dataset.num_features
