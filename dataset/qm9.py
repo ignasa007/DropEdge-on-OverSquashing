@@ -1,9 +1,9 @@
 from typing import Iterable
 
-import numpy as np
 import torch
 from torch_geometric.datasets import QM9 as QM9Torch
 from torch_geometric.transforms import NormalizeFeatures
+from torch_geometric.loader import DataLoader
 
 from model import Model
 
@@ -23,7 +23,7 @@ class QM9:
         dataset = QM9Torch(root=f'./data/QM9', pre_transform=NormalizeFeatures()).to(device)
         dataset = dataset.shuffle()[:32_000]
 
-        self.train_loader = dataset.to_datapipe().batch_graphs(batch_size=64)
+        self.train_loader = DataLoader(dataset, batch_size=64, shuffle=True)
         self.train_size = len(dataset)
 
         self.valid_tasks = {'graph-r', }
