@@ -1,7 +1,9 @@
 from typing import Tuple, Dict
+
 from torch import no_grad, device as Device
 from torch_geometric.datasets import QM9 as QM9Torch
 from torch_geometric.transforms import NormalizeFeatures
+from torch_geometric.loader import DataLoader
 from torch.optim import Optimizer
 
 from dataset.constants import root, batch_size, Splits
@@ -21,9 +23,9 @@ class QM9(BaseDataset):
         
         # batch_graphs takes an additional named argument $drop_last (bool):
         #       whether to drop the last batch (possibly smaller than $batch_size) or not
-        self.train_loader = dataset[:train_end].to_datapipe().batch_graphs(batch_size=batch_size)
-        self.val_loader = dataset[train_end:val_end].to_datapipe().batch_graphs(batch_size=batch_size)
-        self.test_loader = dataset[val_end:].to_datapipe().batch_graphs(batch_size=batch_size)
+        self.train_loader = DataLoader(dataset[:train_end], batch_size=batch_size, shuffle=True)
+        self.val_loader = DataLoader(dataset[train_end:val_end], batch_size=batch_size, shuffle=True)
+        self.test_loader = DataLoader(dataset[val_end:], batch_size=batch_size, shuffle=True)
 
         self.valid_tasks = {'graph-r', }
         self.num_features = dataset.num_features
