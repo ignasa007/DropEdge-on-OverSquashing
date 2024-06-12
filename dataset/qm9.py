@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from torch_geometric.datasets import QM9 as QM9Torch
 from torch_geometric.transforms import NormalizeFeatures
+from torch_geometric.loader import DataLoader
 
 from model import Model
 
@@ -25,8 +26,8 @@ class QM9:
         # taking a small dataset to allow for overfitting
         # (QM9 is too big, won't see the effect of dropout without restricting the size)
 
-        self.train_loader = dataset.to_datapipe().batch_graphs(batch_size=64)
-        self.eval_loader = dataset.to_datapipe().batch_graphs(batch_size=64)
+        self.train_loader = DataLoader(dataset, batch_size=64, shuffle=True)
+        self.eval_loader = DataLoader(dataset, batch_size=64, shuffle=True)
         self.train_size = len(dataset)
 
         self.valid_tasks = {'graph-r', }
