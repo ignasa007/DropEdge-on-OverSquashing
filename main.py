@@ -19,16 +19,18 @@ model = Model(dataset.num_features, dataset.output_dim, args=args).to(device=DEV
 optimizer = Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
 
 
-param_norms, grad_norms = list(), list()
-for epoch in tqdm(range(1, args.n_epochs+1)):
-    norms = dataset.train(model, optimizer)
-    param_norms.extend(norms[0])
-    grad_norms.extend(norms[1])
-
 EXP_DIR = f'./results/grad-norm/{args.dataset}/{args.gnn}/{args.dropout}/prob={int(100*args.drop_p)}'
 makedirs(EXP_DIR)
+PARAMS_DIR = f'{EXP_DIR}/params'
+makedirs(PARAMS_DIR)
+GRADS_DIR = f'{EXP_DIR}/grads'
+makedirs(GRADS_DIR)
 
-with open(f'{EXP_DIR}/param-norms.pkl', 'wb') as f:
-    dump(param_norms, f, protocol=HIGHEST_PROTOCOL)
-with open(f'{EXP_DIR}/grad-norms.pkl', 'wb') as f:
-    dump(grad_norms, f, protocol=HIGHEST_PROTOCOL)
+param_norms, grad_norms = list(), list()
+for epoch in tqdm(range(1, args.n_epochs+1)):
+    results = dataset.train(model, optimizer)
+    for batch, (params, grads) in results:
+        with open(f"{PARAMS_DIR}/iter-{str(batch).rjust(4,'0')}.pkl", 'wb') as f:
+            dump(params, f, protocol=HIGHEST_PROTOCOL)
+        with open(f"{GRADS_DIR}/iter-{str(batch).rjust(4,'0')}.pkl", 'wb') as f:
+            dump(grads, f, protocol=HIGHEST_PROTOCOL)

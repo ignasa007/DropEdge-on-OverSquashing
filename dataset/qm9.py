@@ -24,7 +24,6 @@ class QM9:
         dataset = dataset.shuffle()[:32_000]
 
         self.train_loader = dataset.to_datapipe().batch_graphs(batch_size=64)
-        self.eval_loader = dataset.to_datapipe().batch_graphs(batch_size=64)
         self.train_size = len(dataset)
 
         self.valid_tasks = {'graph-r', }
@@ -33,10 +32,11 @@ class QM9:
         
         validate_task(task_name, valid_tasks=self.valid_tasks, class_name=self.__class__.__name__)
 
+        self.batches_trained = 0
+
     def train(self, model: Model, optimizer: torch.optim.Optimizer):
 
         model.train()
-        param_norms, grad_norms = list(), list()
         
         for batch in self.train_loader:
         
@@ -44,13 +44,11 @@ class QM9:
             out = model(batch.x, batch.edge_index, batch.batch)
             train_loss = torch.mean(torch.square(out-batch.y))
             train_loss.backward()
+            self.batches_trained += 1
         
-            param_norm = torch.cat([param.view(-1) for param in model.parameters()])
-            param_norms.append(torch.norm(param_norm).detach())
-        
-            grad_norm = torch.cat([param.grad.view(-1) for param in model.parameters()])
-            grad_norms.append(torch.norm(grad_norm))
+            if self.batches_trained % 100 == 0:
+                params = torch.cat([param.view(-1) for param in model.parameters()])
+                grads = torch.cat([param.grad.view(-1) for param in model.parameters()])
+                yield self.batches_trained, (params.detach(), grads)
         
             optimizer.step()
-            
-        return param_norms, grad_norms
