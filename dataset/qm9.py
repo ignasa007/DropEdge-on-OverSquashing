@@ -20,13 +20,9 @@ class QM9(BaseDataset):
         train_end = int(Splits.train_split*len(dataset))
         val_end = train_end + int(Splits.val_split*len(dataset))
         
-        self.train_loader = dataset[:train_end].to_datapipe().batch_graphs(batch_size=batch_size)
-        self.val_loader = dataset[train_end:val_end].to_datapipe().batch_graphs(batch_size=batch_size)
-        self.test_loader = dataset[val_end:].to_datapipe().batch_graphs(batch_size=batch_size)
-
-        # self.train_loader = DataLoader(dataset[:train_end].to_datapipe(), batch_size=batch_size, num_workers=4, pin_memory=True)
-        # self.val_loader = DataLoader(dataset[train_end:val_end].to_datapipe(), batch_size=batch_size, num_workers=4, pin_memory=True)
-        # self.test_loader = DataLoader(dataset[val_end:].to_datapipe(), batch_size=batch_size, num_workers=4, pin_memory=True)
+        self.train_loader = DataLoader(dataset[:train_end], batch_size=batch_size, shuffle=True)
+        self.val_loader = DataLoader(dataset[train_end:val_end], batch_size=batch_size, shuffle=True)
+        self.test_loader = DataLoader(dataset[val_end:], batch_size=batch_size, shuffle=True)
 
         self.valid_tasks = {'graph-r', }
         self.num_features = dataset.num_features
