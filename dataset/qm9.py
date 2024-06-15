@@ -44,7 +44,7 @@ class QM9(BaseDataset):
         return train_metrics
     
     @no_grad()
-    def eval(self, model: Model) -> Tuple[Dict[str, float], Dict[str, float]]:
+    def eval(self, model: Model) -> Dict[str, float]:
 
         model.eval()
         
@@ -53,9 +53,4 @@ class QM9(BaseDataset):
             self.compute_loss(out, batch.y)
         val_metrics = self.compute_metrics()
 
-        for batch in self.test_loader:
-            out = model(batch.x, batch.edge_index, batch.batch)
-            self.compute_loss(out, batch.y)
-        test_metrics = self.compute_metrics()
-
-        return val_metrics, test_metrics
+        return val_metrics

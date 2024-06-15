@@ -20,6 +20,7 @@ class Model(Module):
         activation = get_activation(args.gnn_activation)()
         gnn_layer = get_layer(args.gnn)
         gnn_layer_sizes = [input_dim] + args.gnn_layer_sizes
+        
         self.message_passing = ModuleList()
         for in_channels, out_channels in zip(gnn_layer_sizes[:-1], gnn_layer_sizes[1:]):
             self.message_passing.append(gnn_layer(

@@ -1,7 +1,9 @@
+from typing import List, Tuple
 import os
+import shutil
 from datetime import datetime
 import pickle
-from typing import List, Tuple
+
 import numpy as np
 import torch
 
@@ -12,12 +14,7 @@ def get_time():
 
 class Logger:
 
-    def __init__(
-        self,
-        dataset: str,
-        gnn: str,
-        dropout: str
-    ):
+    def __init__(self, dataset: str, gnn: str, dropout: str, drop_p: float):
 
         '''
         Initialize the logging directory:
@@ -28,7 +25,11 @@ class Logger:
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/compare_dropout/{dataset}/{gnn}/{dropout}/{get_time()}'; os.makedirs(self.exp_dir)
+        self.exp_dir = f'./results/pruning/{dataset}/{gnn}/{dropout}/prob={int(100*drop_p)}'
+        if os.path.isdir(self.exp_dir):
+            shutil.rmtree(self.exp_dir)
+        os.makedirs(self.exp_dir)
+        
         self.pickle_dir = None
         self.array_dir = None
         self.tensor_dir = None
@@ -132,4 +133,4 @@ class Logger:
             f'Expected Torch tensor, instead received {type(tensor)}.'
         if not fn.endswith('.pt'):
             fn = os.path.splitext(fn)[0] + '.pt'
-        torch.save(tensor, f'{self.tensor_dir}/fn')
+        torch.save(tensor, f'{self.tensor_dir}/{fn}')

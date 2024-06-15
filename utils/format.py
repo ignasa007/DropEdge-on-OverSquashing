@@ -7,6 +7,7 @@ format_dataset_name = {
 
 format_task_name = {
     'node-c': 'Node-C', 'node_c': 'Node-C',
+    'graph-r': 'Graph-R', 'graph_r': 'Graph-R',
 }
 
 format_layer_name = {
