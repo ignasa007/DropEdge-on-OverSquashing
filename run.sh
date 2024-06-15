@@ -19,7 +19,8 @@ for dataset in {'Cora','CiteSeer','PubMed'}; do
                 --n_epochs 200 \
                 --learning_rate 0.01 \
                 --weight_decay 0.005 \
-                --test_every 1
+                --test_every 1 \
+                --device $2
         done    
     done
 done
@@ -43,6 +44,7 @@ for gnn in {'GCN','GAT','APPNP'}; do
             --n_epochs 200 \
             --learning_rate 0.01 \
             --weight_decay 0.005 \
-            --test_every 1
+            --test_every 1 \
+            --device $2
     done    
 done
