@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# pip install -r requirements.txt
+pip install -r requirements.txt
 
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 pip install torchmetrics==1.4.0 lightning-utilities==0.11.2
