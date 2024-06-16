@@ -38,7 +38,6 @@ class GATLayer(GATConv):
 
         x = self.drop_strategy.apply_feature_mat(x, self.training)
         x = self.lin(x)
-        x = self.activation(x)
 
         return x
 
@@ -56,10 +55,12 @@ class GATLayer(GATConv):
         
         return out
     
-    def add_bias(self, out):
+    def nonlinearity(self, out):
 
         if self.bias is not None:
             out = out + self.bias
+
+        out = self.activation(out)
 
         return out
     
@@ -81,7 +82,7 @@ class GATLayer(GATConv):
         # MESSAGE PASSING
         out = self.message_passing(edge_index, x=x, alpha=alpha)
         # ADD BIAS
-        out = self.add_bias(out)
+        out = self.nonlinearity(out)
 
         return out
 
