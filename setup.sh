@@ -3,8 +3,8 @@ set -e
 
 pip install -r requirements.txt
 
-pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+conda install pytorch==1.13.0 cpuonly -c pytorch
 pip install torchmetrics==1.4.0 lightning-utilities==0.11.2
 
-pip install torch_geometric
-pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.3.0+cpu.html
+conda install pyg -c pyg
+pip install pyg_lib==0.4.0 torch_cluster==1.6.1 torch_scatter==2.1.1 torch-sparse==0.6.17 torch_spline_conv==1.2.2 -f https://pytorch-geometric.com/whl/torch-1.13.0+cpu.html
