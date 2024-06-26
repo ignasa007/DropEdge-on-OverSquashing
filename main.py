@@ -49,37 +49,14 @@ logger.log(f'Dropout probability: {args.drop_p}\n', with_time=False)
 logger.log(f'Number of training epochs: {args.n_epochs}', with_time=False)
 logger.log(f'Learning rate: {args.learning_rate}\n', with_time=False)
 
-config = {
-    'num-features': dataset.num_features,
-    'output-dim': dataset.output_dim,
-    'cmd-line-args': args,
-    'device': DEVICE
-}
-
-with open(f'{logger.exp_dir}/config.pkl', 'wb') as f:
-    pickle.dump(config, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-
-format_epoch = FormatEpoch(args.n_epochs)
 
 for epoch in tqdm(range(1, args.n_epochs+1)):
-
-    logger.log(f'Epoch {format_epoch(epoch)}')
+    logger.log(f'Epoch {epoch}')
     train_metrics = dataset.train(model, optimizer)
-    logger.log_metrics(train_metrics, prefix='\tTraining:   ', with_time=False, print_text=False)
-
-    if epoch == args.n_epochs or args.test_every > 0 and epoch % args.test_every == 0:
-        val_metrics = dataset.eval(model)
-        logger.log_metrics(val_metrics, prefix='\tValidation: ', with_time=False, print_text=False)
-
-    if isinstance(args.save_every, int) and (args.save_every > 0 and epoch % args.save_every == 0 or args.save_every == -1 and epoch == args.n_epochs):
-        ckpt_fn = f'{logger.exp_dir}/ckpt-{format_epoch(epoch)}.pt'
-        logger.log(f'\tSaving model at {ckpt_fn}.', with_time=False, print_text=True)
-        torch.save(model.state_dict(), ckpt_fn)
-
-    logger.log('', with_time=False, print_text=False)
-
-    torch.save(model.state_dict(), f'{logger.exp_dir}/epoch-{format_epoch(epoch)}.pt')
+    logger.log_metrics(train_metrics, prefix='\tTraining: ', with_time=False, print_text=False)
 
 
-torch.save(dataset.test_loader, f'{logger.exp_dir}/test-loader.pt')
+test_targets, test_preds, test_conf = dataset.eval(model)
+torch.save(test_targets, f'{logger.exp_dir}/test-targets.pt')
+torch.save(test_preds, f'{logger.exp_dir}/test-predictions.pt')
+torch.save(test_conf, f'{logger.exp_dir}/test-confidence.pt')

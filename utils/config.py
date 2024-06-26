@@ -7,7 +7,7 @@ def parse_arguments():
 
     parser.add_argument(
         '--dataset', type=str, required=True,
-        help='The dataset to be trained on: [Cora, CiteSeer, PubMed, QM9].'
+        help='The dataset to be trained on: [Cora, CiteSeer, PubMed, QM9, Proteins].'
     )
     parser.add_argument(
         '--add_self_loops', type=bool, default=True,

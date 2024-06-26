@@ -44,6 +44,8 @@ class Model(Module):
         edge_index: Adj,
         mask: Optional[Union[Tensor, BoolTensor]] = None,
     ):
+        
+        # print(x) #
 
         for mp_layer in self.message_passing:
             x = mp_layer(x, edge_index)

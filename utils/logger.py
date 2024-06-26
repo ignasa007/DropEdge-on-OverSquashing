@@ -17,15 +17,14 @@ class Logger:
     def __init__(self, dataset: str, gnn: str, dropout: str, drop_p: float):
 
         '''
-        Initialize the logging directory:
-            ./results/<dataset>/<gnn_layer>/<drop_strategy>/<datetime>/
+        Initialize the logging directory.
 
         Args:
             dataset (str): dataset name.
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/pruning/{dataset}/{gnn}/{dropout}/prob={int(100*drop_p)}'
+        self.exp_dir = f'./results/miscalibration/{dataset}/{gnn}/{dropout}/prob={int(100*drop_p)}'
         if os.path.isdir(self.exp_dir):
             shutil.rmtree(self.exp_dir)
         os.makedirs(self.exp_dir)

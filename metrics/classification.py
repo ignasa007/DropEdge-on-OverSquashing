@@ -15,7 +15,7 @@ class Classification(Metrics):
             raise TypeError(f'Expected `num_classes` to be an instance of `int` (got {type(num_classes)}).')
         
         if num_classes == 2:
-            self.loss_fn = BCEWithLogitsLoss(reduction='sum')
+            self.loss_fn = lambda input, target: BCEWithLogitsLoss(reduction='sum')(input, target.float())
             self.accuracy_fn = BinaryAccuracy()
             self.f1score_fn = BinaryF1Score()
             self.auroc_fn = BinaryAUROC()
@@ -37,6 +37,9 @@ class Classification(Metrics):
         self.auroc_fn.reset()
     
     def compute_loss(self, input: Tensor, target: Tensor):
+
+        input = input.squeeze()
+        # print(input.detach().tolist(), target.tolist(), sep='\n') #
 
         batch_ce_loss = self.loss_fn(input, target)
         self.total_ce_loss += batch_ce_loss.item()

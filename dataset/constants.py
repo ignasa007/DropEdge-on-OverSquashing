@@ -1,7 +1,6 @@
 root = './data'
-batch_size = 64
+batch_size = 32
 
 class Splits:
-    train_split = 0.60
-    val_split = 0.16
+    train_split = 0.80
     test_split = 0.20
