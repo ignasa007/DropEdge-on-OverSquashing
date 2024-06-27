@@ -12,14 +12,14 @@ from dropout import get_dropout
 
 class Model(Module):
 
-    def __init__(self, input_dim: int, output_dim: int, args: Namespace):
+    def __init__(self, config: Namespace):
         
         super(Model, self).__init__()
         
-        drop_strategy = get_dropout(args.dropout)(args.drop_p)
-        activation = get_activation(args.gnn_activation)()
-        gnn_layer = get_layer(args.gnn)
-        gnn_layer_sizes = [input_dim] + args.gnn_layer_sizes
+        drop_strategy = get_dropout(config.dropout)(config.drop_p)
+        activation = get_activation(config.gnn_activation)()
+        gnn_layer = get_layer(config.gnn)
+        gnn_layer_sizes = [config.input_dim] + config.gnn_layer_sizes
         self.message_passing = ModuleList()
         for in_channels, out_channels in zip(gnn_layer_sizes[:-1], gnn_layer_sizes[1:]):
             self.message_passing.append(gnn_layer(
@@ -27,14 +27,14 @@ class Model(Module):
                 out_channels=out_channels,
                 drop_strategy=drop_strategy,
                 activation=activation,
-                args=args,
+                config=config,
             ))
 
-        ffn_head = get_head(args.task)
-        ffn_layer_sizes = args.gnn_layer_sizes[-1:] + args.ffn_layer_sizes + [output_dim]
+        ffn_head = get_head(config.task)
+        ffn_layer_sizes = config.gnn_layer_sizes[-1:] + config.ffn_layer_sizes + [config.output_dim]
         self.readout = ffn_head(
             layer_sizes=ffn_layer_sizes,
-            activation=get_activation(args.ffn_activation)(),
+            activation=get_activation(config.ffn_activation)(),
         )
 
     def forward(

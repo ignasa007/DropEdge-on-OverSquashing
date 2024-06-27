@@ -1,7 +1,9 @@
 import os
+from argparse import Namespace
 from datetime import datetime
 import pickle
 from typing import List, Tuple
+
 import numpy as np
 import torch
 
@@ -12,12 +14,7 @@ def get_time():
 
 class Logger:
 
-    def __init__(
-        self,
-        dataset: str,
-        gnn: str,
-        dropout: str
-    ):
+    def __init__(self, config: Namespace):
 
         '''
         Initialize the logging directory:
@@ -28,7 +25,11 @@ class Logger:
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/compare_dropout/{dataset}/{gnn}/{dropout}/{get_time()}'; os.makedirs(self.exp_dir)
+        self.exp_dir = f'./results/compare-dropout/{get_time()}'; os.makedirs(self.exp_dir)
+        self.log(''.join(f'{k} = {v}\n' for k, v in vars(config).items()), with_time=False)
+        with open(f'{self.exp_dir}/config.pkl', 'wb') as f:
+            pickle.dump(config, f, protocol=pickle.HIGHEST_PROTOCOL)
+
         self.pickle_dir = None
         self.array_dir = None
         self.tensor_dir = None
@@ -87,33 +88,33 @@ class Logger:
         with open(f'{self.pickle_dir}/{fn}', 'wb') as f:
             pickle.dump(obj, f, protocol=pickle.HIGHEST_PROTOCOL)
 
-    def save_arrays(self, fn, *args, **kwargs):
+    def save_arrays(self, fn, *config, **kwconfig):
 
         '''
         Save NumPy arrays.
 
         Args:
-            args (List[np.ndarray]): arrays saved into <fn>_unnamed.npz 
+            config (List[np.ndarray]): arrays saved into <fn>_unnamed.npz 
                 and can be queried using integer indexing.
-            kwargs (Dict[str, np.ndarray]): arrays saved into <fn>_named.npz 
+            kwconfig (Dict[str, np.ndarray]): arrays saved into <fn>_named.npz 
                 and can be queried using string indexing.
         '''
 
         if self.array_dir is None:
             self.array_dir = f'{self.exp_dir}/arrays'; os.makedirs(self.array_dir)
 
-        if args:
-            assert all([isinstance(ar, np.ndarray) for ar in args]), \
-                f'Expected NumPy arrays, instead received {set((type(ar) for ar in args))}.'
+        if config:
+            assert all([isinstance(ar, np.ndarray) for ar in config]), \
+                f'Expected NumPy arrays, instead received {set((type(ar) for ar in config))}.'
             unnamed_fn = os.path.splitext(fn)[0] + '_unnamed.npz'
             with open(f'{self.array_dir}/{unnamed_fn}', 'wb') as f:
-                np.savez(f, *args)
-        if kwargs:
-            assert all([isinstance(ar, np.ndarray) for ar in kwargs.keys()]), \
-                f'Expected NumPy arrays, instead received {set((type(ar) for ar in kwargs.keys()))}.'
+                np.savez(f, *config)
+        if kwconfig:
+            assert all([isinstance(ar, np.ndarray) for ar in kwconfig.keys()]), \
+                f'Expected NumPy arrays, instead received {set((type(ar) for ar in kwconfig.keys()))}.'
             named_fn = os.path.splitext(fn)[0] + '_named.npz'
             with open(f'{self.array_dir}/{named_fn}', 'wb') as f:
-                np.savez(f, **kwargs)
+                np.savez(f, **kwconfig)
 
     def save_tensors(self, fn, tensor):
 

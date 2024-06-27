@@ -3,10 +3,13 @@ format_dataset_name = {
     'citeseer': 'CiteSeer',
     'pubmed': 'PubMed',
     'qm9': 'QM9',
+    'proteins': 'Proteins',
 }
 
 format_task_name = {
     'node-c': 'Node-C', 'node_c': 'Node-C',
+    'graph-c': 'Graph-C', 'graph_c': 'Graph-C',
+    'graph-r': 'Graph-R', 'graph_r': 'Graph-R',
 }
 
 format_layer_name = {

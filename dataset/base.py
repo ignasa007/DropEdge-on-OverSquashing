@@ -7,7 +7,7 @@ def validate_task(task_name: str, valid_tasks: Iterable, class_name: str = None)
 
     formatted_name = task_name.replace('_', '-').lower()
     if formatted_name not in valid_tasks:
-        raise ValueError('Parameter `task_name` not recognised for the given dataset' +
+        raise ValueError('Parameter `task_name` not recognised for the given dataset'
             + ' ' + f'(got task `{task_name}` for dataset {class_name}).')
     
 def set_metrics(task_name: str, num_classes: int) -> Tuple[Metrics, int]:

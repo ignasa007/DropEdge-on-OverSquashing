@@ -93,6 +93,6 @@ def parse_arguments():
             '\tSpecial cases: skip to never save and -1 to save at the last epoch.'
     )
 
-    args = parser.parse_args()
+    config = parser.parse_args()
 
-    return args
+    return config

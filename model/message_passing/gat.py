@@ -20,17 +20,17 @@ class GATLayer(GATConv):
         out_channels: int,
         drop_strategy: BaseDropout,
         activation: Module,
-        args: Namespace,
+        config: Namespace,
     ):
 
         super(GATLayer, self).__init__(
             in_channels,
             out_channels,
-            args.attention_heads,
+            config.attention_heads,
             concat=False,
         )
 
-        self.pt = ModelPretreatment(args.add_self_loops, args.normalize)
+        self.pt = ModelPretreatment(config.add_self_loops, config.normalize)
         self.activation = activation
         self.drop_strategy = drop_strategy
 

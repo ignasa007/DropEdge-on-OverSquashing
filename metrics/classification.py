@@ -1,4 +1,4 @@
-from torch import sigmoid, Tensor
+from torch import sigmoid, softmax, Tensor
 from torch.nn import BCEWithLogitsLoss, CrossEntropyLoss
 from torchmetrics.classification import BinaryAccuracy, BinaryF1Score, BinaryAUROC, \
     MulticlassAccuracy, MulticlassF1Score, MulticlassAUROC
@@ -15,11 +15,13 @@ class Classification(Metrics):
             raise TypeError(f'Expected `num_classes` to be an instance of `int` (got {type(num_classes)}).')
         
         if num_classes == 2:
-            self.loss_fn = BCEWithLogitsLoss(reduction='sum')
+            self.nonlinearity = sigmoid
+            self.loss_fn = lambda input, target: BCEWithLogitsLoss(reduction='sum')(input, target.float())
             self.accuracy_fn = BinaryAccuracy()
             self.f1score_fn = BinaryF1Score()
             self.auroc_fn = BinaryAUROC()
         elif num_classes > 2:
+            self.nonlinearity = lambda probs: softmax(probs, dim=-1)
             self.loss_fn = CrossEntropyLoss(reduction='sum')
             self.accuracy_fn = MulticlassAccuracy(num_classes)
             self.f1score_fn = MulticlassF1Score(num_classes)
@@ -38,11 +40,16 @@ class Classification(Metrics):
     
     def compute_loss(self, input: Tensor, target: Tensor):
 
+        # squeeze to make the input compatible for BCE loss
+        input = input.squeeze()
+
+        # loss expects logits, but not probabilities
         batch_ce_loss = self.loss_fn(input, target)
         self.total_ce_loss += batch_ce_loss.item()
         self.n_samples += target.size(0)
 
-        preds = sigmoid(input)
+        # other metrics expect (rather, can work with) probabilities, but not logits
+        preds = self.nonlinearity(input)
         self.accuracy_fn.update(preds, target)
         self.f1score_fn.update(preds, target)
         self.auroc_fn.update(preds, target)

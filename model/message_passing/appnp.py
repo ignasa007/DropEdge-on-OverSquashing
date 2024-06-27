@@ -14,7 +14,7 @@ class APPNPLayer(GCNLayer):
         out_channels: int,
         drop_strategy: BaseDropout,
         activation: Module,
-        args: Namespace,
+        config: Namespace,
     ):
 
         super(APPNPLayer, self).__init__(
@@ -22,11 +22,11 @@ class APPNPLayer(GCNLayer):
             out_channels,
             drop_strategy,
             activation,
-            args
+            config
         )
 
-        self.power_iter = args.power_iter
-        self.teleport_p = args.teleport_p
+        self.power_iter = config.power_iter
+        self.teleport_p = config.teleport_p
 
     def message_passing(self, edge_index, x, edge_weight):
 

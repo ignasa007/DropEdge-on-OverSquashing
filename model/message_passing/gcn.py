@@ -19,17 +19,17 @@ class GCNLayer(GCNConv):
         out_channels: int,
         drop_strategy: BaseDropout,
         activation: Module,
-        args: Namespace,
+        config: Namespace,
     ):
 
         super(GCNLayer, self).__init__(
             in_channels,
             out_channels,
-            add_self_loops=args.add_self_loops,
-            normalize=args.normalize
+            add_self_loops=config.add_self_loops,
+            normalize=config.normalize
         )
         
-        self.pt = ModelPretreatment(args.add_self_loops, args.normalize)
+        self.pt = ModelPretreatment(config.add_self_loops, config.normalize)
         self.activation = activation
         self.drop_strategy = drop_strategy
 
