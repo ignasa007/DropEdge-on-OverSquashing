@@ -1,5 +1,5 @@
 from typing import Tuple, Iterable
-from torch import no_grad, device as Device
+from torch import no_grad
 from metrics import Metrics, Classification, Regression
 
 

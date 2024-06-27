@@ -21,8 +21,6 @@ class QM9(BaseDataset):
         train_end = int(Splits.train_split*len(dataset))
         val_end = train_end + int(Splits.val_split*len(dataset))
         
-        # batch_graphs takes an additional named argument $drop_last (bool):
-        #       whether to drop the last batch (possibly smaller than $batch_size) or not
         self.train_loader = DataLoader(dataset[:train_end], batch_size=batch_size, shuffle=True)
         self.val_loader = DataLoader(dataset[train_end:val_end], batch_size=batch_size, shuffle=True)
         self.test_loader = DataLoader(dataset[val_end:], batch_size=batch_size, shuffle=True)

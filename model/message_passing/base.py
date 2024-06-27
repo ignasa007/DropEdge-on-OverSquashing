@@ -1,1 +1,0 @@
-class BaseLayer(nn.Module)

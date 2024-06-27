@@ -37,7 +37,6 @@ class GCNLayer(GCNConv):
 
         x = self.drop_strategy.apply_feature_mat(x, self.training)
         x = self.lin(x)
-        x = self.activation(x)
 
         return x
     
@@ -54,10 +53,12 @@ class GCNLayer(GCNConv):
         
         return out
     
-    def add_bias(self, out):
+    def nonlinearity(self, out):
 
         if self.bias is not None:
             out = out + self.bias
+
+        out = self.activation(out)
 
         return out
     
@@ -70,7 +71,7 @@ class GCNLayer(GCNConv):
         # MESSAGE PASSING
         out = self.message_passing(edge_index, x, edge_weight)
         # ADD BIAS
-        out = self.add_bias(out)
+        out = self.nonlinearity(out)
 
         return out
 
