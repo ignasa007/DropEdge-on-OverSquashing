@@ -1,6 +1,21 @@
 import argparse
 
 
+def layer_sizes(args):
+
+    out = list()
+    for arg in args:
+        if isinstance(arg, str) and '*' in arg:
+            size, mult = map(int, arg.split('*'))
+            out.extend([size]*mult)
+        elif isinstance(arg, str) and arg.isdigit() or isinstance(arg, int):
+            out.append(int(arg))
+        else:
+            raise ValueError(f'arg = {arg}, type(arg) = {type(arg)}')
+
+    return out
+
+
 def parse_arguments():
 
     parser = argparse.ArgumentParser()
@@ -23,7 +38,7 @@ def parse_arguments():
         help='The backbone model: [GCN, GAT, APPNP, ].'
     )
     parser.add_argument(
-        '--gnn_layer_sizes', type=int, nargs='+', default=[16, 16],
+        '--gnn_layer_sizes', type=str, nargs='+', default=[16, 16],
         help="Hidden layers' sizes for the GNN."
     )
     parser.add_argument(
@@ -48,7 +63,7 @@ def parse_arguments():
         help='The task to perform with the chosen dataset: [Node-C, Graph-C, Graph-R].'
     )
     parser.add_argument(
-        '--ffn_layer_sizes', type=int, nargs='*', default=[],
+        '--ffn_layer_sizes', type=str, nargs='*', default=[],
         help="Hidden layers' sizes for the readout FFN."
     )
     parser.add_argument(
@@ -94,5 +109,7 @@ def parse_arguments():
     )
 
     config = parser.parse_args()
+    config.gnn_layer_sizes = layer_sizes(config.gnn_layer_sizes)
+    config.ffn_layer_sizes = layer_sizes(config.ffn_layer_sizes)
 
     return config
