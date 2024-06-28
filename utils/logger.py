@@ -25,7 +25,7 @@ class Logger:
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/compare-dropout/{get_time()}'; os.makedirs(self.exp_dir)
+        self.exp_dir = f'./results/smoothing/{get_time()}'; os.makedirs(self.exp_dir)
         self.log(''.join(f'{k} = {v}\n' for k, v in vars(config).items()), with_time=False)
         with open(f'{self.exp_dir}/config.pkl', 'wb') as f:
             pickle.dump(config, f, protocol=pickle.HIGHEST_PROTOCOL)

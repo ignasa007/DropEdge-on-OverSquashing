@@ -37,7 +37,7 @@ for epoch in tqdm(range(1, config.n_epochs+1)):
         logger.log_metrics(test_metrics, prefix='\tTesting:    ', with_time=False, print_text=False)
 
     if isinstance(config.save_every, int) and (config.save_every > 0 and epoch % config.save_every == 0 or config.save_every == -1 and epoch == config.n_epochs):
-        ckpt_fn = f'{logger.exp_dir}/ckpt-{format_epoch(epoch)}.pth'
+        ckpt_fn = f'{logger.exp_dir}/ckpt-{format_epoch(epoch)}.pt'
         logger.log(f'\tSaving model at {ckpt_fn}.', with_time=False, print_text=True)
         torch.save(model.state_dict(), ckpt_fn)
 

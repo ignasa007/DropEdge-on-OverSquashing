@@ -1,6 +1,6 @@
 from typing import Tuple, Dict
 
-from torch import no_grad, device as Device
+from torch import no_grad, device as Device, std_mean
 from torch_geometric.datasets import QM9 as QM9Torch
 from torch_geometric.transforms import NormalizeFeatures
 from torch_geometric.loader import DataLoader
@@ -20,6 +20,10 @@ class QM9(BaseDataset):
 
         train_end = int(Splits.train_split*len(dataset))
         val_end = train_end + int(Splits.val_split*len(dataset))
+        
+        # label normalization
+        std, mean = std_mean(dataset.y[:train_end], dim=0, keepdim=True)
+        dataset.y = (dataset.y - mean) / std
         
         self.train_loader = DataLoader(dataset[:train_end], batch_size=batch_size, shuffle=True)
         self.val_loader = DataLoader(dataset[train_end:val_end], batch_size=batch_size, shuffle=True)
