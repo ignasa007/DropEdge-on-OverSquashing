@@ -4,6 +4,8 @@ format_dataset_name = {
     'pubmed': 'PubMed',
     'qm9': 'QM9',
     'proteins': 'Proteins',
+    'ptc': 'PTC',
+    'mutag': 'MUTAG',
 }
 
 format_task_name = {

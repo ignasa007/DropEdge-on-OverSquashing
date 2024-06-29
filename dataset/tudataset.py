@@ -1,6 +1,6 @@
 from typing import Dict
-from torch import Tensor, device as Device, no_grad, cat, sigmoid
-from torch_geometric.datasets import TUDataset
+from torch import device as Device, no_grad
+from torch_geometric.datasets import TUDataset as TUDatasetTorch
 from torch_geometric.loader import DataLoader
 from torch.optim import Optimizer
 
@@ -16,11 +16,11 @@ class NormalizeFeatures:
         data.x = ... # TODO
 
 
-class Proteins(BaseDataset):
+class TUDataset(BaseDataset):
 
-    def __init__(self, task_name: str, device: Device):
+    def __init__(self, name: str, task_name: str, device: Device):
 
-        dataset = TUDataset(root=root, name='PROTEINS', use_node_attr=True).to(device)
+        dataset = TUDatasetTorch(root=root, name=name, use_node_attr=True).to(device)
         dataset = dataset.shuffle()
 
         train_end = int(Splits.train_split*len(dataset))
@@ -33,7 +33,7 @@ class Proteins(BaseDataset):
         self.valid_tasks = {'graph-c', }
         self.num_features = dataset.num_features
         self.num_classes = dataset.num_classes
-        super(Proteins, self).__init__(task_name)
+        super(TUDataset, self).__init__(task_name)
 
     def train(self, model: Model, optimizer: Optimizer):
 
@@ -65,3 +65,16 @@ class Proteins(BaseDataset):
         test_metrics = self.compute_metrics()
 
         return val_metrics, test_metrics
+    
+
+class Proteins(TUDataset):
+    def __init__(self, task_name: str, device: Device):
+        super(Proteins, self).__init__(name='PROTEINS', task_name=task_name, device=device)
+
+class PTC(TUDataset):
+    def __init__(self, task_name: str, device: Device):
+        super(PTC, self).__init__(name='PTC_MR', task_name=task_name, device=device)
+
+class MUTAG(TUDataset):
+    def __init__(self, task_name: str, device: Device):
+        super(MUTAG, self).__init__(name='MUTAG', task_name=task_name, device=device)
