@@ -31,7 +31,7 @@ class Planetoid(BaseDataset):
     def train(self, model: Model, optimizer: Optimizer) -> Dict[str, float]:
 
         model.train()
-        
+
         optimizer.zero_grad()
         out = model(self.x, self.edge_index, self.train_mask)
         train_loss = self.compute_loss(out, self.y[self.train_mask])
