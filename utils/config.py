@@ -73,7 +73,7 @@ def parse_arguments():
 
     parser.add_argument(
         '--dropout', type=str, required=True,
-        help='The dropping method [Dropout, Drop-Edge, Drop-Node, Drop-Message, Drop-GNN].'
+        help='The dropping method [Dropout, DropEdge, DropNode, DropMessage, DropGNN].'
     )
     parser.add_argument(
         '--drop_p', type=float, default=0.5,
