@@ -5,7 +5,7 @@ from dataset.qm9 import QM9
 from dataset.tudataset import Proteins, PTC, MUTAG
 
 
-def get_dataset(dataset_name: str, task_name: str, device: Device) -> BaseDataset:
+def get_dataset(dataset_name: str, task_name: str, device: Device = Device('cpu')) -> BaseDataset:
 
     dataset_map = {
         'cora': Cora,
