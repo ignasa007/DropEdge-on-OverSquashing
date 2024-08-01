@@ -1,32 +1,36 @@
-from typing import Tuple, Dict
-
-from torch import no_grad, device as Device
-from torch_geometric.datasets import QM9 as QM9Torch
+from typing import Dict
+from torch import device as Device, no_grad
+from torch_geometric.datasets import LRGBDataset as LRGBDatasetTorch
 from torch.optim import Optimizer
 
-from dataset.constants import root, Splits, batch_size
+from dataset.constants import root
 from dataset.base import BaseDataset
-from dataset.utils import split_dataset, normalize_features, normalize_labels, create_loaders
+from dataset.utils import normalize_features, create_loaders
 from model import Model
 
 
-class QM9(BaseDataset):
+batch_size = 20     # TODO: tunable
 
-    def __init__(self, task_name: str, device: Device):
 
-        dataset = QM9Torch(root=f'{root}/QM9').to(device)
-        dataset = dataset.shuffle()
+class LRGBDataset(BaseDataset):
+
+    def __init__(self, name: str, task_name: str, device: Device):
+
+        train, val, test = (
+            LRGBDatasetTorch(root=root, name=name, split=split).to(device).shuffle()
+            for split in ('train', 'val', 'test')
+        )
 
         self.train_loader, self.val_loader, self.test_loader = create_loaders(
-            normalize_labels(normalize_features(split_dataset(dataset, Splits.train_split, Splits.val_split, Splits.test_split))),
+            normalize_features(train, val, test),
             batch_size=batch_size,
             shuffle=True
         )
 
-        self.valid_tasks = {'graph-r', }
-        self.num_features = dataset.num_features
-        self.num_classes = dataset.num_classes
-        super(QM9, self).__init__(task_name)
+        self.valid_tasks = {'node-c', }
+        self.num_features = train.num_features
+        self.num_classes = train.num_classes
+        super(LRGBDataset, self).__init__(task_name)
 
     def train(self, model: Model, optimizer: Optimizer):
 
@@ -43,7 +47,7 @@ class QM9(BaseDataset):
         return train_metrics
     
     @no_grad()
-    def eval(self, model: Model) -> Tuple[Dict[str, float], Dict[str, float]]:
+    def eval(self, model: Model) -> Dict[str, float]:
 
         model.eval()
         
@@ -58,3 +62,8 @@ class QM9(BaseDataset):
         test_metrics = self.compute_metrics()
 
         return val_metrics, test_metrics
+    
+
+class Pascal(LRGBDataset):
+    def __init__(self, task_name: str, device: Device):
+        super(Pascal, self).__init__(name='PascalVOC-SP', task_name=task_name, device=device)

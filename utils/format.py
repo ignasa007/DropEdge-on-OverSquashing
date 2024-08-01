@@ -6,6 +6,7 @@ format_dataset_name = {
     'proteins': 'Proteins',
     'ptc': 'PTC',
     'mutag': 'MUTAG',
+    'pascal': 'Pascal'
 }
 
 format_task_name = {

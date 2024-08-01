@@ -14,7 +14,7 @@ def split_dataset(dataset, train_split=Splits.train_split, val_split=Splits.val_
     return train, val, test
 
 
-def normalize_features(train, others=None):
+def normalize_features(train, *others):
 
     out = ()
 
@@ -22,16 +22,15 @@ def normalize_features(train, others=None):
     train.x = (train.x - mean) / std
     out += (train,)
 
-    if others is not None:
-        if not isinstance(others, (tuple, list)):
-            raise ValueError(f'Expected `others` to be an instance of List or Tuple, but received {type(others)}.')
-        for other in others:
-            other.x = (other.x - mean) / std
-            out += (other,)
+    if not isinstance(others, (tuple, list)):
+        raise ValueError(f'Expected `others` to be an instance of List or Tuple, but received {type(others)}.')
+    for other in others:
+        other.x = (other.x - mean) / std
+        out += (other,)
 
     return out
     
-def normalize_labels(train, others=None):
+def normalize_labels(train, *others):
 
     # TODO: 1. controversial choice, 2. some labels in QM9 still way too large -- clip?
 
@@ -41,12 +40,11 @@ def normalize_labels(train, others=None):
     train.y = (train.y - mean) / std
     out += (train,)
 
-    if others is not None:
-        if not isinstance(others, (tuple, list)):
-            raise ValueError(f'Expected `others` to be an instance of List or Tuple, but received {type(others)}.')
-        for other in others:
-            other.y = (other.y - mean) / std
-            out += (other,)
+    if not isinstance(others, (tuple, list)):
+        raise ValueError(f'Expected `others` to be an instance of List or Tuple, but received {type(others)}.')
+    for other in others:
+        other.y = (other.y - mean) / std
+        out += (other,)
 
     return out
 

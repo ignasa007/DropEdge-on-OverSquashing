@@ -1,7 +1,6 @@
 from typing import Tuple, Dict
 from torch import no_grad, device as Device
 from torch_geometric.datasets import Planetoid as PlanetoidTorch
-from torch_geometric.transforms import NormalizeFeatures
 from torch.optim import Optimizer
 
 from dataset.constants import root
@@ -14,7 +13,7 @@ class Planetoid(BaseDataset):
 
     def __init__(self, name: str, task_name: str, device: Device):
 
-        dataset = PlanetoidTorch(root=root, name=name, split='full', transform=NormalizeFeatures()).to(device)
+        dataset = PlanetoidTorch(root=root, name=name, split='full').to(device)
         
         self.x = dataset.x
         self.edge_index = dataset.edge_index

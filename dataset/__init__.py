@@ -3,6 +3,7 @@ from dataset.base import BaseDataset
 from dataset.planetoid import Cora, CiteSeer, PubMed
 from dataset.qm9 import QM9
 from dataset.tudataset import Proteins, PTC, MUTAG
+from dataset.lrgb import Pascal
 
 
 def get_dataset(dataset_name: str, task_name: str, device: Device = Device('cpu')) -> BaseDataset:
@@ -15,6 +16,7 @@ def get_dataset(dataset_name: str, task_name: str, device: Device = Device('cpu'
         'proteins': Proteins,
         'ptc': PTC,
         'mutag': MUTAG,
+        'pascal': Pascal
     }
     
     formatted_name = dataset_name.lower()
