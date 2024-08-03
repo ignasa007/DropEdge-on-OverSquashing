@@ -24,7 +24,7 @@ class Planetoid(BaseDataset):
         self.test_mask = dataset.test_mask
 
         # normalizing the whole graph's features (all nodes because they're available during training)
-        dataset = normalize_features(dataset)
+        dataset, = normalize_features(dataset)
 
         self.valid_tasks = {'node-c', }
         self.num_features = dataset.num_features

@@ -46,7 +46,7 @@ class Model(Module):
 
         for mp_layer in self.message_passing:
             x = mp_layer(x, edge_index)
-               
+        
         out = self.readout(x, mask)
 
         return out

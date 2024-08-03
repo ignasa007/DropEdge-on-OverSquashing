@@ -33,8 +33,8 @@ for trained, ax in zip(('untrained', 'trained'), axs):
 
         for i_dir in os.listdir(sensitivity_dir):
 
-            if 'copy' in i_dir: continue
             i_dir = f'{sensitivity_dir}/{i_dir}'
+            if not os.path.isdir(i_dir) or 'copy' in i_dir: continue
             
             with open (f'{i_dir}/commute_times.pkl', 'rb') as f:
                 commute_times = pickle.load(f)
