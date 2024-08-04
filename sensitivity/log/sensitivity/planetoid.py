@@ -8,13 +8,15 @@ from torch_geometric.datasets import Planetoid
 from torch_geometric.utils import to_scipy_sparse_matrix, subgraph
 
 from utils.parse_logs import parse_configs
+from utils.format import format_dataset_name
 from sensitivity.utils import *
 from sensitivity.utils.planetoid import *
 
 
-DATASET = 'PubMed'
-model_dir = f'./results/model-store/{DATASET}'
-results_dir = f'./results/sensitivity/{DATASET}'
+DATASET = 'Cora'
+L = 8
+model_dir = f'./results/model-store/{format_dataset_name[DATASET.lower()]}/L={L}'
+results_dir = f'./results/sensitivity/{format_dataset_name[DATASET.lower()]}/L={L}'
 
 NODE_SAMPLES = 100
 MODEL_SAMPLES = 10
@@ -27,7 +29,6 @@ dataset = Planetoid(root='./data', name=DATASET)
 num_nodes = dataset.x.size(0)
 A = to_scipy_sparse_matrix(dataset.edge_index)
 indices, = np.where(connected_components(A, return_labels=True)[1] == 0)
-print(indices.shape)
 
 for _ in range(NODE_SAMPLES):
 
@@ -37,9 +38,9 @@ for _ in range(NODE_SAMPLES):
     print(i)
 
     shortest_distances = torch.from_numpy(shortest_path(A, method='D', indices=i))
-    subset = torch.where(shortest_distances <= 4)[0]
-    print(subset.size())
+    subset = torch.where(shortest_distances <= L)[0]
     edge_index, _ = subgraph(subset, dataset.edge_index, relabel_nodes=True, num_nodes=dataset.x.size(0))
+    # check implementation and relabelling is such that subset[i] is relabelled as i
     x = dataset.x[subset, :]
     new_i = torch.where(subset == i)[0].item()
 

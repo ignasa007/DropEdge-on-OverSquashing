@@ -7,13 +7,14 @@ import numpy as np
 from torch_geometric.datasets import TUDataset
 
 from utils.parse_logs import parse_configs
-from utils.logger import get_time
+from utils.format import format_dataset_name
 from sensitivity.utils import *
 from sensitivity.utils.tudataset import *
 
 
-DATASET = 'Proteins'
-model_dir = f'./results/model-store/{DATASET}'
+DATASET = 'PROTEINS'
+L = 7
+model_dir = f'./results/model-store/{format_dataset_name[DATASET.lower()]}/L={L}'
 dir_names = {float(parse_configs(fn)['drop_p']): os.path.dirname(fn) for fn in glob(f'{model_dir}/*/logs')}
 ps = sorted(dir_names)
 assert ps[0] == 0.
@@ -24,7 +25,7 @@ MODEL_SAMPLES = 10
 dataset = TUDataset(root='./data', name=DATASET, use_node_attr=True)
 num_nodes = np.array([molecule.num_nodes for molecule in dataset])
   
-results_dir = f'./results/sensitivity/{DATASET}/{get_time()}'
+results_dir = f'./results/sensitivity/{format_dataset_name[DATASET.lower()]}/L={L}'
 
 for _ in range(MOLECULE_SAMPLES):
 

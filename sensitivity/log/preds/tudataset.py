@@ -7,16 +7,19 @@ from torch_geometric.datasets import TUDataset
 from torch_geometric.loader.dataloader import Collater
 
 from utils.parse_logs import parse_configs
+from utils.format import format_dataset_name
 from model import Model
 from metrics import Classification
 
 
 DATASET = 'PROTEINS'
-MODEL_DIR = f'./results/model-store/{DATASET}'
+L = 7
+MODEL_DIR = f'./results/model-store/{format_dataset_name[DATASET.lower()]}/L={L}'
 MODEL_SAMPLES = 10
+RESULTS_DIR = f'./results/sensitivity/{format_dataset_name[DATASET.lower()]}/L={L}'
 
 dataset = TUDataset(root='./data', name=DATASET, use_node_attr=True)
-indices = [dir_name for dir_name in os.listdir(f'./results/sensitivity/{DATASET}') if dir_name[-1].isdigit()]
+indices = [dir_name for dir_name in os.listdir(RESULTS_DIR) if dir_name[-1].isdigit()]
 indices = list(map(lambda x: int(x.split('=')[1]), indices))
 
 input = Collater(dataset)(dataset[indices])
@@ -59,13 +62,13 @@ for P, dir_name in dir_names.items():
     eval_ce[P] = ce_loss(logits, target)
     eval_mae[P] = mae_loss(nonlinearity(logits), target)
 
-with open(f'./results/sensitivity/{DATASET}/indices.pkl', 'wb') as f:
+with open(f'{RESULTS_DIR}/indices.pkl', 'wb') as f:
     pickle.dump(indices, f, pickle.HIGHEST_PROTOCOL)
-with open(f'./results/sensitivity/{DATASET}/train_ce.pkl', 'wb') as f:
+with open(f'{RESULTS_DIR}/train_ce.pkl', 'wb') as f:
     pickle.dump(train_ce, f, pickle.HIGHEST_PROTOCOL)
-with open(f'./results/sensitivity/{DATASET}/train_mae.pkl', 'wb') as f:
+with open(f'{RESULTS_DIR}/train_mae.pkl', 'wb') as f:
     pickle.dump(train_mae, f, pickle.HIGHEST_PROTOCOL)
-with open(f'./results/sensitivity/{DATASET}/eval_ce.pkl', 'wb') as f:
+with open(f'{RESULTS_DIR}/eval_ce.pkl', 'wb') as f:
     pickle.dump(eval_ce, f, pickle.HIGHEST_PROTOCOL)
-with open(f'./results/sensitivity/{DATASET}/eval_mae.pkl', 'wb') as f:
+with open(f'{RESULTS_DIR}/eval_mae.pkl', 'wb') as f:
     pickle.dump(eval_mae, f, pickle.HIGHEST_PROTOCOL)

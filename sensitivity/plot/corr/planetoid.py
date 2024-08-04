@@ -6,21 +6,24 @@ from scipy.stats import spearmanr, pearsonr
 import matplotlib.pyplot as plt
 
 from sensitivity.utils import bin_jac_norms
+from utils.format import format_dataset_name
 
 
-DATASET = 'PubMed'
-RESULTS_DIR = f'./results/sensitivity/{DATASET}'
+DATASET = 'Cora'
+L = 8
+RESULTS_DIR = f'./results/sensitivity/{format_dataset_name[DATASET.lower()]}/L={L}'
 
 with open(f'{RESULTS_DIR}/indices.pkl', 'rb') as f:
     indices: list = pickle.load(f)
 
 fig, axs = plt.subplots(2, 2, figsize=(12, 8))
+fig.suptitle(f'{DATASET}, L={L}')
 metric_names = ('train_ce', 'train_mae', 'eval_ce', 'eval_mae')
 
 for P in np.round(np.arange(0.0, 0.9, 0.2), decimals=1):
 
     # 2nd dim = 8 because we trained a 4-layer GNN, so it can reach nodes at distances from 0 and 4 
-    binned_jac_norms = torch.full((len(indices), 5), torch.nan)
+    binned_jac_norms = torch.full((len(indices), L+1), torch.nan)
     for i, idx in enumerate(indices):
         with open(f'{RESULTS_DIR}/i={idx}/shortest_distances.pkl', 'rb') as f:
             shortest_distances = pickle.load(f)
@@ -28,7 +31,7 @@ for P in np.round(np.arange(0.0, 0.9, 0.2), decimals=1):
         with open(f'{RESULTS_DIR}/i={idx}/jac-norms/P={P}/trained.pkl', 'rb') as f:
             jac_norms = pickle.load(f)
         y_sd = bin_jac_norms(jac_norms, shortest_distances, x_sd)
-        filter, = torch.where(x_sd<binned_jac_norms.size(1))
+        filter, = torch.where(x_sd<=L)
         binned_jac_norms[i, x_sd[filter]] = y_sd[filter]
     
     for metric_name, ax in zip(metric_names, axs.flatten()):
@@ -47,7 +50,7 @@ for P in np.round(np.arange(0.0, 0.9, 0.2), decimals=1):
             tensor1, tensor2 = map(lambda tensor: tensor[~tensor1.isnan()], (tensor1, metrics[P]))
             corr = spearmanr(tensor1, tensor2)
             y.append(corr.statistic)
-            markers.append(corr.pvalue<0.01)
+            markers.append(corr.pvalue<0.1)
 
         p = ax.plot(x, y, label=f'P = {P}')
         y, markers = map(lambda x: np.array(x), (y, markers))

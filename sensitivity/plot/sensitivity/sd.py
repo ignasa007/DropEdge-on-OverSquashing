@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from sensitivity.utils import bin_jac_norms
 
 
-sensitivity_dir = '../results/sensitivity/2024-07-27-14-46-51'
+sensitivity_dir = '../results/sensitivity/Proteins/L=7'
 
 max_shortest_distance = 0.
 for i_dir in os.listdir(sensitivity_dir):
