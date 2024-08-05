@@ -1,24 +1,26 @@
 import os
 import pickle
 
+import numpy as np
 import torch
 import matplotlib.pyplot as plt
 
 from sensitivity.utils import bin_jac_norms
 
 
-sensitivity_dir = '../results/sensitivity/Proteins/L=7'
+L = 6
+sensitivity_dir = f'./results/sensitivity/Proteins/L={L}'
 
-max_commute_time = 0.
-for i_dir in os.listdir(sensitivity_dir):
-    if 'copy' in i_dir: continue
-    i_dir = f'{sensitivity_dir}/{i_dir}'
-    with open (f'{i_dir}/commute_times.pkl', 'rb') as f:
-        commute_times = pickle.load(f)
-    max_commute_time = max(max_commute_time, commute_times.max())
+# max_commute_time = 0.
+# for i_dir in os.listdir(sensitivity_dir):
+#     if 'copy' in i_dir: continue
+#     i_dir = f'{sensitivity_dir}/{i_dir}'
+#     with open (f'{i_dir}/commute_times.pkl', 'rb') as f:
+#         commute_times = pickle.load(f)
+#     max_commute_time = max(max_commute_time, commute_times.max())
 
 BIN_SIZE = 40.
-Ps = torch.arange(0, 81, 10).numpy()
+Ps = np.arange(0, 1.0, 0.1)
 fig, axs = plt.subplots(2, 1, figsize=(10, 8))
 
 for trained, ax in zip(('untrained', 'trained'), axs):

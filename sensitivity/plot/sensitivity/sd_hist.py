@@ -1,24 +1,18 @@
 import os
 import pickle
 
+import numpy as np
 import torch
 import matplotlib.pyplot as plt
 
 from sensitivity.utils import bin_jac_norms
 
 
-sensitivity_dir = './results/sensitivity/Proteins/L=7'
+L = 6
+sensitivity_dir = './results/sensitivity/Proteins/L={L}'
+agg = 'mean'
 
-max_shortest_distance = 0.
-for i_dir in os.listdir(sensitivity_dir):
-    if 'copy' in i_dir: continue
-    i_dir = f'{sensitivity_dir}/{i_dir}'
-    with open (f'{i_dir}/shortest_distances.pkl', 'rb') as f:
-        shortest_distances = pickle.load(f)
-    max_shortest_distance = max(max_shortest_distance, shortest_distances.max())
-max_shortest_distance = int(max_shortest_distance)
-
-Ps = torch.arange(0, 81, 20).numpy()
+Ps = np.arange(0, 1.0, 0.1).round(decimals=1)
 fig, axs = plt.subplots(2, 1, figsize=(10, 8))
 
 for trained, ax in zip(('untrained', 'trained'), axs):
@@ -28,7 +22,7 @@ for trained, ax in zip(('untrained', 'trained'), axs):
 
     for P in Ps:
 
-        sum_jac_norms = torch.zeros(max_shortest_distance+1)
+        sum_jac_norms = torch.zeros(L+1)
         sum_bin_sizes = torch.zeros_like(sum_jac_norms)
         molecules_count = torch.zeros_like(sum_jac_norms)
 
@@ -40,13 +34,15 @@ for trained, ax in zip(('untrained', 'trained'), axs):
             with open (f'{i_dir}/shortest_distances.pkl', 'rb') as f:
                 shortest_distances = pickle.load(f)
             x_sd, y_hist = map(lambda x: x.int(), shortest_distances.unique(return_counts=True))
-            
+            y_hist /= y_hist.sum()  # convert counts to ratios
+            x_sd, y_hist = map(lambda x: x[x_sd <= L], (x_sd, y_hist))
+
             with open(f'{i_dir}/jac-norms/{trained}/p={P}.pkl', 'rb') as f:
                 jac_norms = pickle.load(f)
-            y_sd = bin_jac_norms(jac_norms, shortest_distances, x_sd)   # expectation of jac-norms over bins
+            y_sd = bin_jac_norms(jac_norms, shortest_distances, x_sd, agg)  # expectation of jac-norms over bins
             
             sum_jac_norms[x_sd] += y_sd
-            sum_bin_sizes[x_sd] += y_hist / y_hist.sum()    # update ratios of edge-pairs at diff distances
+            sum_bin_sizes[x_sd] += y_hist   # update ratios of edge-pairs at diff distances
             molecules_count[x_sd] += 1
                             
         mean_jac_norms[P] = sum_jac_norms / molecules_count     # expectation of binned jac-norms over graphs

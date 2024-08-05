@@ -58,7 +58,7 @@ for P in np.round(np.arange(0.0, 0.9, 0.2), decimals=1):
             tensor1, tensor2 = map(lambda tensor: tensor[~tensor1.isnan()], (tensor1, metrics[P]))
             corr = spearmanr(tensor1, tensor2)
             y.append(corr.statistic)
-            markers.append(corr.pvalue<0.1)
+            markers.append(corr.pvalue<0.01)
 
         p = ax.plot(x, y, label=f'P = {P}')
         y, markers = map(lambda x: np.array(x), (y, markers))
