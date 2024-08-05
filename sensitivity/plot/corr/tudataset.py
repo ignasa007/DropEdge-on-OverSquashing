@@ -11,12 +11,14 @@ from utils.format import format_dataset_name
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', type=str)
+parser.add_argument('--dataset', type=str, choices=['Proteins', 'MUTAG'])
 parser.add_argument('--L', type=int)
+parser.add_argument('--agg', type=str, default='mean', choices=['mean', 'sum'])
 args = parser.parse_args()
 
 DATASET = args.dataset
 L = args.L
+agg = args.agg
 RESULTS_DIR = f'./results/sensitivity/{format_dataset_name[DATASET.lower()]}/L={L}'
 
 with open(f'{RESULTS_DIR}/indices.pkl', 'rb') as f:
@@ -36,7 +38,7 @@ for P in np.round(np.arange(0.0, 0.9, 0.2), decimals=1):
         x_sd = shortest_distances.unique().int()
         with open(f'{RESULTS_DIR}/i={idx}/jac-norms/P={P}/trained.pkl', 'rb') as f:
             jac_norms = pickle.load(f)
-        y_sd = bin_jac_norms(jac_norms, shortest_distances, x_sd)
+        y_sd = bin_jac_norms(jac_norms, shortest_distances, x_sd, agg)
         filter, = torch.where(x_sd<=L)
         binned_jac_norms[i, x_sd[filter]] = y_sd[filter]
     
@@ -61,7 +63,7 @@ for P in np.round(np.arange(0.0, 0.9, 0.2), decimals=1):
         p = ax.plot(x, y, label=f'P = {P}')
         y, markers = map(lambda x: np.array(x), (y, markers))
         ax.scatter(x[markers], y[markers])
-        ax.scatter(x[~markers], y[~markers], facecolors='none', edgecolors=p[-1].get_color())
+        # ax.scatter(x[~markers], y[~markers], facecolors='none', edgecolors=p[-1].get_color())
 
 for ax in axs.flatten():
     ax.grid()

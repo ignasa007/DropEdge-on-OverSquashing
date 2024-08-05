@@ -41,16 +41,23 @@ def compute_shortest_distances(edge_index, assert_connected=True):
     return shortest_distances
 
 
-def bin_jac_norms(jac_norms, bin_assignments, bins):
+def bin_jac_norms(jac_norms, bin_assignments, bins, agg='mean'):
 
     if jac_norms.ndim > 1:
         jac_norms = jac_norms.flatten()
     
     assert jac_norms.size() == bin_assignments.size()
 
-    means = list()
+    if agg == 'mean':
+        aggregator = torch.mean
+    elif agg == 'sum':
+        aggregator = torch.sum
+    else:
+        raise ValueError(f"Expected `agg` to be one of 'mean' or 'sum'. Instead received '{agg}'.")
+    
+    aggregated_jac_norms = list()
     for bin in bins:
         bin_members = jac_norms[torch.where(bin_assignments == bin)]
-        means.append(torch.mean(bin_members))
+        aggregated_jac_norms.append(aggregator(bin_members))
 
-    return torch.Tensor(means)
+    return torch.Tensor(aggregated_jac_norms)
