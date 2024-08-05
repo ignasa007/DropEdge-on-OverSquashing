@@ -1,4 +1,5 @@
 import pickle
+import argparse
 
 import torch
 import numpy as np
@@ -9,8 +10,13 @@ from sensitivity.utils import bin_jac_norms
 from utils.format import format_dataset_name
 
 
-DATASET = 'Cora'
-L = 8
+parser = argparse.ArgumentParser()
+parser.add_argument('--dataset', type=str)
+parser.add_argument('--L', type=int)
+args = parser.parse_args()
+
+DATASET = args.dataset
+L = args.L
 RESULTS_DIR = f'./results/sensitivity/{format_dataset_name[DATASET.lower()]}/L={L}'
 
 with open(f'{RESULTS_DIR}/indices.pkl', 'rb') as f:

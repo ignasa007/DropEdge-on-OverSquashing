@@ -1,24 +1,29 @@
 import os
 from glob import glob
 import pickle
+import argparse
 
 import torch
+from torch.nn import BCEWithLogitsLoss, CrossEntropyLoss
 from torch_geometric.datasets import Planetoid
 
+from model import Model
 from utils.parse_logs import parse_configs
 from utils.format import format_dataset_name
-from model import Model
-from metrics import Classification
 
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--dataset', type=str)
+parser.add_argument('--L', type=int)
+args = parser.parse_args()
 
-DATASET = 'Cora'
-L = 8
+DATASET = args.dataset
+L = args.L
 MODEL_DIR = f'./results/model-store/{format_dataset_name[DATASET.lower()]}/L={L}'
 MODEL_SAMPLES = 10
 RESULTS_DIR = f'./results/sensitivity/{format_dataset_name[DATASET.lower()]}/L={L}'
 
-dataset = Planetoid(root='./data', name=DATASET)
+dataset = Planetoid(root='./data', name=DATASET, split='full')
 indices = [dir_name for dir_name in os.listdir(RESULTS_DIR) if dir_name[-1].isdigit()]
 indices = list(map(lambda x: int(x.split('=')[1]), indices))
 
@@ -27,13 +32,14 @@ mask = indices
 target = input.y[mask]
 
 dir_names = {float(parse_configs(fn)['drop_p']): os.path.dirname(fn) for fn in glob(f'{MODEL_DIR}/*/logs')}
-metric = Classification(dataset.num_classes)
-nonlinearity = metric.nonlinearity
-ce_loss = metric.loss_fn; ce_loss.reduction = 'none'
 if dataset.num_classes == 2:
-    mae_loss = lambda preds, target: torch.abs(preds - target)
+    nonlinearity = torch.sigmoid
+    ce_loss = lambda logits, target: BCEWithLogitsLoss(reduction='none')(logits, target.float())
+    mae_loss = lambda logits, target: torch.abs(nonlinearity(logits) - target)
 else:
-    mae_loss = lambda preds, target: torch.abs(1 - preds[torch.arange(preds.size(0)), target])
+    nonlinearity = lambda probs: torch.softmax(probs, dim=-1)
+    ce_loss = CrossEntropyLoss(reduction='none')
+    mae_loss = lambda logits, target: torch.abs(1 - nonlinearity(logits)[:, target])
 
 train_ce, train_mae, eval_ce, eval_mae = dict(), dict(), dict(), dict()
 
@@ -55,12 +61,12 @@ for P, dir_name in dir_names.items():
         logits += model(input.x, input.edge_index, mask).detach().squeeze()
     logits /= n_samples
     train_ce[P] = ce_loss(logits, target)
-    train_mae[P] = mae_loss(nonlinearity(logits), target)
+    train_mae[P] = mae_loss(logits, target)
 
     model.eval()
     logits = model(input.x, input.edge_index, mask).detach().squeeze()
     eval_ce[P] = ce_loss(logits, target)
-    eval_mae[P] = mae_loss(nonlinearity(logits), target)
+    eval_mae[P] = mae_loss(logits, target)
 
 with open(f'{RESULTS_DIR}/indices.pkl', 'wb') as f:
     pickle.dump(indices, f, pickle.HIGHEST_PROTOCOL)

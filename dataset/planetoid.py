@@ -5,7 +5,6 @@ from torch.optim import Optimizer
 
 from dataset.constants import root
 from dataset.base import BaseDataset
-from dataset.utils import normalize_features 
 from model import Model
 
 
@@ -14,7 +13,9 @@ class Planetoid(BaseDataset):
     def __init__(self, name: str, task_name: str, device: Device):
 
         dataset = PlanetoidTorch(root=root, name=name, split='full').to(device)
-        
+
+        # don't normalize features since they are indicator variables
+
         self.x = dataset.x
         self.edge_index = dataset.edge_index
         self.y = dataset.y
@@ -22,9 +23,6 @@ class Planetoid(BaseDataset):
         self.train_mask = dataset.train_mask
         self.val_mask = dataset.val_mask
         self.test_mask = dataset.test_mask
-
-        # normalizing the whole graph's features (all nodes because they're available during training)
-        dataset, = normalize_features(dataset)
 
         self.valid_tasks = {'node-c', }
         self.num_features = dataset.num_features

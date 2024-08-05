@@ -18,7 +18,7 @@ class QM9(BaseDataset):
         dataset = dataset.shuffle()
 
         self.train_loader, self.val_loader, self.test_loader = create_loaders(
-            normalize_labels(normalize_features(split_dataset(dataset, Splits.train_split, Splits.val_split, Splits.test_split))),
+            normalize_labels(*normalize_features(*split_dataset(dataset, Splits.train_split, Splits.val_split, Splits.test_split))),
             batch_size=batch_size,
             shuffle=True
         )
