@@ -39,7 +39,7 @@ if dataset.num_classes == 2:
 else:
     nonlinearity = lambda probs: torch.softmax(probs, dim=-1)
     ce_loss = CrossEntropyLoss(reduction='none')
-    mae_loss = lambda logits, target: torch.abs(1 - nonlinearity(logits)[:, target])
+    mae_loss = lambda logits, target: torch.abs(1 - nonlinearity(logits)[torch.arange(target.size(0)), target])
 
 train_ce, train_mae, eval_ce, eval_mae = dict(), dict(), dict(), dict()
 

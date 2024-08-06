@@ -28,9 +28,9 @@ fig, axs = plt.subplots(2, 2, figsize=(12, 8))
 fig.suptitle(f'{DATASET}, L={L}')
 metric_names = ('train_ce', 'train_mae', 'eval_ce', 'eval_mae')
 
-for P in np.round(np.arange(0.0, 0.9, 0.2), decimals=1):
+for P in np.round(np.arange(0.0, 1.0, 0.2), decimals=1):
 
-    # 2nd dim = 8 because we trained a 4-layer GNN, so it can reach nodes at distances from 0 and 4 
+    # 2nd dim = L+1 because we trained a L-layer GNN, so it can reach nodes at distances from 0 and L 
     binned_jac_norms = torch.full((len(indices), L+1), torch.nan)
     for i, idx in enumerate(indices):
         with open(f'{RESULTS_DIR}/i={idx}/shortest_distances.pkl', 'rb') as f:

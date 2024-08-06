@@ -4,10 +4,11 @@ import torch
 from torch_geometric.utils import degree, to_undirected
 
 
-def to_adj_mat(edge_index, assert_connected=True):
+def to_adj_mat(edge_index, num_nodes=None, assert_connected=True):
 
-    edge_index = to_undirected(edge_index)
-    num_nodes = (edge_index.max()+1).item()
+    if num_nodes is None:
+        num_nodes = (edge_index.max()+1).item()
+    edge_index = to_undirected(edge_index, num_nodes=num_nodes)
     A = torch.zeros((num_nodes, num_nodes))
     A[edge_index[0], edge_index[1]] = 1.
 
@@ -50,10 +51,12 @@ def bin_jac_norms(jac_norms, bin_assignments, bins, agg='mean'):
 
     if agg == 'mean':
         aggregator = torch.mean
+    elif agg == 'mean_nz':
+        aggregator = lambda members: torch.mean(members[members!=0.])
     elif agg == 'sum':
         aggregator = torch.sum
     else:
-        raise ValueError(f"Expected `agg` to be one of 'mean' or 'sum'. Instead received '{agg}'.")
+        raise ValueError(f"Expected `agg` to be one of 'mean', 'mean_nz' or 'sum'. Instead received '{agg}'.")
     
     aggregated_jac_norms = list()
     for bin in bins:

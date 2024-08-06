@@ -22,7 +22,6 @@ class ModelPretreatment:
 
         edge_weight = None
         if self.normalize:
-
             if isinstance(edge_index, Tensor):
                 row, col = edge_index
             elif isinstance(edge_index, SparseTensor):
