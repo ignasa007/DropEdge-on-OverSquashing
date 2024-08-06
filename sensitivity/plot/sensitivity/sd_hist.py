@@ -9,7 +9,7 @@ from sensitivity.utils import bin_jac_norms
 
 
 L = 6
-sensitivity_dir = './results/sensitivity/Proteins/L={L}'
+sensitivity_dir = f'./results/sensitivity/Proteins/L={L}'
 agg = 'mean'
 
 Ps = np.arange(0, 1.0, 0.1).round(decimals=1)
@@ -34,10 +34,10 @@ for trained, ax in zip(('untrained', 'trained'), axs):
             with open (f'{i_dir}/shortest_distances.pkl', 'rb') as f:
                 shortest_distances = pickle.load(f)
             x_sd, y_hist = map(lambda x: x.int(), shortest_distances.unique(return_counts=True))
-            y_hist /= y_hist.sum()  # convert counts to ratios
+            y_hist = y_hist.float() / y_hist.sum()  # convert counts to ratios
             x_sd, y_hist = map(lambda x: x[x_sd <= L], (x_sd, y_hist))
 
-            with open(f'{i_dir}/jac-norms/{trained}/p={P}.pkl', 'rb') as f:
+            with open(f'{i_dir}/jac-norms/P={P}/{trained}.pkl', 'rb') as f:
                 jac_norms = pickle.load(f)
             y_sd = bin_jac_norms(jac_norms, shortest_distances, x_sd, agg)  # expectation of jac-norms over bins
             
@@ -62,7 +62,7 @@ for trained, ax in zip(('untrained', 'trained'), axs):
     ax.legend()
 
     twin_ax = ax.twinx()
-    twin_ax.bar(x_sd, mean_bin_sizes[x_sd], color='black', alpha=0.3)
+    twin_ax.bar(x_sd, np.cumsum(mean_bin_sizes[x_sd]), color='black', alpha=0.2)
     twin_ax.set_ylabel('Fraction of Edge Pairs', rotation=270, labelpad=16)
 
 fig.tight_layout()
