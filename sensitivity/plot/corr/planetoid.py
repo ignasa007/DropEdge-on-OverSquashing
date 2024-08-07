@@ -28,7 +28,7 @@ fig, axs = plt.subplots(2, 2, figsize=(12, 8))
 fig.suptitle(f'{DATASET}, L={L}')
 metric_names = ('train_ce', 'train_mae', 'eval_ce', 'eval_mae')
 
-for P in np.round(np.arange(0.0, 1.0, 0.2), decimals=1):
+for P in np.round(np.arange(0.0, 0.5, 0.2), decimals=1):
 
     # 2nd dim = L+1 because we trained a L-layer GNN, so it can reach nodes at distances from 0 and L 
     binned_jac_norms = torch.full((len(indices), L+1), torch.nan)
@@ -53,16 +53,18 @@ for P in np.round(np.arange(0.0, 1.0, 0.2), decimals=1):
             metrics: torch.Tensor = pickle.load(f)
 
         x = np.arange(binned_jac_norms.size(1))
-        y, markers = list(), list()
+        y, std, markers = list(), list(), list()
         for tensor1 in binned_jac_norms.transpose(0, 1):
             tensor1, tensor2 = map(lambda tensor: tensor[~tensor1.isnan()], (tensor1, metrics[P]))
             corr = spearmanr(tensor1, tensor2)
             y.append(corr.statistic)
-            markers.append(corr.pvalue<0.1)
+            std.append(np.tanh(np.arctanh(corr.statistic) + 1.96/np.sqrt(tensor1.size(0))))
+            markers.append(corr.pvalue<0.05)
+        y, std, markers = map(lambda x: np.array(x), (y, std, markers))
 
         p = ax.plot(x, y, label=f'P = {P}')
-        y, markers = map(lambda x: np.array(x), (y, markers))
-        ax.scatter(x[markers], y[markers])
+        ax.fill_between(x, y-std, y+std, color=p[-1].get_color()alpha=0.2)
+        ax.scatter(x[markers], y[markers], color=p[-1].get_color())
         # ax.scatter(x[~markers], y[~markers], facecolors='none', edgecolors=p[-1].get_color())
 
 for ax in axs.flatten():
@@ -70,4 +72,4 @@ for ax in axs.flatten():
     ax.legend()
 
 fig.tight_layout()
-plt.show()
+plt.savefig(f'{DATASET}.png')
