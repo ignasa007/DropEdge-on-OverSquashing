@@ -1,6 +1,7 @@
+import argparse
 import os
 import pickle
-import argparse
+from collections import defaultdict
 from tqdm import tqdm
 
 import torch
@@ -13,7 +14,7 @@ from utils.format import format_dataset_name
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', type=str, choices=['Proteins', 'MUTAG'])
+parser.add_argument('--dataset', type=str, required=True, choices=['Cora', 'CiteSeer', 'Proteins', 'MUTAG'])
 parser.add_argument('--agg', type=str, default='mean', choices=['mean', 'sum'])
 args = parser.parse_args()
 
@@ -28,7 +29,7 @@ metric_names = ('train_ce', 'eval_ce')
 for P_dir in tqdm(os.listdir(models_dir)):
     
     P = float(P_dir.split('=')[1])
-    ys = {metric_name: list() for metric_name in metric_names}
+    ys = defaultdict(list)
     
     for timestamp in os.listdir(f'{models_dir}/P={P}'):
 
@@ -65,21 +66,27 @@ for P_dir in tqdm(os.listdir(models_dir)):
             ys[metric_name].append(y)
 
     for metric_name, ax in zip(metric_names, axs.flatten()):
-
-        mode, error = metric_name.split('_')
-        ax.set_title(f'{mode.capitalize()} {error.upper()}')
-        ax.set_xlabel('Shortest Distance')
-        ax.set_ylabel('Correlation with Mean Sensitivity')
         
+        if not ys[metric_name]:
+            print(f'Skipping {metric_name} for P = {P}')
+            continue
         mean, std = np.mean(ys[metric_name], axis=0), np.std(ys[metric_name], axis=0)
         p = ax.plot(x, mean, label=f'P = {P}')
         ax.fill_between(x, mean-std, mean+std, color=p[-1].get_color(), alpha=0.2)
         # ax.scatter(x[markers], y[markers], color=p[-1].get_color())
         # ax.scatter(x[~markers], y[~markers], facecolors='none', edgecolors=p[-1].get_color())
 
-for ax in axs.flatten():
-    ax.grid()
-    ax.legend()
+for metric_name, ax in zip(metric_names, axs.flatten()):
 
+    mode, error = metric_name.split('_')
+    ax.set_title(f'{mode.capitalize()} {error.upper()}')
+    ax.set_xlabel('Shortest Distance')
+    ax.set_ylabel('Correlation with Mean Sensitivity')
+    ax.grid()
+
+handles, labels = ax.get_legend_handles_labels()
+fig.legend(handles, labels, loc='lower center', ncol=5, bbox_to_anchor = (0, -0.15, 1, 1))
 fig.tight_layout()
-plt.savefig(f'./assets/sensitivity/correlation/{args.dataset}.png')
+fn = f'./assets/correlation/{args.dataset}.png'
+os.makedirs(os.path.dirname(fn), exist_ok=True)
+plt.savefig(fn, bbox_inches='tight')
