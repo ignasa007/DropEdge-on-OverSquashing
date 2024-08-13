@@ -1,7 +1,6 @@
 import argparse
 import os
 import pickle
-from collections import defaultdict
 from tqdm import tqdm
 
 import torch
@@ -48,14 +47,14 @@ for trained, ax in zip(('untrained', 'trained'), axs):
                 with open(f'{jac_norms_dir}/i={idx}/{P_dir}/{timestamp}/{trained}.pkl', 'rb') as f:
                     jac_norms = pickle.load(f)
                 y_sd = bin_jac_norms(jac_norms, shortest_distances, x_sd, args.agg)
-                filter, = torch.where(x_sd<=L)
-                sum_jac_norms[x_sd[filter]] += y_sd[filter]
-                count_jac_norms[x_sd[filter]] += 1
+                mask, = torch.where(x_sd<=L)
+                sum_jac_norms[x_sd[mask]] += y_sd[mask]
+                count_jac_norms[x_sd[mask]] += 1
 
             # average over molecules
             mean_jac_norms.append(sum_jac_norms/count_jac_norms)
 
-        # average over model runs
+        # average over models
         if len(mean_jac_norms) == 0:
             continue
         elif len(mean_jac_norms) == 1:

@@ -23,7 +23,7 @@ def normalize_features(train, *others):
     out += (train,)
 
     if not isinstance(others, (tuple, list)):
-        raise ValueError(f'Expected `others` to be an instance of List or Tuple, but received {type(others)}.')
+        raise TypeError(f'Expected `others` to be an instance of List or Tuple, but received {type(others)}.')
     for other in others:
         other.x = (other.x - mean) / std
         out += (other,)
@@ -41,7 +41,7 @@ def normalize_labels(train, *others):
     out += (train,)
 
     if not isinstance(others, (tuple, list)):
-        raise ValueError(f'Expected `others` to be an instance of List or Tuple, but received {type(others)}.')
+        raise TypeError(f'Expected `others` to be an instance of List or Tuple, but received {type(others)}.')
     for other in others:
         other.y = (other.y - mean) / std
         out += (other,)

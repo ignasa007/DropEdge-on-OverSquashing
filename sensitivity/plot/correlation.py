@@ -45,8 +45,8 @@ for P_dir in tqdm(os.listdir(models_dir)):
             with open(f'{jac_norms_dir}/i={idx}/P={P}/{timestamp}/trained.pkl', 'rb') as f:
                 jac_norms = pickle.load(f)
             y_sd = bin_jac_norms(jac_norms, shortest_distances, x_sd, args.agg)
-            filter, = torch.where(x_sd<=L)
-            binned_jac_norms[i, x_sd[filter]] = y_sd[filter]
+            mask, = torch.where(x_sd<=L)
+            binned_jac_norms[i, x_sd[mask]] = y_sd[mask]
 
         for metric_name in metric_names:
 
@@ -87,6 +87,6 @@ for metric_name, ax in zip(metric_names, axs.flatten()):
 handles, labels = ax.get_legend_handles_labels()
 fig.legend(handles, labels, loc='lower center', ncol=5, bbox_to_anchor = (0, -0.15, 1, 1))
 fig.tight_layout()
-fn = f'./assets/correlation/{args.dataset}.png'
+fn = f'./assets/correlation/Cross Entropy/{args.dataset}.png'
 os.makedirs(os.path.dirname(fn), exist_ok=True)
 plt.savefig(fn, bbox_inches='tight')

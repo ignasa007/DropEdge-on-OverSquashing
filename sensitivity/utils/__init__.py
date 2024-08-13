@@ -23,6 +23,7 @@ def compute_commute_times(edge_index, P=0.):
     edge_index = edge_index.type(torch.int64)
     A = to_adj_mat(edge_index, assert_connected=True)
     degrees = degree(edge_index[0], num_nodes=edge_index.max()+1)
+    print(A); print(degrees)
 
     L = torch.diag(degrees) - A
     L_pinv = torch.linalg.pinv(L)
