@@ -19,11 +19,9 @@ L = 6
 models_dir = f'./results/sensitivity/model-store/{format_dataset_name[args.dataset.lower()]}'
 jac_norms_dir = f'./results/sensitivity/jac-norms-store/{format_dataset_name[args.dataset.lower()]}'
 
-fig, axs = plt.subplots(2, 1, figsize=(12, 8))
+for trained in ('untrained', 'trained'):
 
-for trained, ax in zip(('untrained', 'trained'), axs):
-    
-    ax.set_title(f'{trained.capitalize()} Models')
+    fig, ax = plt.subplots(1, 1, figsize=(12, 8))
 
     for P_dir in tqdm(os.listdir(models_dir)):
 
@@ -38,8 +36,6 @@ for trained, ax in zip(('untrained', 'trained'), axs):
             with open(f'{models_dir}/{P_dir}/{timestamp}/indices.pkl', 'rb') as f:
                 indices = pickle.load(f)
 
-            # 2nd dim = L+1 because we trained a L-layer GNN, so it can reach nodes at distances from 0 and L 
-            binned_jac_norms = torch.full((len(indices), L+1), torch.nan)
             for i, idx in enumerate(indices):
                 with open(f'{jac_norms_dir}/i={idx}/shortest_distances.pkl', 'rb') as f:
                     shortest_distances = pickle.load(f)
@@ -65,14 +61,15 @@ for trained, ax in zip(('untrained', 'trained'), axs):
         p = ax.plot(x, mean, label=f'P = {P}')
         ax.fill_between(x, mean-std, mean+std, alpha=0.2)
 
+    ax.set_xlabel('Shortest Distances')
     ax.set_ylabel('Mean Sensitivity')
     ax.set_yscale('log')
     ax.grid()
 
-ax.set_xlabel('Shortest Distances')
-handles, labels = ax.get_legend_handles_labels()
-fig.legend(handles, labels, loc='lower center', ncol=5, bbox_to_anchor = (0, -0.07, 1, 1))
-fig.tight_layout()
-fn = f'./assets/sensitivity/shortest-distance/{args.dataset}.png'
-os.makedirs(os.path.dirname(fn), exist_ok=True)
-plt.savefig(fn, bbox_inches='tight')
+    handles, labels = ax.get_legend_handles_labels()
+    fig.legend(handles, labels, loc='lower center', ncol=5, bbox_to_anchor = (0, -0.07, 1, 1))
+    fig.tight_layout()
+
+    fn = f'./assets/sensitivity/shortest-distance/{args.dataset}/{trained}.png'
+    os.makedirs(os.path.dirname(fn), exist_ok=True)
+    plt.savefig(fn, bbox_inches='tight')

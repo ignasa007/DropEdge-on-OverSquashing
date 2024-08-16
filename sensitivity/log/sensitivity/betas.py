@@ -4,7 +4,7 @@ from torch_geometric.utils import degree
 from scipy.sparse.csgraph import connected_components
 
 
-dataset = TUDataset(root='./data', name='Proteins', use_node_attr=True)
+dataset = TUDataset(root='./data/TUDataset', name='Proteins', use_node_attr=True)
 betas_store = list()
 
 for molecule in dataset:

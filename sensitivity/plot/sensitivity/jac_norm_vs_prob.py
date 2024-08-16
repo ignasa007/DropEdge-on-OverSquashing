@@ -42,8 +42,6 @@ for trained, ax in zip(('untrained', 'trained'), axs):
             with open(f'{models_dir}/{P_dir}/{timestamp}/indices.pkl', 'rb') as f:
                 indices = pickle.load(f)
 
-            # 2nd dim = L+1 because we trained a L-layer GNN, so it can reach nodes at distances from 0 and L 
-            binned_jac_norms = torch.full((len(indices), L+1), torch.nan)
             for i, idx in enumerate(indices):
                 with open(f'{jac_norms_dir}/i={idx}/shortest_distances.pkl', 'rb') as f:
                     shortest_distances = pickle.load(f)

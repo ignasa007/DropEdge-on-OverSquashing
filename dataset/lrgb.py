@@ -9,9 +9,6 @@ from dataset.utils import normalize_features, create_loaders
 from model import Model
 
 
-batch_size = 20     # TODO: tunable
-
-
 class LRGBDataset(BaseDataset):
 
     def __init__(self, name: str, task_name: str, device: Device):
@@ -21,8 +18,11 @@ class LRGBDataset(BaseDataset):
             for split in ('train', 'val', 'test')
         )
 
+        sizes = 1500, 250, 250
+        batch_size = 20 
+
         self.train_loader, self.val_loader, self.test_loader = create_loaders(
-            normalize_features(train, val, test),
+            tuple(map(lambda enum: enum[1][:sizes[enum[0]]], enumerate(normalize_features(train, val, test)))),
             batch_size=batch_size,
             shuffle=True
         )

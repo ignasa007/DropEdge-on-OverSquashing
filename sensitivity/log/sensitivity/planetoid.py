@@ -23,9 +23,10 @@ models_dir = f'./results/sensitivity/model-store/{format_dataset_name[args.datas
 jac_norms_dir = f'./results/sensitivity/jac-norms-store/{format_dataset_name[args.dataset.lower()]}'
 os.makedirs(jac_norms_dir, exist_ok=True)
 
-dataset = Planetoid(root='./data', name=format_dataset_name[args.dataset.lower()], split='full')
+dataset = Planetoid(root='./data/Planetoid', name=format_dataset_name[args.dataset.lower()], split='full')
 num_nodes = dataset.x.size(0)
 A = to_scipy_sparse_matrix(dataset.edge_index)
+commute_times = compute_commute_times(dataset.edge_index, assert_connected=False)
 
 # sample nodes from the largest component
 assignments = connected_components(A, return_labels=True)[1]
@@ -48,6 +49,8 @@ for i in sample:
     os.makedirs(i_dir, exist_ok=True)
     with open(f'{i_dir}/shortest_distances.pkl', 'wb') as f:
         pickle.dump(shortest_distances[subset], f, protocol=pickle.HIGHEST_PROTOCOL)
+    with open(f'{i_dir}/commute_times.pkl', 'wb') as f:
+        pickle.dump(commute_times[i, subset], f, protocol=pickle.HIGHEST_PROTOCOL)
 
     edge_index, _ = subgraph(subset, dataset.edge_index, relabel_nodes=True, num_nodes=dataset.x.size(0))
     # checked implementation and relabelling is such that subset[i] is relabelled as i

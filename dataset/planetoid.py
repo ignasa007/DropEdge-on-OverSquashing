@@ -12,7 +12,7 @@ class Planetoid(BaseDataset):
 
     def __init__(self, name: str, task_name: str, device: Device):
 
-        dataset = PlanetoidTorch(root=root, name=name, split='full').to(device)
+        dataset = PlanetoidTorch(root=f'{root}/Planetoid', name=name, split='full').to(device)
 
         # don't normalize features since they are indicator variables
 

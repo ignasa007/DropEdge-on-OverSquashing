@@ -4,13 +4,14 @@ import torch
 from torch_geometric.utils import degree, to_undirected
 
 
-def to_adj_mat(edge_index, num_nodes=None, assert_connected=True):
+def to_adj_mat(edge_index, num_nodes=None, undirected=True, assert_connected=True):
 
     if num_nodes is None:
         num_nodes = (edge_index.max()+1).item()
-    edge_index = to_undirected(edge_index, num_nodes=num_nodes)
+    if undirected:
+        edge_index = to_undirected(edge_index, num_nodes=num_nodes)
     A = torch.zeros((num_nodes, num_nodes))
-    A[edge_index[0], edge_index[1]] = 1.
+    A[edge_index[1], edge_index[0]] = 1.
 
     if assert_connected:
         assert connected_components(A, directed=False, return_labels=False) == 1
@@ -18,12 +19,11 @@ def to_adj_mat(edge_index, num_nodes=None, assert_connected=True):
     return A
 
 
-def compute_commute_times(edge_index, P=0.):
+def compute_commute_times(edge_index, P=0., assert_connected=True):
 
     edge_index = edge_index.type(torch.int64)
-    A = to_adj_mat(edge_index, assert_connected=True)
+    A = to_adj_mat(edge_index, assert_connected=assert_connected)
     degrees = degree(edge_index[0], num_nodes=edge_index.max()+1)
-    print(A); print(degrees)
 
     L = torch.diag(degrees) - A
     L_pinv = torch.linalg.pinv(L)

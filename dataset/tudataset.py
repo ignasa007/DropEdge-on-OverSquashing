@@ -13,7 +13,7 @@ class TUDataset(BaseDataset):
 
     def __init__(self, name: str, task_name: str, device: Device):
 
-        dataset = TUDatasetTorch(root=root, name=name, use_node_attr=True).to(device)
+        dataset = TUDatasetTorch(root=f'{root}/TUDataset', name=name, use_node_attr=True).to(device)
         dataset = dataset.shuffle()
 
         self.train_loader, self.val_loader, self.test_loader = create_loaders(

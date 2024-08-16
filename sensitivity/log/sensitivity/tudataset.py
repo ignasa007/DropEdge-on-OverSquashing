@@ -23,7 +23,7 @@ models_dir = f'./results/sensitivity/model-store/{format_dataset_name[args.datas
 jac_norms_dir = f'./results/sensitivity/jac-norms-store/{format_dataset_name[args.dataset.lower()]}'
 os.makedirs(jac_norms_dir, exist_ok=True)
 
-dataset = TUDataset(root='./data', name=args.dataset, use_node_attr=True)
+dataset = TUDataset(root='./data/TUDataset', name=args.dataset, use_node_attr=True)
 dataset, = normalize_features(dataset)
 num_nodes = np.array([molecule.num_nodes for molecule in dataset])
 
@@ -39,6 +39,7 @@ for _ in range(NODE_SAMPLES):
         i = logged_indices.pop()
         molecule = dataset[i]
         shortest_distances = compute_shortest_distances(molecule.edge_index).flatten()
+        commute_times = compute_commute_times(molecule.edge_index).flatten()
     else:
         while True:
             i = np.random.choice(options)
@@ -47,6 +48,7 @@ for _ in range(NODE_SAMPLES):
             molecule = dataset[i]
             try:
                 shortest_distances = compute_shortest_distances(molecule.edge_index).flatten()
+                commute_times = compute_commute_times(molecule.edge_index).flatten()
             except AssertionError:
                 continue
             options.remove(i)
@@ -57,6 +59,8 @@ for _ in range(NODE_SAMPLES):
     os.makedirs(i_dir, exist_ok=True)
     with open(f'{i_dir}/shortest_distances.pkl', 'wb') as f:
         pickle.dump(shortest_distances, f, protocol=pickle.HIGHEST_PROTOCOL)
+    with open(f'{i_dir}/commute_times.pkl', 'wb') as f:
+        pickle.dump(commute_times, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     for P_dir in tqdm(os.listdir(models_dir)):
         P = float(P_dir.split('=')[1])

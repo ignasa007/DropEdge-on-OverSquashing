@@ -13,7 +13,7 @@ if not hasattr(axs, '__len__'): axs = (axs,)
 
 for dataset_name, ax in zip(datasets, axs):
 
-    dataset = TUDataset(root='./data', name=dataset_name.upper(), use_node_attr=True)
+    dataset = TUDataset(root='./data/TUDataset', name=dataset_name.upper(), use_node_attr=True)
     ratios = defaultdict(list)
 
     for molecule in dataset:
@@ -45,4 +45,4 @@ for dataset_name, ax in zip(datasets, axs):
     ax.legend()
 
 fig.tight_layout()
-plt.savefig('assets/commute-times/beta_dist.png')
+plt.savefig('assets/commute-times/beta-dist.png')

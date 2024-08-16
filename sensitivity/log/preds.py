@@ -24,7 +24,7 @@ if args.dataset in ('Cora', 'CiteSeer'):
     
     from torch_geometric.datasets import Planetoid
     
-    dataset = Planetoid(root='./data', name=format_dataset_name[args.dataset.lower()], split='full')
+    dataset = Planetoid(root='./data/Planetoid', name=format_dataset_name[args.dataset.lower()], split='full')
     indices = [int(i_dir.split('=')[1]) for i_dir in os.listdir(jac_norms_dir)]
     
     input = dataset
@@ -37,7 +37,7 @@ elif args.dataset in ('Proteins', 'MUTAG'):
     from dataset.utils import normalize_features
     from torch_geometric.loader.dataloader import Collater
 
-    dataset = TUDataset(root='./data', name=format_dataset_name[args.dataset.lower()], use_node_attr=True)
+    dataset = TUDataset(root='./data/TUDataset', name=format_dataset_name[args.dataset.lower()], use_node_attr=True)
     dataset, = normalize_features(dataset)
     indices = [int(i_dir.split('=')[1]) for i_dir in os.listdir(jac_norms_dir)]
 
