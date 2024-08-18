@@ -1,7 +1,9 @@
 import os
 import shutil
 
-assets_dir = './sensitivity/model-store'
+##########
+
+# assets_dir = './sensitivity/model-store'
 
 # for dataset in os.listdir(assets_dir):
 #     dataset_dir = f'{assets_dir}/{dataset}'
@@ -9,6 +11,10 @@ assets_dir = './sensitivity/model-store'
 #         fn = f'{dataset_dir}/{fn}'
 #         if os.path.isfile(fn):
 #             os.remove(fn)
+
+##########
+
+# assets_dir = './sensitivity/model-store'
 
 # for dataset in os.listdir(assets_dir):
 #     dataset_dir = f'{assets_dir}/{dataset}'
@@ -22,14 +28,13 @@ assets_dir = './sensitivity/model-store'
 #                     shutil.rmtree(dst)
 #                 os.rename(src, dst)
 
-import os
-import shutil
+##########
 
 dirs = os.listdir('.')
 
 for dir in dirs:
 
-    if dir == '__pycache__':
+    if dir in ('__pycache__', 'overleaf'):
         continue
 
     src_names = [
@@ -50,3 +55,28 @@ for dir in dirs:
             os.remove(dst_name)
         os.makedirs(os.path.dirname(dst_name), exist_ok=True)
         shutil.copy2(src_name, dst_name)
+
+##########
+
+# dirs = os.listdir('.')
+
+# for dir in dirs:
+
+#     if dir in ('__pycache__', 'overleaf'):
+#         continue
+
+#     src_names = [
+#         f'{dirpath}/{d}'.replace('\\', '/')
+#         for (dirpath, dirnames, _) in os.walk(dir) 
+#         for d in dirnames
+#     ]
+
+#     dst_names = [
+#         d.replace('accuracy', 'Accuracy').replace('f1-score', 'F1 Score').replace('cross-entropy-loss', 'Cross Entropy Loss')
+#         for d in src_names
+#     ]
+
+#     for src_name, dst_name in zip(src_names, dst_names):
+        
+#         if src_name != dst_name:
+#             os.rename(src_name, dst_name)
