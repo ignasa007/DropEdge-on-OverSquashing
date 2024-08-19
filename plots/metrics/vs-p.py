@@ -55,7 +55,7 @@ gap_metrics = {exp: (np.mean(samples), np.std(samples)) for exp, samples in gap_
 
 ### PLOT FOR TRAIN SET ###
 
-fig, axs = plt.subplots(1, len(args.gnns), figsize=(6*len(args.gnns), 4))
+fig, axs = plt.subplots(1, len(args.gnns), figsize=(6.4*len(args.gnns), 4.8))
 if not hasattr(axs, '__len__'): axs = (axs,)
 
 for gnn, ax in zip(args.gnns, axs):
@@ -81,7 +81,7 @@ plt.savefig(fn, bbox_inches='tight')
 
 ### PLOT FOR TEST SET ###
 
-fig, axs = plt.subplots(1, len(args.gnns), figsize=(6*len(args.gnns), 4))
+fig, axs = plt.subplots(1, len(args.gnns), figsize=(6.4*len(args.gnns), 4.8))
 if not hasattr(axs, '__len__'): axs = (axs,)
 
 for gnn, ax in zip(args.gnns, axs):
@@ -107,7 +107,7 @@ plt.savefig(fn, bbox_inches='tight')
 
 ### PLOT FOR GEN GAP ###
 
-fig, axs = plt.subplots(1, len(args.gnns), figsize=(6*len(args.gnns), 4))
+fig, axs = plt.subplots(1, len(args.gnns), figsize=(6.4*len(args.gnns), 4.8))
 if not hasattr(axs, '__len__'): axs = (axs,)
 
 for gnn, ax in zip(args.gnns, axs):

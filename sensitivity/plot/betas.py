@@ -2,7 +2,7 @@ import torch
 import matplotlib.pyplot as plt
 
 
-fig, (axs_bar, axs_plot, axs_violin) = plt.subplots(1, 3, figsize=(18, 4))
+fig, (axs_bar, axs_plot, axs_violin) = plt.subplots(1, 3, figsize=(18, 4.8))
 
 betas_store = torch.load('./results/betas_store.pkl').transpose(0, 1)
 indices = torch.arange(0, betas_store.size(0), 2)

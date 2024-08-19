@@ -22,7 +22,7 @@ L = 6
 models_dir = f'./results/sensitivity/model-store/{format_dataset_name[args.dataset.lower()]}'
 jac_norms_dir = f'./results/sensitivity/jac-norms-store/{format_dataset_name[args.dataset.lower()]}'
 
-fig, axs = plt.subplots(1, 2, figsize=(12, 4))
+fig, axs = plt.subplots(1, 2, figsize=(12, 4.8))
 fig.suptitle(f'{args.dataset}, L={L}')
 metric_names = ('train_ce', 'eval_ce')
 

@@ -25,7 +25,7 @@ def main(args):
 
     args.dataset = args.dataset.split('_')[0]
 
-    with open(f"./results/signal-propagation/{args.vs}/{args.dataset}.pkl", 'rb') as f:
+    with open(f'./results/signal-propagation/{args.vs}/{args.dataset}.pkl', 'rb') as f:
         pairs = pickle.load(f)
 
     Ps = np.arange(0.0, 1.0, 0.1)

@@ -23,7 +23,7 @@ jac_norms_dir = f'./results/sensitivity/jac-norms-store/{args.dataset}'
 
 for trained in ('untrained', 'trained'):
 
-    fig, ax = plt.subplots(1, 1, figsize=(6, 4))
+    fig, ax = plt.subplots(1, 1, figsize=(6, 4.8))
     xlim = 0
 
     for P_dir in tqdm(os.listdir(models_dir)):
