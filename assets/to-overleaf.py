@@ -30,9 +30,13 @@ import shutil
 
 ##########
 
-dirs = os.listdir('.')
+import argparse
 
-for dir in dirs:
+parser = argparse.ArgumentParser()
+parser.add_argument('--dirs', nargs='+', type=str, required=True)
+args = parser.parse_args()
+
+for dir in args.dirs:
 
     if dir in ('__pycache__', 'overleaf'):
         continue

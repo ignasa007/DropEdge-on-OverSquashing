@@ -6,9 +6,9 @@ from torch_geometric.utils import to_scipy_sparse_matrix, to_undirected, degree
 from scipy.sparse.csgraph import connected_components
 import matplotlib.pyplot as plt
 
-datasets = ('Proteins',)     # 'MUTAG')
+datasets = ('Proteins', 'MUTAG') # , 'PTC_MR')
 Ps = (0.2, 0.4, 0.6, 0.8)
-fig, axs = plt.subplots(1, len(datasets), figsize=(6*len(datasets), 4))
+fig, axs = plt.subplots(1, len(datasets), figsize=(6.4*len(datasets), 4.8), sharey=True)
 if not hasattr(axs, '__len__'): axs = (axs,)
 
 for dataset_name, ax in zip(datasets, axs):
@@ -37,9 +37,9 @@ for dataset_name, ax in zip(datasets, axs):
         bin_mids = (bin_edges[:-1] + bin_edges[1:]) / 2
         ax.bar(bin_mids, counts/len(ratio), width=bin_edges.diff(), label=f'P = {P}', alpha=0.8)
 
-    ax.set_title(dataset_name, fontsize=14)
-    ax.set_xlabel(r'$\beta_p/\beta_0$', fontsize=12)
-    ax.set_ylabel('Proportion of Graphs', fontsize=12)
+    ax.set_title(dataset_name.split('_')[0], fontsize=16)
+    ax.set_xlabel(r'$\beta_p/\beta_0$', fontsize=14)
+    axs[0].set_ylabel('Proportion of Graphs', fontsize=14)
 
     ax.grid()
     ax.legend()

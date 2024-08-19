@@ -66,8 +66,8 @@ for gnn, ax in zip(args.gnns, axs):
             means.append(mean); lower.append(mean-std); upper.append(mean+std)
         ax.plot(ps, means, label=f'L = {depth}')
         # ax.fill_between(ps, lower, upper, alpha=0.2)
-    ax.set_xlabel('DropEdge Probability', fontsize=12)
-    ax.set_ylabel(f'Training {args.metric}', fontsize=12)
+    ax.set_xlabel('DropEdge Probability', fontsize=14)
+    ax.set_ylabel(f'Training {args.metric}', fontsize=14)
     ax.set_title(gnn, fontsize=14)
     ax.grid()
 
@@ -92,8 +92,8 @@ for gnn, ax in zip(args.gnns, axs):
             means.append(mean); lower.append(mean-std); upper.append(mean+std)
         ax.plot(ps, means, label=f'L = {depth}')
         # ax.fill_between(ps, lower, upper, alpha=0.2)
-    ax.set_xlabel('DropEdge Probability', fontsize=12)
-    ax.set_ylabel(f'Testing {args.metric}', fontsize=12)
+    ax.set_xlabel('DropEdge Probability', fontsize=14)
+    ax.set_ylabel(f'Testing {args.metric}', fontsize=14)
     ax.set_title(gnn, fontsize=14)
     ax.grid()
 
@@ -118,8 +118,8 @@ for gnn, ax in zip(args.gnns, axs):
             means.append(mean); lower.append(mean-std); upper.append(mean+std)
         ax.plot(ps, means, label=f'L = {depth}')
         # ax.fill_between(ps, lower, upper, alpha=0.2)
-    ax.set_xlabel('DropEdge Probability', fontsize=12)
-    ax.set_ylabel(f'Generalization Gap in {args.metric}', fontsize=12)
+    ax.set_xlabel('DropEdge Probability', fontsize=14)
+    ax.set_ylabel(f'Generalization Gap in {args.metric}', fontsize=14)
     ax.set_title(gnn, fontsize=14)
     ax.grid()
 

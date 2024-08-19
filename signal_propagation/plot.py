@@ -25,7 +25,7 @@ def main(args):
 
     args.dataset = args.dataset.split('_')[0]
 
-    with open(f'./results/signal-propagation/{args.dataset}.pkl', 'rb') as f:
+    with open(f"./results/signal-propagation/{args.vs}/{args.dataset}.pkl", 'rb') as f:
         pairs = pickle.load(f)
 
     Ps = np.arange(0.0, 1.0, 0.1)
@@ -38,21 +38,23 @@ def main(args):
         data = (data - data.min(axis=1, keepdims=True)) / (data.max(axis=1, keepdims=True) - data.min(axis=1, keepdims=True))
         smooth_plot(*data, ax=ax, label=f'P={P:.1f}', halflife=args.halflife)
 
-    ax.set_xlabel('Effective Resistance', fontsize=12)
-    ax.set_ylabel('Signal Propagation', fontsize=12)
-    ax.set_title(args.dataset, fontsize=14)
+    ax.set_xlabel(args.vs, fontsize=14)
+    ax.set_ylabel('Signal Propagation', fontsize=14)
+    ax.set_title(args.dataset, fontsize=16)
     ax.grid()
     ax.legend()
 
-    fn = f'assets/signal-propagation/{args.dataset}.png'
+    fig.tight_layout()
+
+    fn = f'assets/signal-propagation/{args.vs}/{args.dataset}.png'
     os.makedirs(os.path.dirname(fn), exist_ok=True)
     plt.savefig(fn)
-    plt.show()
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--dataset', type=str, choices=['Proteins', 'MUTAG', 'PTC_MR'])
+    parser.add_argument('--dataset', type=str, required=True, choices=['Proteins', 'MUTAG', 'PTC_MR'])
+    parser.add_argument('--vs', type=str, required=True, choices=['Total Resistance', 'Commute Time'])
     parser.add_argument('--halflife', type=int, default=20)
     args = parser.parse_args()
     

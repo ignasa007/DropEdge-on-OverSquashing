@@ -69,8 +69,8 @@ for p in ps:
     ax.plot(x, y, label=f'P = {p:.1f}')
 
 ax.set_yscale('log')
-ax.set_xlabel('Shortest Distance', fontsize=12)
-ax.set_ylabel(rf'$\left(\mathbb{{E}}\left[\hat{{A}}^{{asym}}\right]^{{{L}}}\right)_{{ij}}$', fontsize=12)
+ax.set_xlabel('Shortest Distance', fontsize=14)
+ax.set_ylabel(rf'$\left(\mathbb{{E}}\left[\hat{{A}}^{{asym}}\right]^{{{L}}}\right)_{{ij}}$', fontsize=14)
 ax.set_title(args.dataset, fontsize=14)
 ax.grid()
 

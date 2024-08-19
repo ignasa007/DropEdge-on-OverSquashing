@@ -77,8 +77,8 @@ for trained in ('untrained', 'trained'):
 
     ax.set_xlim(xmax=min(600, xlim))
     ax.set_ylim(ymin=1e-6)
-    ax.set_xlabel('Commute Times', fontsize=12)
-    ax.set_ylabel('Mean Sensitivity', fontsize=12)
+    ax.set_xlabel('Commute Times', fontsize=14)
+    ax.set_ylabel('Mean Sensitivity', fontsize=14)
     ax.set_title(args.dataset, fontsize=14)
     ax.set_yscale('log')
     ax.grid()
