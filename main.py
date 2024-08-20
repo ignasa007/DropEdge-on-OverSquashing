@@ -10,7 +10,7 @@ from utils.logger import Logger
 from utils.format import *
 
 
-config = parse_arguments(return_unknown=False)
+config, others = parse_arguments(return_unknown=True)
 DEVICE = torch.device(f'cuda:{config.device_index}' if torch.cuda.is_available() and config.device_index is not None else 'cpu')
 
 dataset: BaseDataset = get_dataset(config.dataset, config.task, DEVICE)
@@ -20,7 +20,7 @@ config.output_dim = dataset.output_dim
 model = Model(config).to(device=DEVICE)
 optimizer = Adam(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
 
-logger = Logger(config)
+logger = Logger(config, others)
 
 
 format_epoch = FormatEpoch(config.n_epochs)

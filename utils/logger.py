@@ -2,7 +2,7 @@ import os
 from argparse import Namespace
 from datetime import datetime
 import pickle
-from typing import List, Tuple
+from typing import Union, List, Tuple
 
 import numpy as np
 import torch
@@ -14,7 +14,7 @@ def get_time():
 
 class Logger:
 
-    def __init__(self, config: Namespace):
+    def __init__(self, config: Namespace, others: Union[Namespace, None] = None):
 
         '''
         Initialize the logging directory:
@@ -25,7 +25,7 @@ class Logger:
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/synthetic/{config.dataset}/{config.gnn}/L={len(config.gnn_layer_sizes)}/P={config.drop_p:.1f}/{get_time()}'; os.makedirs(self.exp_dir)
+        self.exp_dir = f'./results/zinc-synthetic/{config.gnn}/L={len(config.gnn_layer_sizes)}/P={config.drop_p:.1f}/alpha={others.alpha}/{get_time()}'; os.makedirs(self.exp_dir)
         self.log(''.join(f'{k} = {v}\n' for k, v in vars(config).items()), with_time=False)
         with open(f'{self.exp_dir}/config.pkl', 'wb') as f:
             pickle.dump(config, f, protocol=pickle.HIGHEST_PROTOCOL)
