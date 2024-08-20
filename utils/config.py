@@ -16,13 +16,13 @@ def layer_sizes(args):
     return out
 
 
-def parse_arguments():
+def parse_arguments(return_unknown=False):
 
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--dataset', type=str, required=True,
-        help='The dataset to be trained on: [Cora, CiteSeer, PubMed, QM9].'
+        '--dataset', type=str, required=True, choices=['Cora', 'CiteSeer', 'PubMed', 'Proteins', 'MUTAG', 'PTC', 'QM9', 'ZINC', 'Pascal'],
+        help='The dataset to be trained on.'
     )
     parser.add_argument(
         '--add_self_loops', type=bool, default=True,
@@ -34,8 +34,8 @@ def parse_arguments():
     )
 
     parser.add_argument(
-        '--gnn', type=str, required=True,
-        help='The backbone model: [GCN, GAT, APPNP, ].'
+        '--gnn', type=str, required=True, choices=['GCN', 'GAT', 'APPNP'],
+        help='The backbone model.'
     )
     parser.add_argument(
         '--gnn_layer_sizes', type=str, nargs='+', default=[16, 16],
@@ -54,26 +54,26 @@ def parse_arguments():
         help='Teleport probability to use (when GNN is APPNP).'
     )
     parser.add_argument(
-        '--gnn_activation', type=str, default='ReLU',
-        help='The non-linearity to use for message-passing: [Identity, ReLU, ELU, GeLU, Sigmoid, Tanh].'
+        '--gnn_activation', type=str, default='ReLU', choices=['Identity', 'ReLU', 'ELU', 'GeLU', 'Sigmoid', 'Tanh'],
+        help='The non-linearity to use for message-passing.'
     )
 
     parser.add_argument(
-        '--task', type=str, required=True,
-        help='The task to perform with the chosen dataset: [Node-C, Graph-C, Graph-R].'
+        '--task', type=str, required=True, choices=['Node-C', 'Graph-C', 'Graph-R'],
+        help='The task to perform with the chosen dataset.'
     )
     parser.add_argument(
         '--ffn_layer_sizes', type=str, nargs='*', default=[],
         help="Hidden layers' sizes for the readout FFN."
     )
     parser.add_argument(
-        '--ffn_activation', type=str, default='ReLU',
-        help='The non-linearity to use for readout: [Identity, ReLU, ELU, GeLU, Sigmoid, Tanh].'
+        '--ffn_activation', type=str, default='ReLU', choices=['Identity', 'ReLU', 'ELU', 'GeLU', 'Sigmoid', 'Tanh'],
+        help='The non-linearity to use for readout.'
     )
 
     parser.add_argument(
-        '--dropout', type=str, required=True,
-        help='The dropping method [Dropout, Drop-Edge, Drop-Node, Drop-Message, Drop-GNN].'
+        '--dropout', type=str, required=True, choices=['Dropout', 'DropEdge', 'DropNode', 'DropMessage', 'DropGNN'],
+        help='The dropping method.'
     )
     parser.add_argument(
         '--drop_p', type=float, default=0.5,
@@ -108,8 +108,17 @@ def parse_arguments():
             '\tSpecial cases: skip to never save and -1 to save at the last epoch.'
     )
 
-    config = parser.parse_args()
+    config, others = parser.parse_known_args()
     config.gnn_layer_sizes = layer_sizes(config.gnn_layer_sizes)
     config.ffn_layer_sizes = layer_sizes(config.ffn_layer_sizes)
 
-    return config
+    if not return_unknown:
+        return config
+
+    other_args = argparse.Namespace()
+    for i in range(0, len(others), 2):
+        key = others[i].lstrip('--')
+        value = others[i+1]
+        setattr(other_args, key, value)
+    
+    return config, other_args

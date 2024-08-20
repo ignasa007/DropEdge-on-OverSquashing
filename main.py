@@ -10,7 +10,7 @@ from utils.logger import Logger
 from utils.format import *
 
 
-config = parse_arguments()
+config = parse_arguments(return_unknown=False)
 DEVICE = torch.device(f'cuda:{config.device_index}' if torch.cuda.is_available() and config.device_index is not None else 'cpu')
 
 dataset: BaseDataset = get_dataset(config.dataset, config.task, DEVICE)

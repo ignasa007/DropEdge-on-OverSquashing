@@ -1,5 +1,5 @@
 from torch import Tensor
-from torch_geometric.nn import global_mean_pool
+from torch_geometric.nn import global_mean_pool, global_max_pool
 from model.readout.base import BaseHead
 
 
@@ -16,4 +16,5 @@ class GraphRegression(BaseHead):
             mask: tensor {0, ..., B-1}^N of shape (N,) assigning each node to a graph
         '''
 
-        return global_mean_pool(x=node_repr, batch=mask)
+        # return global_mean_pool(x=node_repr, batch=mask)
+        return global_max_pool(x=node_repr, batch=mask)
