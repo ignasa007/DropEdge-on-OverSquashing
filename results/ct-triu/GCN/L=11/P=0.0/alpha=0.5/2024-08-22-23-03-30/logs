@@ -1,0 +1,823 @@
+dataset = ZINC
+add_self_loops = True
+normalize = True
+gnn = GCN
+gnn_layer_sizes = [8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+attention_heads = None
+power_iter = None
+teleport_p = None
+gnn_activation = ReLU
+task = Graph-R
+ffn_layer_sizes = []
+ffn_activation = ReLU
+dropout = DropEdge
+drop_p = 0.0
+n_epochs = 250
+learning_rate = 0.002
+weight_decay = 0.0001
+device_index = None
+test_every = 10
+save_every = None
+input_dim = 1
+output_dim = 1
+
+2024-08-22-23-03-30: Epoch 001
+	Training:   Mean Squared Error = 1.551583e-01, Mean Absolute Error = 2.895207e-01, Mean Absolute Percentage Error = 5.063047e-01
+
+2024-08-22-23-03-33: Epoch 002
+	Training:   Mean Squared Error = 2.894181e-02, Mean Absolute Error = 1.323116e-01, Mean Absolute Percentage Error = 3.098128e-01
+
+2024-08-22-23-03-36: Epoch 003
+	Training:   Mean Squared Error = 1.030897e-02, Mean Absolute Error = 8.091936e-02, Mean Absolute Percentage Error = 1.641463e-01
+
+2024-08-22-23-03-39: Epoch 004
+	Training:   Mean Squared Error = 7.145418e-03, Mean Absolute Error = 6.792817e-02, Mean Absolute Percentage Error = 1.229848e-01
+
+2024-08-22-23-03-42: Epoch 005
+	Training:   Mean Squared Error = 6.524736e-03, Mean Absolute Error = 6.472595e-02, Mean Absolute Percentage Error = 1.155426e-01
+
+2024-08-22-23-03-45: Epoch 006
+	Training:   Mean Squared Error = 6.360485e-03, Mean Absolute Error = 6.391004e-02, Mean Absolute Percentage Error = 1.131971e-01
+
+2024-08-22-23-03-47: Epoch 007
+	Training:   Mean Squared Error = 6.329480e-03, Mean Absolute Error = 6.363133e-02, Mean Absolute Percentage Error = 1.135162e-01
+
+2024-08-22-23-03-50: Epoch 008
+	Training:   Mean Squared Error = 6.263485e-03, Mean Absolute Error = 6.339243e-02, Mean Absolute Percentage Error = 1.123712e-01
+
+2024-08-22-23-03-53: Epoch 009
+	Training:   Mean Squared Error = 6.242337e-03, Mean Absolute Error = 6.327325e-02, Mean Absolute Percentage Error = 1.125394e-01
+
+2024-08-22-23-03-56: Epoch 010
+	Training:   Mean Squared Error = 6.278296e-03, Mean Absolute Error = 6.338037e-02, Mean Absolute Percentage Error = 1.123822e-01
+	Validation: Mean Squared Error = 6.332183e-03, Mean Absolute Error = 6.245693e-02, Mean Absolute Percentage Error = 1.144420e-01
+	Testing:    Mean Squared Error = 6.332001e-03, Mean Absolute Error = 6.144338e-02, Mean Absolute Percentage Error = 1.195570e-01
+
+2024-08-22-23-04-00: Epoch 011
+	Training:   Mean Squared Error = 6.129347e-03, Mean Absolute Error = 6.264033e-02, Mean Absolute Percentage Error = 1.109946e-01
+
+2024-08-22-23-04-03: Epoch 012
+	Training:   Mean Squared Error = 6.045695e-03, Mean Absolute Error = 6.229626e-02, Mean Absolute Percentage Error = 1.099920e-01
+
+2024-08-22-23-04-07: Epoch 013
+	Training:   Mean Squared Error = 6.064023e-03, Mean Absolute Error = 6.232734e-02, Mean Absolute Percentage Error = 1.105213e-01
+
+2024-08-22-23-04-10: Epoch 014
+	Training:   Mean Squared Error = 6.083730e-03, Mean Absolute Error = 6.251886e-02, Mean Absolute Percentage Error = 1.109820e-01
+
+2024-08-22-23-04-14: Epoch 015
+	Training:   Mean Squared Error = 5.936432e-03, Mean Absolute Error = 6.194512e-02, Mean Absolute Percentage Error = 1.102505e-01
+
+2024-08-22-23-04-18: Epoch 016
+	Training:   Mean Squared Error = 5.950972e-03, Mean Absolute Error = 6.192588e-02, Mean Absolute Percentage Error = 1.105194e-01
+
+2024-08-22-23-04-21: Epoch 017
+	Training:   Mean Squared Error = 5.867021e-03, Mean Absolute Error = 6.167264e-02, Mean Absolute Percentage Error = 1.101857e-01
+
+2024-08-22-23-04-25: Epoch 018
+	Training:   Mean Squared Error = 5.899381e-03, Mean Absolute Error = 6.165418e-02, Mean Absolute Percentage Error = 1.099699e-01
+
+2024-08-22-23-04-29: Epoch 019
+	Training:   Mean Squared Error = 5.775434e-03, Mean Absolute Error = 6.109294e-02, Mean Absolute Percentage Error = 1.092781e-01
+
+2024-08-22-23-04-33: Epoch 020
+	Training:   Mean Squared Error = 5.711797e-03, Mean Absolute Error = 6.071107e-02, Mean Absolute Percentage Error = 1.087842e-01
+	Validation: Mean Squared Error = 5.853690e-03, Mean Absolute Error = 6.017453e-02, Mean Absolute Percentage Error = 1.111238e-01
+	Testing:    Mean Squared Error = 5.742128e-03, Mean Absolute Error = 5.942471e-02, Mean Absolute Percentage Error = 1.180345e-01
+
+2024-08-22-23-04-38: Epoch 021
+	Training:   Mean Squared Error = 5.608868e-03, Mean Absolute Error = 6.016983e-02, Mean Absolute Percentage Error = 1.076798e-01
+
+2024-08-22-23-04-42: Epoch 022
+	Training:   Mean Squared Error = 5.632176e-03, Mean Absolute Error = 6.038937e-02, Mean Absolute Percentage Error = 1.082919e-01
+
+2024-08-22-23-04-45: Epoch 023
+	Training:   Mean Squared Error = 5.649555e-03, Mean Absolute Error = 6.031259e-02, Mean Absolute Percentage Error = 1.085144e-01
+
+2024-08-22-23-04-49: Epoch 024
+	Training:   Mean Squared Error = 5.566662e-03, Mean Absolute Error = 5.995983e-02, Mean Absolute Percentage Error = 1.076496e-01
+
+2024-08-22-23-04-53: Epoch 025
+	Training:   Mean Squared Error = 5.689363e-03, Mean Absolute Error = 6.062247e-02, Mean Absolute Percentage Error = 1.088748e-01
+
+2024-08-22-23-04-57: Epoch 026
+	Training:   Mean Squared Error = 5.608461e-03, Mean Absolute Error = 6.010491e-02, Mean Absolute Percentage Error = 1.081968e-01
+
+2024-08-22-23-05-01: Epoch 027
+	Training:   Mean Squared Error = 5.503641e-03, Mean Absolute Error = 5.944834e-02, Mean Absolute Percentage Error = 1.069049e-01
+
+2024-08-22-23-05-05: Epoch 028
+	Training:   Mean Squared Error = 5.495232e-03, Mean Absolute Error = 5.946331e-02, Mean Absolute Percentage Error = 1.071517e-01
+
+2024-08-22-23-05-09: Epoch 029
+	Training:   Mean Squared Error = 5.529199e-03, Mean Absolute Error = 5.973298e-02, Mean Absolute Percentage Error = 1.072911e-01
+
+2024-08-22-23-05-13: Epoch 030
+	Training:   Mean Squared Error = 5.409343e-03, Mean Absolute Error = 5.905348e-02, Mean Absolute Percentage Error = 1.061428e-01
+	Validation: Mean Squared Error = 5.343962e-03, Mean Absolute Error = 5.815649e-02, Mean Absolute Percentage Error = 1.068526e-01
+	Testing:    Mean Squared Error = 5.087467e-03, Mean Absolute Error = 5.651493e-02, Mean Absolute Percentage Error = 1.113213e-01
+
+2024-08-22-23-05-17: Epoch 031
+	Training:   Mean Squared Error = 5.210676e-03, Mean Absolute Error = 5.793261e-02, Mean Absolute Percentage Error = 1.045246e-01
+
+2024-08-22-23-05-21: Epoch 032
+	Training:   Mean Squared Error = 5.308369e-03, Mean Absolute Error = 5.847332e-02, Mean Absolute Percentage Error = 1.051648e-01
+
+2024-08-22-23-05-25: Epoch 033
+	Training:   Mean Squared Error = 5.223615e-03, Mean Absolute Error = 5.788122e-02, Mean Absolute Percentage Error = 1.038996e-01
+
+2024-08-22-23-05-29: Epoch 034
+	Training:   Mean Squared Error = 5.283703e-03, Mean Absolute Error = 5.841880e-02, Mean Absolute Percentage Error = 1.050349e-01
+
+2024-08-22-23-05-33: Epoch 035
+	Training:   Mean Squared Error = 5.301287e-03, Mean Absolute Error = 5.826416e-02, Mean Absolute Percentage Error = 1.047288e-01
+
+2024-08-22-23-05-37: Epoch 036
+	Training:   Mean Squared Error = 5.160190e-03, Mean Absolute Error = 5.762750e-02, Mean Absolute Percentage Error = 1.036047e-01
+
+2024-08-22-23-05-40: Epoch 037
+	Training:   Mean Squared Error = 5.135231e-03, Mean Absolute Error = 5.761049e-02, Mean Absolute Percentage Error = 1.032790e-01
+
+2024-08-22-23-05-44: Epoch 038
+	Training:   Mean Squared Error = 5.177266e-03, Mean Absolute Error = 5.782129e-02, Mean Absolute Percentage Error = 1.036592e-01
+
+2024-08-22-23-05-48: Epoch 039
+	Training:   Mean Squared Error = 4.873564e-03, Mean Absolute Error = 5.583920e-02, Mean Absolute Percentage Error = 1.006519e-01
+
+2024-08-22-23-05-52: Epoch 040
+	Training:   Mean Squared Error = 5.059733e-03, Mean Absolute Error = 5.701716e-02, Mean Absolute Percentage Error = 1.021880e-01
+	Validation: Mean Squared Error = 6.751272e-03, Mean Absolute Error = 7.003266e-02, Mean Absolute Percentage Error = 1.152989e-01
+	Testing:    Mean Squared Error = 6.260085e-03, Mean Absolute Error = 6.693155e-02, Mean Absolute Percentage Error = 1.163883e-01
+
+2024-08-22-23-05-57: Epoch 041
+	Training:   Mean Squared Error = 5.005297e-03, Mean Absolute Error = 5.677488e-02, Mean Absolute Percentage Error = 1.017507e-01
+
+2024-08-22-23-06-01: Epoch 042
+	Training:   Mean Squared Error = 4.775479e-03, Mean Absolute Error = 5.555878e-02, Mean Absolute Percentage Error = 9.966671e-02
+
+2024-08-22-23-06-04: Epoch 043
+	Training:   Mean Squared Error = 4.745649e-03, Mean Absolute Error = 5.525725e-02, Mean Absolute Percentage Error = 9.879136e-02
+
+2024-08-22-23-06-08: Epoch 044
+	Training:   Mean Squared Error = 4.732989e-03, Mean Absolute Error = 5.505227e-02, Mean Absolute Percentage Error = 9.865000e-02
+
+2024-08-22-23-06-12: Epoch 045
+	Training:   Mean Squared Error = 5.006708e-03, Mean Absolute Error = 5.643246e-02, Mean Absolute Percentage Error = 1.005649e-01
+
+2024-08-22-23-06-16: Epoch 046
+	Training:   Mean Squared Error = 4.632419e-03, Mean Absolute Error = 5.457736e-02, Mean Absolute Percentage Error = 9.775274e-02
+
+2024-08-22-23-06-20: Epoch 047
+	Training:   Mean Squared Error = 4.615157e-03, Mean Absolute Error = 5.436811e-02, Mean Absolute Percentage Error = 9.700184e-02
+
+2024-08-22-23-06-24: Epoch 048
+	Training:   Mean Squared Error = 4.702788e-03, Mean Absolute Error = 5.492527e-02, Mean Absolute Percentage Error = 9.786364e-02
+
+2024-08-22-23-06-28: Epoch 049
+	Training:   Mean Squared Error = 4.534324e-03, Mean Absolute Error = 5.387906e-02, Mean Absolute Percentage Error = 9.613474e-02
+
+2024-08-22-23-06-32: Epoch 050
+	Training:   Mean Squared Error = 4.489131e-03, Mean Absolute Error = 5.361704e-02, Mean Absolute Percentage Error = 9.552447e-02
+	Validation: Mean Squared Error = 5.593529e-03, Mean Absolute Error = 5.676588e-02, Mean Absolute Percentage Error = 1.074453e-01
+	Testing:    Mean Squared Error = 5.097119e-03, Mean Absolute Error = 5.494913e-02, Mean Absolute Percentage Error = 1.115592e-01
+
+2024-08-22-23-06-36: Epoch 051
+	Training:   Mean Squared Error = 4.717160e-03, Mean Absolute Error = 5.504438e-02, Mean Absolute Percentage Error = 9.724643e-02
+
+2024-08-22-23-06-40: Epoch 052
+	Training:   Mean Squared Error = 4.465394e-03, Mean Absolute Error = 5.348898e-02, Mean Absolute Percentage Error = 9.508247e-02
+
+2024-08-22-23-06-44: Epoch 053
+	Training:   Mean Squared Error = 4.577607e-03, Mean Absolute Error = 5.400686e-02, Mean Absolute Percentage Error = 9.599063e-02
+
+2024-08-22-23-06-48: Epoch 054
+	Training:   Mean Squared Error = 4.392341e-03, Mean Absolute Error = 5.300381e-02, Mean Absolute Percentage Error = 9.379438e-02
+
+2024-08-22-23-06-52: Epoch 055
+	Training:   Mean Squared Error = 4.726831e-03, Mean Absolute Error = 5.489448e-02, Mean Absolute Percentage Error = 9.689613e-02
+
+2024-08-22-23-06-56: Epoch 056
+	Training:   Mean Squared Error = 4.517250e-03, Mean Absolute Error = 5.385837e-02, Mean Absolute Percentage Error = 9.547762e-02
+
+2024-08-22-23-07-00: Epoch 057
+	Training:   Mean Squared Error = 4.628737e-03, Mean Absolute Error = 5.444056e-02, Mean Absolute Percentage Error = 9.685965e-02
+
+2024-08-22-23-07-04: Epoch 058
+	Training:   Mean Squared Error = 4.546370e-03, Mean Absolute Error = 5.409991e-02, Mean Absolute Percentage Error = 9.584319e-02
+
+2024-08-22-23-07-08: Epoch 059
+	Training:   Mean Squared Error = 4.379203e-03, Mean Absolute Error = 5.300979e-02, Mean Absolute Percentage Error = 9.428751e-02
+
+2024-08-22-23-07-12: Epoch 060
+	Training:   Mean Squared Error = 4.526017e-03, Mean Absolute Error = 5.380566e-02, Mean Absolute Percentage Error = 9.514806e-02
+	Validation: Mean Squared Error = 5.040650e-03, Mean Absolute Error = 5.883220e-02, Mean Absolute Percentage Error = 9.879908e-02
+	Testing:    Mean Squared Error = 4.378237e-03, Mean Absolute Error = 5.484640e-02, Mean Absolute Percentage Error = 9.739411e-02
+
+2024-08-22-23-07-16: Epoch 061
+	Training:   Mean Squared Error = 4.360620e-03, Mean Absolute Error = 5.281998e-02, Mean Absolute Percentage Error = 9.386331e-02
+
+2024-08-22-23-07-20: Epoch 062
+	Training:   Mean Squared Error = 4.501956e-03, Mean Absolute Error = 5.348903e-02, Mean Absolute Percentage Error = 9.473981e-02
+
+2024-08-22-23-07-23: Epoch 063
+	Training:   Mean Squared Error = 4.391142e-03, Mean Absolute Error = 5.303998e-02, Mean Absolute Percentage Error = 9.362788e-02
+
+2024-08-22-23-07-27: Epoch 064
+	Training:   Mean Squared Error = 4.242630e-03, Mean Absolute Error = 5.221394e-02, Mean Absolute Percentage Error = 9.218404e-02
+
+2024-08-22-23-07-31: Epoch 065
+	Training:   Mean Squared Error = 4.364599e-03, Mean Absolute Error = 5.306407e-02, Mean Absolute Percentage Error = 9.362385e-02
+
+2024-08-22-23-07-35: Epoch 066
+	Training:   Mean Squared Error = 4.461796e-03, Mean Absolute Error = 5.335466e-02, Mean Absolute Percentage Error = 9.446339e-02
+
+2024-08-22-23-07-39: Epoch 067
+	Training:   Mean Squared Error = 4.510286e-03, Mean Absolute Error = 5.379302e-02, Mean Absolute Percentage Error = 9.473290e-02
+
+2024-08-22-23-07-43: Epoch 068
+	Training:   Mean Squared Error = 4.319533e-03, Mean Absolute Error = 5.273411e-02, Mean Absolute Percentage Error = 9.313284e-02
+
+2024-08-22-23-07-46: Epoch 069
+	Training:   Mean Squared Error = 4.458699e-03, Mean Absolute Error = 5.333542e-02, Mean Absolute Percentage Error = 9.434664e-02
+
+2024-08-22-23-07-50: Epoch 070
+	Training:   Mean Squared Error = 4.431890e-03, Mean Absolute Error = 5.325714e-02, Mean Absolute Percentage Error = 9.374034e-02
+	Validation: Mean Squared Error = 4.525369e-03, Mean Absolute Error = 5.299606e-02, Mean Absolute Percentage Error = 9.815509e-02
+	Testing:    Mean Squared Error = 3.974110e-03, Mean Absolute Error = 4.951903e-02, Mean Absolute Percentage Error = 9.912352e-02
+
+2024-08-22-23-07-55: Epoch 071
+	Training:   Mean Squared Error = 4.320756e-03, Mean Absolute Error = 5.265961e-02, Mean Absolute Percentage Error = 9.359244e-02
+
+2024-08-22-23-07-59: Epoch 072
+	Training:   Mean Squared Error = 4.470882e-03, Mean Absolute Error = 5.347916e-02, Mean Absolute Percentage Error = 9.396101e-02
+
+2024-08-22-23-08-03: Epoch 073
+	Training:   Mean Squared Error = 4.368342e-03, Mean Absolute Error = 5.292753e-02, Mean Absolute Percentage Error = 9.357874e-02
+
+2024-08-22-23-08-06: Epoch 074
+	Training:   Mean Squared Error = 4.191720e-03, Mean Absolute Error = 5.191711e-02, Mean Absolute Percentage Error = 9.169362e-02
+
+2024-08-22-23-08-11: Epoch 075
+	Training:   Mean Squared Error = 4.439129e-03, Mean Absolute Error = 5.336611e-02, Mean Absolute Percentage Error = 9.413733e-02
+
+2024-08-22-23-08-14: Epoch 076
+	Training:   Mean Squared Error = 4.437934e-03, Mean Absolute Error = 5.332497e-02, Mean Absolute Percentage Error = 9.403193e-02
+
+2024-08-22-23-08-18: Epoch 077
+	Training:   Mean Squared Error = 4.180172e-03, Mean Absolute Error = 5.175524e-02, Mean Absolute Percentage Error = 9.134258e-02
+
+2024-08-22-23-08-22: Epoch 078
+	Training:   Mean Squared Error = 4.276315e-03, Mean Absolute Error = 5.239978e-02, Mean Absolute Percentage Error = 9.261252e-02
+
+2024-08-22-23-08-26: Epoch 079
+	Training:   Mean Squared Error = 4.279490e-03, Mean Absolute Error = 5.220886e-02, Mean Absolute Percentage Error = 9.231328e-02
+
+2024-08-22-23-08-30: Epoch 080
+	Training:   Mean Squared Error = 4.413200e-03, Mean Absolute Error = 5.320251e-02, Mean Absolute Percentage Error = 9.380394e-02
+	Validation: Mean Squared Error = 4.303047e-03, Mean Absolute Error = 5.240195e-02, Mean Absolute Percentage Error = 9.291796e-02
+	Testing:    Mean Squared Error = 3.693732e-03, Mean Absolute Error = 4.844445e-02, Mean Absolute Percentage Error = 9.077793e-02
+
+2024-08-22-23-08-35: Epoch 081
+	Training:   Mean Squared Error = 4.468142e-03, Mean Absolute Error = 5.349815e-02, Mean Absolute Percentage Error = 9.456903e-02
+
+2024-08-22-23-08-39: Epoch 082
+	Training:   Mean Squared Error = 4.400294e-03, Mean Absolute Error = 5.303428e-02, Mean Absolute Percentage Error = 9.368567e-02
+
+2024-08-22-23-08-43: Epoch 083
+	Training:   Mean Squared Error = 4.406204e-03, Mean Absolute Error = 5.320184e-02, Mean Absolute Percentage Error = 9.419722e-02
+
+2024-08-22-23-08-47: Epoch 084
+	Training:   Mean Squared Error = 4.164806e-03, Mean Absolute Error = 5.175101e-02, Mean Absolute Percentage Error = 9.167469e-02
+
+2024-08-22-23-08-51: Epoch 085
+	Training:   Mean Squared Error = 4.333587e-03, Mean Absolute Error = 5.256456e-02, Mean Absolute Percentage Error = 9.244472e-02
+
+2024-08-22-23-08-54: Epoch 086
+	Training:   Mean Squared Error = 4.619718e-03, Mean Absolute Error = 5.435202e-02, Mean Absolute Percentage Error = 9.582959e-02
+
+2024-08-22-23-08-58: Epoch 087
+	Training:   Mean Squared Error = 4.245124e-03, Mean Absolute Error = 5.219535e-02, Mean Absolute Percentage Error = 9.242719e-02
+
+2024-08-22-23-09-02: Epoch 088
+	Training:   Mean Squared Error = 4.250800e-03, Mean Absolute Error = 5.226526e-02, Mean Absolute Percentage Error = 9.233832e-02
+
+2024-08-22-23-09-06: Epoch 089
+	Training:   Mean Squared Error = 4.323579e-03, Mean Absolute Error = 5.263784e-02, Mean Absolute Percentage Error = 9.257770e-02
+
+2024-08-22-23-09-10: Epoch 090
+	Training:   Mean Squared Error = 4.403677e-03, Mean Absolute Error = 5.293963e-02, Mean Absolute Percentage Error = 9.368869e-02
+	Validation: Mean Squared Error = 4.303926e-03, Mean Absolute Error = 5.231033e-02, Mean Absolute Percentage Error = 9.333959e-02
+	Testing:    Mean Squared Error = 3.669067e-03, Mean Absolute Error = 4.822726e-02, Mean Absolute Percentage Error = 9.201491e-02
+
+2024-08-22-23-09-14: Epoch 091
+	Training:   Mean Squared Error = 4.283057e-03, Mean Absolute Error = 5.251554e-02, Mean Absolute Percentage Error = 9.288301e-02
+
+2024-08-22-23-09-18: Epoch 092
+	Training:   Mean Squared Error = 4.110043e-03, Mean Absolute Error = 5.142411e-02, Mean Absolute Percentage Error = 9.122276e-02
+
+2024-08-22-23-09-22: Epoch 093
+	Training:   Mean Squared Error = 4.121670e-03, Mean Absolute Error = 5.141798e-02, Mean Absolute Percentage Error = 9.057096e-02
+
+2024-08-22-23-09-26: Epoch 094
+	Training:   Mean Squared Error = 4.378610e-03, Mean Absolute Error = 5.305821e-02, Mean Absolute Percentage Error = 9.379935e-02
+
+2024-08-22-23-09-30: Epoch 095
+	Training:   Mean Squared Error = 4.233320e-03, Mean Absolute Error = 5.214429e-02, Mean Absolute Percentage Error = 9.183072e-02
+
+2024-08-22-23-09-34: Epoch 096
+	Training:   Mean Squared Error = 4.064116e-03, Mean Absolute Error = 5.092162e-02, Mean Absolute Percentage Error = 8.989933e-02
+
+2024-08-22-23-09-38: Epoch 097
+	Training:   Mean Squared Error = 4.103591e-03, Mean Absolute Error = 5.134684e-02, Mean Absolute Percentage Error = 9.042604e-02
+
+2024-08-22-23-09-41: Epoch 098
+	Training:   Mean Squared Error = 4.209438e-03, Mean Absolute Error = 5.200225e-02, Mean Absolute Percentage Error = 9.129314e-02
+
+2024-08-22-23-09-45: Epoch 099
+	Training:   Mean Squared Error = 4.459813e-03, Mean Absolute Error = 5.342099e-02, Mean Absolute Percentage Error = 9.415313e-02
+
+2024-08-22-23-09-49: Epoch 100
+	Training:   Mean Squared Error = 4.490449e-03, Mean Absolute Error = 5.365197e-02, Mean Absolute Percentage Error = 9.447542e-02
+	Validation: Mean Squared Error = 4.372523e-03, Mean Absolute Error = 5.181732e-02, Mean Absolute Percentage Error = 9.435946e-02
+	Testing:    Mean Squared Error = 3.821045e-03, Mean Absolute Error = 4.845585e-02, Mean Absolute Percentage Error = 9.398334e-02
+
+2024-08-22-23-09-54: Epoch 101
+	Training:   Mean Squared Error = 4.370072e-03, Mean Absolute Error = 5.268130e-02, Mean Absolute Percentage Error = 9.281588e-02
+
+2024-08-22-23-09-58: Epoch 102
+	Training:   Mean Squared Error = 4.117790e-03, Mean Absolute Error = 5.141865e-02, Mean Absolute Percentage Error = 9.100576e-02
+
+2024-08-22-23-10-02: Epoch 103
+	Training:   Mean Squared Error = 4.203964e-03, Mean Absolute Error = 5.193504e-02, Mean Absolute Percentage Error = 9.198911e-02
+
+2024-08-22-23-10-06: Epoch 104
+	Training:   Mean Squared Error = 4.215756e-03, Mean Absolute Error = 5.192735e-02, Mean Absolute Percentage Error = 9.183669e-02
+
+2024-08-22-23-10-10: Epoch 105
+	Training:   Mean Squared Error = 4.192541e-03, Mean Absolute Error = 5.198445e-02, Mean Absolute Percentage Error = 9.225314e-02
+
+2024-08-22-23-10-14: Epoch 106
+	Training:   Mean Squared Error = 4.185277e-03, Mean Absolute Error = 5.183046e-02, Mean Absolute Percentage Error = 9.159251e-02
+
+2024-08-22-23-10-18: Epoch 107
+	Training:   Mean Squared Error = 4.236752e-03, Mean Absolute Error = 5.199987e-02, Mean Absolute Percentage Error = 9.204814e-02
+
+2024-08-22-23-10-22: Epoch 108
+	Training:   Mean Squared Error = 4.222888e-03, Mean Absolute Error = 5.194879e-02, Mean Absolute Percentage Error = 9.205259e-02
+
+2024-08-22-23-10-26: Epoch 109
+	Training:   Mean Squared Error = 4.165597e-03, Mean Absolute Error = 5.175520e-02, Mean Absolute Percentage Error = 9.140093e-02
+
+2024-08-22-23-10-30: Epoch 110
+	Training:   Mean Squared Error = 4.183676e-03, Mean Absolute Error = 5.196689e-02, Mean Absolute Percentage Error = 9.173742e-02
+	Validation: Mean Squared Error = 5.217568e-03, Mean Absolute Error = 5.549921e-02, Mean Absolute Percentage Error = 1.043701e-01
+	Testing:    Mean Squared Error = 4.704422e-03, Mean Absolute Error = 5.316317e-02, Mean Absolute Percentage Error = 1.073333e-01
+
+2024-08-22-23-10-35: Epoch 111
+	Training:   Mean Squared Error = 4.128926e-03, Mean Absolute Error = 5.143813e-02, Mean Absolute Percentage Error = 9.081611e-02
+
+2024-08-22-23-10-39: Epoch 112
+	Training:   Mean Squared Error = 4.160098e-03, Mean Absolute Error = 5.153863e-02, Mean Absolute Percentage Error = 9.066479e-02
+
+2024-08-22-23-10-43: Epoch 113
+	Training:   Mean Squared Error = 4.338459e-03, Mean Absolute Error = 5.253051e-02, Mean Absolute Percentage Error = 9.271427e-02
+
+2024-08-22-23-10-47: Epoch 114
+	Training:   Mean Squared Error = 4.174832e-03, Mean Absolute Error = 5.165487e-02, Mean Absolute Percentage Error = 9.109243e-02
+
+2024-08-22-23-10-51: Epoch 115
+	Training:   Mean Squared Error = 4.308267e-03, Mean Absolute Error = 5.244797e-02, Mean Absolute Percentage Error = 9.231937e-02
+
+2024-08-22-23-10-55: Epoch 116
+	Training:   Mean Squared Error = 4.254909e-03, Mean Absolute Error = 5.220011e-02, Mean Absolute Percentage Error = 9.191395e-02
+
+2024-08-22-23-10-59: Epoch 117
+	Training:   Mean Squared Error = 4.177148e-03, Mean Absolute Error = 5.177544e-02, Mean Absolute Percentage Error = 9.104905e-02
+
+2024-08-22-23-11-03: Epoch 118
+	Training:   Mean Squared Error = 4.037320e-03, Mean Absolute Error = 5.089774e-02, Mean Absolute Percentage Error = 8.999283e-02
+
+2024-08-22-23-11-07: Epoch 119
+	Training:   Mean Squared Error = 4.373089e-03, Mean Absolute Error = 5.290214e-02, Mean Absolute Percentage Error = 9.341604e-02
+
+2024-08-22-23-11-11: Epoch 120
+	Training:   Mean Squared Error = 4.180189e-03, Mean Absolute Error = 5.170295e-02, Mean Absolute Percentage Error = 9.142886e-02
+	Validation: Mean Squared Error = 4.390988e-03, Mean Absolute Error = 5.452611e-02, Mean Absolute Percentage Error = 9.365394e-02
+	Testing:    Mean Squared Error = 3.751260e-03, Mean Absolute Error = 5.039514e-02, Mean Absolute Percentage Error = 9.211366e-02
+
+2024-08-22-23-11-16: Epoch 121
+	Training:   Mean Squared Error = 4.382933e-03, Mean Absolute Error = 5.301037e-02, Mean Absolute Percentage Error = 9.359639e-02
+
+2024-08-22-23-11-20: Epoch 122
+	Training:   Mean Squared Error = 4.175474e-03, Mean Absolute Error = 5.172811e-02, Mean Absolute Percentage Error = 9.103399e-02
+
+2024-08-22-23-11-24: Epoch 123
+	Training:   Mean Squared Error = 4.161241e-03, Mean Absolute Error = 5.164931e-02, Mean Absolute Percentage Error = 9.150009e-02
+
+2024-08-22-23-11-28: Epoch 124
+	Training:   Mean Squared Error = 4.055049e-03, Mean Absolute Error = 5.107796e-02, Mean Absolute Percentage Error = 8.993965e-02
+
+2024-08-22-23-11-32: Epoch 125
+	Training:   Mean Squared Error = 4.298790e-03, Mean Absolute Error = 5.259637e-02, Mean Absolute Percentage Error = 9.222004e-02
+
+2024-08-22-23-11-36: Epoch 126
+	Training:   Mean Squared Error = 4.048066e-03, Mean Absolute Error = 5.093804e-02, Mean Absolute Percentage Error = 8.962526e-02
+
+2024-08-22-23-11-40: Epoch 127
+	Training:   Mean Squared Error = 4.004405e-03, Mean Absolute Error = 5.061892e-02, Mean Absolute Percentage Error = 8.916467e-02
+
+2024-08-22-23-11-44: Epoch 128
+	Training:   Mean Squared Error = 4.205921e-03, Mean Absolute Error = 5.188381e-02, Mean Absolute Percentage Error = 9.093232e-02
+
+2024-08-22-23-11-48: Epoch 129
+	Training:   Mean Squared Error = 4.094614e-03, Mean Absolute Error = 5.117587e-02, Mean Absolute Percentage Error = 8.995502e-02
+
+2024-08-22-23-11-52: Epoch 130
+	Training:   Mean Squared Error = 4.323824e-03, Mean Absolute Error = 5.251957e-02, Mean Absolute Percentage Error = 9.244797e-02
+	Validation: Mean Squared Error = 7.046311e-03, Mean Absolute Error = 7.058381e-02, Mean Absolute Percentage Error = 1.119462e-01
+	Testing:    Mean Squared Error = 6.297023e-03, Mean Absolute Error = 6.720278e-02, Mean Absolute Percentage Error = 1.124371e-01
+
+2024-08-22-23-11-57: Epoch 131
+	Training:   Mean Squared Error = 4.155246e-03, Mean Absolute Error = 5.163989e-02, Mean Absolute Percentage Error = 9.113991e-02
+
+2024-08-22-23-12-01: Epoch 132
+	Training:   Mean Squared Error = 4.191227e-03, Mean Absolute Error = 5.179859e-02, Mean Absolute Percentage Error = 9.145813e-02
+
+2024-08-22-23-12-04: Epoch 133
+	Training:   Mean Squared Error = 4.015344e-03, Mean Absolute Error = 5.086984e-02, Mean Absolute Percentage Error = 8.984233e-02
+
+2024-08-22-23-12-09: Epoch 134
+	Training:   Mean Squared Error = 4.109350e-03, Mean Absolute Error = 5.124307e-02, Mean Absolute Percentage Error = 9.022997e-02
+
+2024-08-22-23-12-13: Epoch 135
+	Training:   Mean Squared Error = 3.940935e-03, Mean Absolute Error = 5.026516e-02, Mean Absolute Percentage Error = 8.853062e-02
+
+2024-08-22-23-12-17: Epoch 136
+	Training:   Mean Squared Error = 4.132924e-03, Mean Absolute Error = 5.142729e-02, Mean Absolute Percentage Error = 9.042436e-02
+
+2024-08-22-23-12-21: Epoch 137
+	Training:   Mean Squared Error = 3.978002e-03, Mean Absolute Error = 5.065127e-02, Mean Absolute Percentage Error = 8.870829e-02
+
+2024-08-22-23-12-25: Epoch 138
+	Training:   Mean Squared Error = 4.163622e-03, Mean Absolute Error = 5.159014e-02, Mean Absolute Percentage Error = 9.091810e-02
+
+2024-08-22-23-12-29: Epoch 139
+	Training:   Mean Squared Error = 3.994372e-03, Mean Absolute Error = 5.045924e-02, Mean Absolute Percentage Error = 8.882816e-02
+
+2024-08-22-23-12-33: Epoch 140
+	Training:   Mean Squared Error = 4.112907e-03, Mean Absolute Error = 5.129834e-02, Mean Absolute Percentage Error = 9.041074e-02
+	Validation: Mean Squared Error = 4.520629e-03, Mean Absolute Error = 5.564250e-02, Mean Absolute Percentage Error = 9.365564e-02
+	Testing:    Mean Squared Error = 3.871799e-03, Mean Absolute Error = 5.158643e-02, Mean Absolute Percentage Error = 9.258927e-02
+
+2024-08-22-23-12-37: Epoch 141
+	Training:   Mean Squared Error = 4.098939e-03, Mean Absolute Error = 5.128404e-02, Mean Absolute Percentage Error = 9.013448e-02
+
+2024-08-22-23-12-41: Epoch 142
+	Training:   Mean Squared Error = 4.290829e-03, Mean Absolute Error = 5.244108e-02, Mean Absolute Percentage Error = 9.261821e-02
+
+2024-08-22-23-12-45: Epoch 143
+	Training:   Mean Squared Error = 4.071353e-03, Mean Absolute Error = 5.119105e-02, Mean Absolute Percentage Error = 9.036223e-02
+
+2024-08-22-23-12-50: Epoch 144
+	Training:   Mean Squared Error = 4.444836e-03, Mean Absolute Error = 5.320597e-02, Mean Absolute Percentage Error = 9.369890e-02
+
+2024-08-22-23-12-54: Epoch 145
+	Training:   Mean Squared Error = 4.013554e-03, Mean Absolute Error = 5.077335e-02, Mean Absolute Percentage Error = 8.981702e-02
+
+2024-08-22-23-12-58: Epoch 146
+	Training:   Mean Squared Error = 3.983972e-03, Mean Absolute Error = 5.053462e-02, Mean Absolute Percentage Error = 8.932590e-02
+
+2024-08-22-23-13-02: Epoch 147
+	Training:   Mean Squared Error = 4.122903e-03, Mean Absolute Error = 5.159071e-02, Mean Absolute Percentage Error = 9.057631e-02
+
+2024-08-22-23-13-06: Epoch 148
+	Training:   Mean Squared Error = 4.042552e-03, Mean Absolute Error = 5.078706e-02, Mean Absolute Percentage Error = 8.953284e-02
+
+2024-08-22-23-13-10: Epoch 149
+	Training:   Mean Squared Error = 4.027387e-03, Mean Absolute Error = 5.084756e-02, Mean Absolute Percentage Error = 8.941690e-02
+
+2024-08-22-23-13-14: Epoch 150
+	Training:   Mean Squared Error = 4.051874e-03, Mean Absolute Error = 5.109158e-02, Mean Absolute Percentage Error = 8.968339e-02
+	Validation: Mean Squared Error = 4.237365e-03, Mean Absolute Error = 5.137605e-02, Mean Absolute Percentage Error = 9.304258e-02
+	Testing:    Mean Squared Error = 3.673162e-03, Mean Absolute Error = 4.769868e-02, Mean Absolute Percentage Error = 9.301624e-02
+
+2024-08-22-23-13-19: Epoch 151
+	Training:   Mean Squared Error = 3.897875e-03, Mean Absolute Error = 4.994232e-02, Mean Absolute Percentage Error = 8.788492e-02
+
+2024-08-22-23-13-23: Epoch 152
+	Training:   Mean Squared Error = 3.951519e-03, Mean Absolute Error = 5.028708e-02, Mean Absolute Percentage Error = 8.896439e-02
+
+2024-08-22-23-13-27: Epoch 153
+	Training:   Mean Squared Error = 4.038427e-03, Mean Absolute Error = 5.090269e-02, Mean Absolute Percentage Error = 8.919758e-02
+
+2024-08-22-23-13-31: Epoch 154
+	Training:   Mean Squared Error = 4.046876e-03, Mean Absolute Error = 5.077570e-02, Mean Absolute Percentage Error = 8.925463e-02
+
+2024-08-22-23-13-35: Epoch 155
+	Training:   Mean Squared Error = 3.949304e-03, Mean Absolute Error = 5.015772e-02, Mean Absolute Percentage Error = 8.831603e-02
+
+2024-08-22-23-13-39: Epoch 156
+	Training:   Mean Squared Error = 3.966935e-03, Mean Absolute Error = 5.047948e-02, Mean Absolute Percentage Error = 8.881500e-02
+
+2024-08-22-23-13-43: Epoch 157
+	Training:   Mean Squared Error = 4.171010e-03, Mean Absolute Error = 5.172445e-02, Mean Absolute Percentage Error = 9.074425e-02
+
+2024-08-22-23-13-47: Epoch 158
+	Training:   Mean Squared Error = 4.167713e-03, Mean Absolute Error = 5.162693e-02, Mean Absolute Percentage Error = 9.118501e-02
+
+2024-08-22-23-13-51: Epoch 159
+	Training:   Mean Squared Error = 3.812182e-03, Mean Absolute Error = 4.945420e-02, Mean Absolute Percentage Error = 8.696742e-02
+
+2024-08-22-23-13-55: Epoch 160
+	Training:   Mean Squared Error = 4.003510e-03, Mean Absolute Error = 5.067422e-02, Mean Absolute Percentage Error = 8.865488e-02
+	Validation: Mean Squared Error = 4.451488e-03, Mean Absolute Error = 5.485516e-02, Mean Absolute Percentage Error = 9.336180e-02
+	Testing:    Mean Squared Error = 3.801587e-03, Mean Absolute Error = 5.084712e-02, Mean Absolute Percentage Error = 9.158646e-02
+
+2024-08-22-23-14-00: Epoch 161
+	Training:   Mean Squared Error = 4.232604e-03, Mean Absolute Error = 5.216533e-02, Mean Absolute Percentage Error = 9.166222e-02
+
+2024-08-22-23-14-04: Epoch 162
+	Training:   Mean Squared Error = 3.866252e-03, Mean Absolute Error = 4.977905e-02, Mean Absolute Percentage Error = 8.802395e-02
+
+2024-08-22-23-14-08: Epoch 163
+	Training:   Mean Squared Error = 3.937683e-03, Mean Absolute Error = 5.019244e-02, Mean Absolute Percentage Error = 8.831460e-02
+
+2024-08-22-23-14-12: Epoch 164
+	Training:   Mean Squared Error = 3.845269e-03, Mean Absolute Error = 4.961376e-02, Mean Absolute Percentage Error = 8.748787e-02
+
+2024-08-22-23-14-16: Epoch 165
+	Training:   Mean Squared Error = 4.148209e-03, Mean Absolute Error = 5.136335e-02, Mean Absolute Percentage Error = 9.012812e-02
+
+2024-08-22-23-14-20: Epoch 166
+	Training:   Mean Squared Error = 3.876704e-03, Mean Absolute Error = 4.964102e-02, Mean Absolute Percentage Error = 8.721600e-02
+
+2024-08-22-23-14-24: Epoch 167
+	Training:   Mean Squared Error = 4.169155e-03, Mean Absolute Error = 5.163309e-02, Mean Absolute Percentage Error = 9.080655e-02
+
+2024-08-22-23-14-28: Epoch 168
+	Training:   Mean Squared Error = 4.083786e-03, Mean Absolute Error = 5.094731e-02, Mean Absolute Percentage Error = 8.948851e-02
+
+2024-08-22-23-14-32: Epoch 169
+	Training:   Mean Squared Error = 3.965583e-03, Mean Absolute Error = 5.036071e-02, Mean Absolute Percentage Error = 8.868784e-02
+
+2024-08-22-23-14-36: Epoch 170
+	Training:   Mean Squared Error = 3.927028e-03, Mean Absolute Error = 5.020674e-02, Mean Absolute Percentage Error = 8.820140e-02
+	Validation: Mean Squared Error = 4.587509e-03, Mean Absolute Error = 5.250071e-02, Mean Absolute Percentage Error = 9.655166e-02
+	Testing:    Mean Squared Error = 4.066809e-03, Mean Absolute Error = 4.964084e-02, Mean Absolute Percentage Error = 9.751032e-02
+
+2024-08-22-23-14-41: Epoch 171
+	Training:   Mean Squared Error = 3.969792e-03, Mean Absolute Error = 5.041301e-02, Mean Absolute Percentage Error = 8.832899e-02
+
+2024-08-22-23-14-45: Epoch 172
+	Training:   Mean Squared Error = 3.778532e-03, Mean Absolute Error = 4.913357e-02, Mean Absolute Percentage Error = 8.603222e-02
+
+2024-08-22-23-14-49: Epoch 173
+	Training:   Mean Squared Error = 3.997561e-03, Mean Absolute Error = 5.059741e-02, Mean Absolute Percentage Error = 8.857158e-02
+
+2024-08-22-23-14-53: Epoch 174
+	Training:   Mean Squared Error = 3.837663e-03, Mean Absolute Error = 4.954258e-02, Mean Absolute Percentage Error = 8.647776e-02
+
+2024-08-22-23-14-58: Epoch 175
+	Training:   Mean Squared Error = 3.870479e-03, Mean Absolute Error = 4.957609e-02, Mean Absolute Percentage Error = 8.710996e-02
+
+2024-08-22-23-15-02: Epoch 176
+	Training:   Mean Squared Error = 3.915580e-03, Mean Absolute Error = 5.001115e-02, Mean Absolute Percentage Error = 8.728634e-02
+
+2024-08-22-23-15-06: Epoch 177
+	Training:   Mean Squared Error = 3.909263e-03, Mean Absolute Error = 5.004526e-02, Mean Absolute Percentage Error = 8.708053e-02
+
+2024-08-22-23-15-10: Epoch 178
+	Training:   Mean Squared Error = 3.768835e-03, Mean Absolute Error = 4.899644e-02, Mean Absolute Percentage Error = 8.570948e-02
+
+2024-08-22-23-15-14: Epoch 179
+	Training:   Mean Squared Error = 4.008161e-03, Mean Absolute Error = 5.064296e-02, Mean Absolute Percentage Error = 8.843908e-02
+
+2024-08-22-23-15-18: Epoch 180
+	Training:   Mean Squared Error = 3.968336e-03, Mean Absolute Error = 5.030537e-02, Mean Absolute Percentage Error = 8.770724e-02
+	Validation: Mean Squared Error = 5.702669e-03, Mean Absolute Error = 5.795424e-02, Mean Absolute Percentage Error = 1.078704e-01
+	Testing:    Mean Squared Error = 5.133247e-03, Mean Absolute Error = 5.602977e-02, Mean Absolute Percentage Error = 1.108291e-01
+
+2024-08-22-23-15-23: Epoch 181
+	Training:   Mean Squared Error = 4.115196e-03, Mean Absolute Error = 5.118299e-02, Mean Absolute Percentage Error = 8.964462e-02
+
+2024-08-22-23-15-27: Epoch 182
+	Training:   Mean Squared Error = 3.764256e-03, Mean Absolute Error = 4.909178e-02, Mean Absolute Percentage Error = 8.584161e-02
+
+2024-08-22-23-15-31: Epoch 183
+	Training:   Mean Squared Error = 3.792677e-03, Mean Absolute Error = 4.930965e-02, Mean Absolute Percentage Error = 8.651847e-02
+
+2024-08-22-23-15-35: Epoch 184
+	Training:   Mean Squared Error = 3.949068e-03, Mean Absolute Error = 5.027543e-02, Mean Absolute Percentage Error = 8.808124e-02
+
+2024-08-22-23-15-39: Epoch 185
+	Training:   Mean Squared Error = 4.137002e-03, Mean Absolute Error = 5.130170e-02, Mean Absolute Percentage Error = 8.937780e-02
+
+2024-08-22-23-15-44: Epoch 186
+	Training:   Mean Squared Error = 3.969921e-03, Mean Absolute Error = 5.021971e-02, Mean Absolute Percentage Error = 8.800709e-02
+
+2024-08-22-23-15-48: Epoch 187
+	Training:   Mean Squared Error = 3.772087e-03, Mean Absolute Error = 4.904982e-02, Mean Absolute Percentage Error = 8.617109e-02
+
+2024-08-22-23-15-52: Epoch 188
+	Training:   Mean Squared Error = 4.041318e-03, Mean Absolute Error = 5.080228e-02, Mean Absolute Percentage Error = 8.884180e-02
+
+2024-08-22-23-15-56: Epoch 189
+	Training:   Mean Squared Error = 3.943380e-03, Mean Absolute Error = 5.026133e-02, Mean Absolute Percentage Error = 8.801628e-02
+
+2024-08-22-23-16-00: Epoch 190
+	Training:   Mean Squared Error = 3.771323e-03, Mean Absolute Error = 4.894844e-02, Mean Absolute Percentage Error = 8.604466e-02
+	Validation: Mean Squared Error = 3.905999e-03, Mean Absolute Error = 4.985798e-02, Mean Absolute Percentage Error = 8.820573e-02
+	Testing:    Mean Squared Error = 3.299440e-03, Mean Absolute Error = 4.554165e-02, Mean Absolute Percentage Error = 8.621498e-02
+
+2024-08-22-23-16-05: Epoch 191
+	Training:   Mean Squared Error = 3.906493e-03, Mean Absolute Error = 4.988768e-02, Mean Absolute Percentage Error = 8.695610e-02
+
+2024-08-22-23-16-09: Epoch 192
+	Training:   Mean Squared Error = 3.678550e-03, Mean Absolute Error = 4.848626e-02, Mean Absolute Percentage Error = 8.488243e-02
+
+2024-08-22-23-16-13: Epoch 193
+	Training:   Mean Squared Error = 3.942499e-03, Mean Absolute Error = 5.017328e-02, Mean Absolute Percentage Error = 8.778033e-02
+
+2024-08-22-23-16-17: Epoch 194
+	Training:   Mean Squared Error = 3.890322e-03, Mean Absolute Error = 4.980532e-02, Mean Absolute Percentage Error = 8.693844e-02
+
+2024-08-22-23-16-22: Epoch 195
+	Training:   Mean Squared Error = 3.976373e-03, Mean Absolute Error = 5.041236e-02, Mean Absolute Percentage Error = 8.821777e-02
+
+2024-08-22-23-16-26: Epoch 196
+	Training:   Mean Squared Error = 3.887081e-03, Mean Absolute Error = 4.985619e-02, Mean Absolute Percentage Error = 8.743825e-02
+
+2024-08-22-23-16-30: Epoch 197
+	Training:   Mean Squared Error = 3.803694e-03, Mean Absolute Error = 4.927122e-02, Mean Absolute Percentage Error = 8.631878e-02
+
+2024-08-22-23-16-34: Epoch 198
+	Training:   Mean Squared Error = 3.973625e-03, Mean Absolute Error = 5.045429e-02, Mean Absolute Percentage Error = 8.831498e-02
+
+2024-08-22-23-16-38: Epoch 199
+	Training:   Mean Squared Error = 3.775487e-03, Mean Absolute Error = 4.916294e-02, Mean Absolute Percentage Error = 8.617078e-02
+
+2024-08-22-23-16-42: Epoch 200
+	Training:   Mean Squared Error = 3.710733e-03, Mean Absolute Error = 4.864987e-02, Mean Absolute Percentage Error = 8.532956e-02
+	Validation: Mean Squared Error = 3.883041e-03, Mean Absolute Error = 4.960021e-02, Mean Absolute Percentage Error = 8.668535e-02
+	Testing:    Mean Squared Error = 3.259906e-03, Mean Absolute Error = 4.527637e-02, Mean Absolute Percentage Error = 8.423683e-02
+
+2024-08-22-23-16-47: Epoch 201
+	Training:   Mean Squared Error = 3.909746e-03, Mean Absolute Error = 5.006609e-02, Mean Absolute Percentage Error = 8.690788e-02
+
+2024-08-22-23-16-51: Epoch 202
+	Training:   Mean Squared Error = 4.018572e-03, Mean Absolute Error = 5.068933e-02, Mean Absolute Percentage Error = 8.851916e-02
+
+2024-08-22-23-16-55: Epoch 203
+	Training:   Mean Squared Error = 3.934202e-03, Mean Absolute Error = 5.014734e-02, Mean Absolute Percentage Error = 8.763951e-02
+
+2024-08-22-23-16-59: Epoch 204
+	Training:   Mean Squared Error = 3.946841e-03, Mean Absolute Error = 5.019242e-02, Mean Absolute Percentage Error = 8.802183e-02
+
+2024-08-22-23-17-03: Epoch 205
+	Training:   Mean Squared Error = 3.849638e-03, Mean Absolute Error = 4.955350e-02, Mean Absolute Percentage Error = 8.675712e-02
+
+2024-08-22-23-17-07: Epoch 206
+	Training:   Mean Squared Error = 3.831427e-03, Mean Absolute Error = 4.939409e-02, Mean Absolute Percentage Error = 8.635464e-02
+
+2024-08-22-23-17-11: Epoch 207
+	Training:   Mean Squared Error = 3.790477e-03, Mean Absolute Error = 4.921879e-02, Mean Absolute Percentage Error = 8.612094e-02
+
+2024-08-22-23-17-15: Epoch 208
+	Training:   Mean Squared Error = 3.711472e-03, Mean Absolute Error = 4.858493e-02, Mean Absolute Percentage Error = 8.520137e-02
+
+2024-08-22-23-17-19: Epoch 209
+	Training:   Mean Squared Error = 3.762698e-03, Mean Absolute Error = 4.908413e-02, Mean Absolute Percentage Error = 8.578470e-02
+
+2024-08-22-23-17-23: Epoch 210
+	Training:   Mean Squared Error = 3.723330e-03, Mean Absolute Error = 4.865584e-02, Mean Absolute Percentage Error = 8.512869e-02
+	Validation: Mean Squared Error = 3.861910e-03, Mean Absolute Error = 4.903245e-02, Mean Absolute Percentage Error = 8.646721e-02
+	Testing:    Mean Squared Error = 3.290213e-03, Mean Absolute Error = 4.513205e-02, Mean Absolute Percentage Error = 8.465832e-02
+
+2024-08-22-23-17-28: Epoch 211
+	Training:   Mean Squared Error = 4.091998e-03, Mean Absolute Error = 5.119985e-02, Mean Absolute Percentage Error = 8.872272e-02
+
+2024-08-22-23-17-32: Epoch 212
+	Training:   Mean Squared Error = 3.882366e-03, Mean Absolute Error = 4.966395e-02, Mean Absolute Percentage Error = 8.687253e-02
+
+2024-08-22-23-17-36: Epoch 213
+	Training:   Mean Squared Error = 3.797397e-03, Mean Absolute Error = 4.929665e-02, Mean Absolute Percentage Error = 8.617928e-02
+
+2024-08-22-23-17-40: Epoch 214
+	Training:   Mean Squared Error = 3.740073e-03, Mean Absolute Error = 4.893672e-02, Mean Absolute Percentage Error = 8.571954e-02
+
+2024-08-22-23-17-44: Epoch 215
+	Training:   Mean Squared Error = 3.802482e-03, Mean Absolute Error = 4.919436e-02, Mean Absolute Percentage Error = 8.589034e-02
+
+2024-08-22-23-17-49: Epoch 216
+	Training:   Mean Squared Error = 3.901763e-03, Mean Absolute Error = 4.986398e-02, Mean Absolute Percentage Error = 8.690242e-02
+
+2024-08-22-23-17-53: Epoch 217
+	Training:   Mean Squared Error = 4.072549e-03, Mean Absolute Error = 5.090335e-02, Mean Absolute Percentage Error = 8.859313e-02
+
+2024-08-22-23-17-57: Epoch 218
+	Training:   Mean Squared Error = 3.788308e-03, Mean Absolute Error = 4.903825e-02, Mean Absolute Percentage Error = 8.586231e-02
+
+2024-08-22-23-18-01: Epoch 219
+	Training:   Mean Squared Error = 3.809135e-03, Mean Absolute Error = 4.928210e-02, Mean Absolute Percentage Error = 8.646895e-02
+
+2024-08-22-23-18-05: Epoch 220
+	Training:   Mean Squared Error = 3.814714e-03, Mean Absolute Error = 4.939497e-02, Mean Absolute Percentage Error = 8.621562e-02
+	Validation: Mean Squared Error = 4.902509e-03, Mean Absolute Error = 5.775344e-02, Mean Absolute Percentage Error = 9.544320e-02
+	Testing:    Mean Squared Error = 4.268420e-03, Mean Absolute Error = 5.416417e-02, Mean Absolute Percentage Error = 9.593644e-02
+
+2024-08-22-23-18-10: Epoch 221
+	Training:   Mean Squared Error = 3.892801e-03, Mean Absolute Error = 4.985971e-02, Mean Absolute Percentage Error = 8.710256e-02
+
+2024-08-22-23-18-14: Epoch 222
+	Training:   Mean Squared Error = 3.745316e-03, Mean Absolute Error = 4.891861e-02, Mean Absolute Percentage Error = 8.548290e-02
+
+2024-08-22-23-18-18: Epoch 223
+	Training:   Mean Squared Error = 3.778422e-03, Mean Absolute Error = 4.896688e-02, Mean Absolute Percentage Error = 8.599973e-02
+
+2024-08-22-23-18-22: Epoch 224
+	Training:   Mean Squared Error = 3.850581e-03, Mean Absolute Error = 4.958777e-02, Mean Absolute Percentage Error = 8.668096e-02
+
+2024-08-22-23-18-26: Epoch 225
+	Training:   Mean Squared Error = 3.680573e-03, Mean Absolute Error = 4.837061e-02, Mean Absolute Percentage Error = 8.472288e-02
+
+2024-08-22-23-18-30: Epoch 226
+	Training:   Mean Squared Error = 3.903213e-03, Mean Absolute Error = 4.985925e-02, Mean Absolute Percentage Error = 8.680193e-02
+
+2024-08-22-23-18-34: Epoch 227
+	Training:   Mean Squared Error = 4.013083e-03, Mean Absolute Error = 5.073082e-02, Mean Absolute Percentage Error = 8.832473e-02
+
+2024-08-22-23-18-38: Epoch 228
+	Training:   Mean Squared Error = 3.810501e-03, Mean Absolute Error = 4.935117e-02, Mean Absolute Percentage Error = 8.592722e-02
+
+2024-08-22-23-18-42: Epoch 229
+	Training:   Mean Squared Error = 3.632209e-03, Mean Absolute Error = 4.811382e-02, Mean Absolute Percentage Error = 8.418022e-02
+
+2024-08-22-23-18-47: Epoch 230
+	Training:   Mean Squared Error = 3.846661e-03, Mean Absolute Error = 4.957647e-02, Mean Absolute Percentage Error = 8.622710e-02
+	Validation: Mean Squared Error = 4.092891e-03, Mean Absolute Error = 5.017076e-02, Mean Absolute Percentage Error = 8.984905e-02
+	Testing:    Mean Squared Error = 3.494956e-03, Mean Absolute Error = 4.623432e-02, Mean Absolute Percentage Error = 8.846324e-02
+
+2024-08-22-23-18-51: Epoch 231
+	Training:   Mean Squared Error = 3.726083e-03, Mean Absolute Error = 4.881230e-02, Mean Absolute Percentage Error = 8.530540e-02
+
+2024-08-22-23-18-55: Epoch 232
+	Training:   Mean Squared Error = 3.873963e-03, Mean Absolute Error = 4.968511e-02, Mean Absolute Percentage Error = 8.672047e-02
+
+2024-08-22-23-19-00: Epoch 233
+	Training:   Mean Squared Error = 3.840484e-03, Mean Absolute Error = 4.955959e-02, Mean Absolute Percentage Error = 8.627515e-02
+
+2024-08-22-23-19-05: Epoch 234
+	Training:   Mean Squared Error = 3.783363e-03, Mean Absolute Error = 4.923397e-02, Mean Absolute Percentage Error = 8.593455e-02
+
+2024-08-22-23-19-10: Epoch 235
+	Training:   Mean Squared Error = 4.138123e-03, Mean Absolute Error = 5.140626e-02, Mean Absolute Percentage Error = 8.945338e-02
+
+2024-08-22-23-19-15: Epoch 236
+	Training:   Mean Squared Error = 3.864552e-03, Mean Absolute Error = 4.961471e-02, Mean Absolute Percentage Error = 8.707657e-02
+
+2024-08-22-23-19-20: Epoch 237
+	Training:   Mean Squared Error = 4.166207e-03, Mean Absolute Error = 5.159089e-02, Mean Absolute Percentage Error = 8.959565e-02
+
+2024-08-22-23-19-25: Epoch 238
+	Training:   Mean Squared Error = 3.708161e-03, Mean Absolute Error = 4.861599e-02, Mean Absolute Percentage Error = 8.556439e-02
+
+2024-08-22-23-19-30: Epoch 239
+	Training:   Mean Squared Error = 3.837853e-03, Mean Absolute Error = 4.937136e-02, Mean Absolute Percentage Error = 8.644073e-02
+
+2024-08-22-23-19-36: Epoch 240
+	Training:   Mean Squared Error = 3.905500e-03, Mean Absolute Error = 5.005407e-02, Mean Absolute Percentage Error = 8.731962e-02
+	Validation: Mean Squared Error = 3.823553e-03, Mean Absolute Error = 5.001496e-02, Mean Absolute Percentage Error = 8.636242e-02
+	Testing:    Mean Squared Error = 3.232257e-03, Mean Absolute Error = 4.559990e-02, Mean Absolute Percentage Error = 8.428838e-02
+
+2024-08-22-23-19-41: Epoch 241
+	Training:   Mean Squared Error = 3.794390e-03, Mean Absolute Error = 4.925625e-02, Mean Absolute Percentage Error = 8.626398e-02
+
+2024-08-22-23-19-47: Epoch 242
+	Training:   Mean Squared Error = 3.754581e-03, Mean Absolute Error = 4.898125e-02, Mean Absolute Percentage Error = 8.588537e-02
+
+2024-08-22-23-19-52: Epoch 243
+	Training:   Mean Squared Error = 3.709668e-03, Mean Absolute Error = 4.859814e-02, Mean Absolute Percentage Error = 8.488422e-02
+
+2024-08-22-23-19-57: Epoch 244
+	Training:   Mean Squared Error = 3.920583e-03, Mean Absolute Error = 4.992533e-02, Mean Absolute Percentage Error = 8.713373e-02
+
+2024-08-22-23-20-02: Epoch 245
+	Training:   Mean Squared Error = 3.826722e-03, Mean Absolute Error = 4.936649e-02, Mean Absolute Percentage Error = 8.621857e-02
+
+2024-08-22-23-20-07: Epoch 246
+	Training:   Mean Squared Error = 3.682685e-03, Mean Absolute Error = 4.844162e-02, Mean Absolute Percentage Error = 8.492984e-02
+
+2024-08-22-23-20-12: Epoch 247
+	Training:   Mean Squared Error = 3.704334e-03, Mean Absolute Error = 4.854435e-02, Mean Absolute Percentage Error = 8.431826e-02
+
+2024-08-22-23-20-18: Epoch 248
+	Training:   Mean Squared Error = 3.816881e-03, Mean Absolute Error = 4.930159e-02, Mean Absolute Percentage Error = 8.598353e-02
+
+2024-08-22-23-20-23: Epoch 249
+	Training:   Mean Squared Error = 3.930728e-03, Mean Absolute Error = 5.021290e-02, Mean Absolute Percentage Error = 8.765414e-02
+
+2024-08-22-23-20-28: Epoch 250
+	Training:   Mean Squared Error = 3.994396e-03, Mean Absolute Error = 5.041309e-02, Mean Absolute Percentage Error = 8.794057e-02
+	Validation: Mean Squared Error = 4.125344e-03, Mean Absolute Error = 4.990836e-02, Mean Absolute Percentage Error = 9.049357e-02
+	Testing:    Mean Squared Error = 3.549816e-03, Mean Absolute Error = 4.652512e-02, Mean Absolute Percentage Error = 9.016779e-02
+
