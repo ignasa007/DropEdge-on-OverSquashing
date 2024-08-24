@@ -15,7 +15,6 @@ from dataset.constants import root, batch_size
 from dataset.base import BaseDataset
 from dataset.utils import create_loaders
 from model import Model
-from sensitivity.utils import compute_commute_times
 
 
 class Tranform:
@@ -38,6 +37,8 @@ class Tranform:
         return f'{root}/ZINCSynthetic/node-pairs/alpha={alpha}/{split}.pkl'
 
     def save_node_pairs(self, split, alpha):
+        
+        from sensitivity.utils import compute_commute_times
 
         dataset = ZINCTorch(root=f'{root}/ZINCSynthetic', subset=True, split=split)
         node_pairs = list()
