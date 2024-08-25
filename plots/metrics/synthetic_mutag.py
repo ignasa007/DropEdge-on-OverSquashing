@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from utils.parse_logs import parse_metrics
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--dataset', type=str, required=True)
+parser.add_argument('--dataset', type=str, required=True, choices=['SyntheticMUTAG_4', 'SyntheticMUTAG_6'])
 parser.add_argument('--metric', type=str, required=True)
 parser.add_argument('--gnns', nargs='+', default=('GCN',))
 parser.add_argument('--which', type=str, default=['Best'], choices=['Best', 'Final'])
@@ -29,11 +29,8 @@ depths = range(args.min_depth, args.max_depth+1)
 ncol = np.ceil(len(depths)/1)
 ps = np.round(np.arange(0.1, 1, 0.1), decimals=1)
 
-# results_dir = f'./results/max-pooling/{args.dataset}'
 results_dir = f'./results/synthetics/{args.dataset}'
 exp_dir = results_dir + '/{gnn}/L={depth}/P={p}'
-# results_dir = f'./results/sensitivity/model-store/{args.dataset}'
-# exp_dir = results_dir + '/P={p}'
 assets_dir = results_dir.replace('results', 'assets')
 
 ### RETRIEVE METRICS ###
