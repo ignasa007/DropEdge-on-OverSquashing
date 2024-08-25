@@ -7,7 +7,8 @@ format_dataset_name = {
     'ptc': 'PTC',
     'mutag': 'MUTAG',
     'pascal': 'Pascal',
-    'zinc': 'ZINC'
+    'syntheticzinc': 'SyntheticZINC',
+    'syntheticmutag': 'SyntheticMUTAG',
 }
 
 format_task_name = {
