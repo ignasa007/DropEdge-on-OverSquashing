@@ -27,7 +27,7 @@ def get_jacobian_norms(x, edge_index, i, dir_name, n_samples, use_trained):
         model.load_state_dict(state_dict)
     model.train()
 
-    jacobians = torch.zeros((config.output_dim, x.size(0), config.input_dim))
+    jacobians = torch.zeros((others.output_dim, x.size(0), others.input_dim))
     n_samples = n_samples if config.drop_p > 0. else 1
     for _ in range(n_samples):
         jacobians += jacrev(model, argnums=2)(i, edge_index, x)

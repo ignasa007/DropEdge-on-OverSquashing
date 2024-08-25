@@ -27,7 +27,7 @@ def get_jacobian_norms(molecule, dir_name, n_samples, use_trained):
         model.load_state_dict(state_dict)
     model.train()
 
-    jacobians = torch.zeros((molecule.num_nodes, config.gnn_layer_sizes[-1], molecule.num_nodes, config.input_dim))
+    jacobians = torch.zeros((molecule.num_nodes, config.gnn_layer_sizes[-1], molecule.num_nodes, others.input_dim))
     n_samples = n_samples if config.drop_p > 0. else 1
     for _ in range(n_samples):
         jacobians += jacrev(model, argnums=2)(molecule.edge_index, None, molecule.x)

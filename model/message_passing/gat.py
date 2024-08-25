@@ -8,7 +8,7 @@ from torch_geometric.utils import softmax
 from torch_geometric.typing import Adj, OptTensor
 from torch_geometric.nn.conv import GATConv
 
-from dropout.base import BaseDropout
+from model.dropout.base import BaseDropout
 from model.message_passing.pretreatment import ModelPretreatment
 
 
@@ -20,17 +20,20 @@ class GATLayer(GATConv):
         out_channels: int,
         drop_strategy: BaseDropout,
         activation: Module,
-        config: Namespace,
+        add_self_loops: bool = True,
+        normalize: bool = True,
+        others: Optional[Namespace] = None,
     ):
 
         super(GATLayer, self).__init__(
-            in_channels,
-            out_channels,
-            config.attention_heads,
+            in_channels=in_channels,
+            out_channels=out_channels,
+            heads=others.attention_heads,
             concat=False,
+            add_self_loops=add_self_loops,
         )
 
-        self.pt = ModelPretreatment(config.add_self_loops, config.normalize)
+        self.pt = ModelPretreatment(add_self_loops, normalize)
         self.activation = activation
         self.drop_strategy = drop_strategy
 

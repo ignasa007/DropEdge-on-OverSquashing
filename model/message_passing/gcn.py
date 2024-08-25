@@ -1,11 +1,12 @@
 from argparse import Namespace
+from typing import Optional
 
 from torch import Tensor
 from torch.nn import Module
 from torch_geometric.typing import Adj, OptTensor
 from torch_geometric.nn.conv import GCNConv
 
-from dropout.base import BaseDropout
+from model.dropout.base import BaseDropout
 from model.message_passing.pretreatment import ModelPretreatment
 
 
@@ -19,17 +20,19 @@ class GCNLayer(GCNConv):
         out_channels: int,
         drop_strategy: BaseDropout,
         activation: Module,
-        config: Namespace,
+        add_self_loops: bool = True,
+        normalize: bool = True,
+        others: Optional[Namespace] = None,
     ):
 
         super(GCNLayer, self).__init__(
-            in_channels,
-            out_channels,
-            add_self_loops=config.add_self_loops,
-            normalize=config.normalize
+            in_channels=in_channels,
+            out_channels=out_channels,
+            add_self_loops=add_self_loops,
+            normalize=normalize,
         )
         
-        self.pt = ModelPretreatment(config.add_self_loops, config.normalize)
+        self.pt = ModelPretreatment(add_self_loops, normalize)
         self.activation = activation
         self.drop_strategy = drop_strategy
 
