@@ -60,7 +60,7 @@ def process_graph_datum(datum, config, Ps, use_commute_times=False):
             model = initialize_architecture(config)
 
             out = torch.mean(torch.stack([
-                model(datum.x, datum.edge_index).detach() for _ in range(DROPEDGE_SAMPLES)
+                model(datum.x, datum.edge_index).detach() for _ in range(DROPEDGE_SAMPLES if P>0 else 1)
             ]), dim=0)
             out = out.abs()
             # normalize over each feature dimension
@@ -101,7 +101,7 @@ def main(args):
         except AssertionError:
             continue
 
-    fn = f'./results/signal-propagation/{args.vs}/{args.dataset}.pkl'
+    fn = f'./results/signal-propagation-temp/{args.vs}/{args.dataset}.pkl'
     os.makedirs(os.path.dirname(fn), exist_ok=True)
     with open(fn, 'wb') as f:
         pickle.dump(pairs, f, protocol=pickle.HIGHEST_PROTOCOL)
