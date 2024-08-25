@@ -16,12 +16,17 @@ def layer_sizes(args):
     return out
 
 
-def parse_arguments(return_unknown=False):
+def parse_arguments(return_others=False):
 
     parser = argparse.ArgumentParser()
 
     parser.add_argument(
-        '--dataset', type=str, required=True, choices=['Cora', 'CiteSeer', 'PubMed', 'Proteins', 'MUTAG', 'PTC', 'QM9', 'ZINC', 'Pascal'],
+        '--dataset', type=str, required=True,
+        choices=[
+            'Cora', 'CiteSeer', 'PubMed',
+            'Proteins', 'MUTAG', 'PTC', 'QM9',
+            'SyntheticZINC', 'SyntheticMUTAG', 'Pascal'
+        ],
         help='The dataset to be trained on.'
     )
     parser.add_argument(
@@ -42,26 +47,10 @@ def parse_arguments(return_unknown=False):
         help="Hidden layers' sizes for the GNN."
     )
     parser.add_argument(
-        '--attention_heads', type=int, default=None,
-        help='Number of attention heads (when GNN is GAT).'
-    )
-    parser.add_argument(
-        '--power_iter', type=int, default=None,
-        help='Number of power iteration steps (when GNN is APPNP).'
-    )
-    parser.add_argument(
-        '--teleport_p', type=float, default=None,
-        help='Teleport probability to use (when GNN is APPNP).'
-    )
-    parser.add_argument(
         '--gnn_activation', type=str, default='ReLU', choices=['Identity', 'ReLU', 'ELU', 'GeLU', 'Sigmoid', 'Tanh'],
         help='The non-linearity to use for message-passing.'
     )
 
-    parser.add_argument(
-        '--task', type=str, required=True, choices=['Node-C', 'Graph-C', 'Graph-R'],
-        help='The task to perform with the chosen dataset.'
-    )
     parser.add_argument(
         '--ffn_layer_sizes', type=str, nargs='*', default=[],
         help="Hidden layers' sizes for the readout FFN."
@@ -85,11 +74,11 @@ def parse_arguments(return_unknown=False):
         help='Number of epochs to train the model for.'
     )
     parser.add_argument(
-        '--learning_rate', type=float, default=1e-2,
+        '--learning_rate', type=float, default=1e-3,
         help='Learning rate for Adam optimizer.'
     )
     parser.add_argument(
-        '--weight_decay', type=float, default=5e-3,
+        '--weight_decay', type=float, default=5e-4,
         help='Weight decay for Adam optimizer.'
     )
 
@@ -108,17 +97,47 @@ def parse_arguments(return_unknown=False):
             '\tSpecial cases: skip to never save and -1 to save at the last epoch.'
     )
 
-    config, others = parser.parse_known_args()
+    config, _ = parser.parse_known_args()
     config.gnn_layer_sizes = layer_sizes(config.gnn_layer_sizes)
     config.ffn_layer_sizes = layer_sizes(config.ffn_layer_sizes)
 
-    if not return_unknown:
+    if not return_others:
         return config
-
-    other_args = argparse.Namespace()
-    for i in range(0, len(others), 2):
-        key = others[i].lstrip('--')
-        value = others[i+1]
-        setattr(other_args, key, value)
     
-    return config, other_args
+    parser = argparse.ArgumentParser()
+    
+    parser.add_argument(
+        '--gt_depth', type=int,
+        help='Depth of the ground-truth function (in case dataset is SyntheticMUTAG).'
+    )
+    parser.add_argument(
+        '--alpha', type=float,
+        help='Commute times percentile (in case dataset is SyntheticZINC).'
+    )
+
+    parser.add_argument(
+        '--attention_heads', type=int,
+        help='Number of attention heads (when GNN is GAT).'
+    )
+    parser.add_argument(
+        '--power_iter', type=int,
+        help='Number of power iteration steps (when GNN is APPNP).'
+    )
+    parser.add_argument(
+        '--teleport_p', type=float,
+        help='Teleport probability to use (when GNN is APPNP).'
+    )
+    parser.add_argument(
+        '--pooler', type=str, choices=['mean', 'add', 'max'],
+        help='Method used to pool node embeddings when task is at the graph-level.'
+    )
+    
+    others, unknown = parser.parse_known_args()
+
+    for i in range(0, len(unknown), 2):
+        key = unknown[i].lstrip('--')
+        value = unknown[i+1]
+        if not hasattr(config, key):
+            setattr(others, key, value)
+    
+    return config, others

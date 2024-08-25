@@ -10,14 +10,15 @@ from utils.logger import Logger
 from utils.format import *
 
 
-config, others = parse_arguments(return_unknown=True)
+config, others = parse_arguments(return_others=True)
 DEVICE = torch.device(f'cuda:{config.device_index}' if torch.cuda.is_available() and config.device_index is not None else 'cpu')
 
-dataset: BaseDataset = get_dataset(config.dataset, config.task, DEVICE)
-config.input_dim = dataset.num_features
-config.output_dim = dataset.output_dim
+dataset: BaseDataset = get_dataset(config.dataset, config=config, others=others, device=DEVICE)
+others.input_dim = dataset.num_features
+others.output_dim = dataset.output_dim
+others.task_name = dataset.task_name
 
-model = Model(config).to(device=DEVICE)
+model = Model(config, others).to(device=DEVICE)
 optimizer = Adam(model.parameters(), lr=config.learning_rate, weight_decay=config.weight_decay)
 
 logger = Logger(config, others)
