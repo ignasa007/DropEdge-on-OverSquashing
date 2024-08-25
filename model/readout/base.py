@@ -1,13 +1,19 @@
+from argparse import Namespace
 from typing import Union, Optional
+
 from torch import Tensor, BoolTensor
 from torch.nn import Module, Linear, Sequential
 
 
 class BaseHead(Module):
 
-    def __init__(self, layer_sizes: list, activation: Module):
+    def __init__(self, layer_sizes: list, activation: Module, others: Optional[Namespace]):
 
         super(BaseHead, self).__init__()
+
+        if others.task_name.startswith('graph'):
+            from model.readout.utils import get_pooler
+            self.pooler = get_pooler(others.pooler)
         
         module_list = []
         for in_channels, out_channels in zip(layer_sizes[:-1], layer_sizes[1:]):

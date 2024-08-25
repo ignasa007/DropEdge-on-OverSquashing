@@ -1,6 +1,5 @@
 from typing import Optional
 from torch import Tensor
-from torch_geometric.nn import global_mean_pool
 from model.readout.base import BaseHead
 
 
@@ -17,4 +16,4 @@ class GraphClassification(BaseHead):
             mask: tensor (N_1, N_2, ..., N_B) of shape (B,)
         '''
 
-        return global_mean_pool(x=node_repr, batch=mask)
+        return self.pooler(x=node_repr, batch=mask)
