@@ -1,7 +1,9 @@
-from torch import sigmoid, softmax, Tensor
+import torch
+from torch import Tensor
 from torch.nn import BCEWithLogitsLoss, CrossEntropyLoss
 from torchmetrics.classification import BinaryAccuracy, BinaryF1Score, BinaryAUROC, \
     MulticlassAccuracy, MulticlassF1Score, MulticlassAUROC
+
 from metrics.base import Metrics
 
 
@@ -15,13 +17,13 @@ class Classification(Metrics):
             raise TypeError(f'Expected `num_classes` to be an instance of `int` (got {type(num_classes)}).')
         
         if num_classes == 2:
-            self.nonlinearity = sigmoid
+            self.nonlinearity = torch.sigmoid
             self.loss_fn = lambda input, target: BCEWithLogitsLoss(reduction='sum')(input, target.float())
             self.accuracy_fn = BinaryAccuracy()
             self.f1score_fn = BinaryF1Score()
             self.auroc_fn = BinaryAUROC()
         elif num_classes > 2:
-            self.nonlinearity = lambda probs: softmax(probs, dim=-1)
+            self.nonlinearity = lambda probs: torch.softmax(probs, dim=-1)
             self.loss_fn = CrossEntropyLoss(reduction='sum')
             self.accuracy_fn = MulticlassAccuracy(num_classes)
             self.f1score_fn = MulticlassF1Score(num_classes)
