@@ -1,14 +1,7 @@
-from typing import Tuple, Iterable
-from torch import no_grad
+from typing import Tuple
+import torch
 from metrics import Metrics, Classification, Regression
 
-
-def validate_task(task_name: str, valid_tasks: Iterable, class_name: str = None):
-
-    formatted_name = task_name.replace('_', '-').lower()
-    if formatted_name not in valid_tasks:
-        raise ValueError('Parameter `task_name` not recognised for the given dataset'
-            + ' ' + f'(got task `{task_name}` for dataset {class_name}).')
     
 def set_metrics(task_name: str, num_classes: int) -> Tuple[Metrics, int]:
 
@@ -31,7 +24,6 @@ class BaseDataset:
 
     def __init__(self, task_name: str):
 
-        validate_task(task_name, valid_tasks=self.valid_tasks, class_name=self.__class__.__name__)
         self.metrics, self.output_dim = set_metrics(task_name, num_classes=self.num_classes)
         
     def reset_metrics(self):
@@ -50,7 +42,7 @@ class BaseDataset:
 
         raise NotImplementedError
     
-    @no_grad()
+    @torch.no_grad()
     def eval(self, model):
 
         raise NotImplementedError

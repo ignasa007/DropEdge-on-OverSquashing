@@ -1,6 +1,6 @@
 from typing import Tuple, Dict
 
-from torch import no_grad, device as Device
+import torch
 from torch_geometric.datasets import QM9 as QM9Torch
 from torch.optim import Optimizer
 
@@ -12,7 +12,7 @@ from model import Model
 
 class QM9(BaseDataset):
 
-    def __init__(self, task_name: str, device: Device):
+    def __init__(self, device: torch.device, **kwargs):
 
         dataset = QM9Torch(root=f'{root}/QM9').to(device)
         dataset = dataset.shuffle()
@@ -23,10 +23,10 @@ class QM9(BaseDataset):
             shuffle=True
         )
 
-        self.valid_tasks = {'graph-r', }
+        self.task_name = 'graph-r'
         self.num_features = dataset.num_features
         self.num_classes = dataset.num_classes
-        super(QM9, self).__init__(task_name)
+        super(QM9, self).__init__(self.task_name)
 
     def train(self, model: Model, optimizer: Optimizer):
 
@@ -42,7 +42,7 @@ class QM9(BaseDataset):
         train_metrics = self.compute_metrics()
         return train_metrics
     
-    @no_grad()
+    @torch.no_grad()
     def eval(self, model: Model) -> Tuple[Dict[str, float], Dict[str, float]]:
 
         model.eval()

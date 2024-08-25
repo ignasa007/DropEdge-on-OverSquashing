@@ -1,5 +1,6 @@
 from typing import Dict
-from torch import device as Device, no_grad
+
+import torch
 from torch_geometric.datasets import LRGBDataset as LRGBDatasetTorch
 from torch.optim import Optimizer
 
@@ -11,7 +12,7 @@ from model import Model
 
 class LRGBDataset(BaseDataset):
 
-    def __init__(self, name: str, task_name: str, device: Device):
+    def __init__(self, name: str, device: torch.device, **kwargs):
 
         train, val, test = (
             LRGBDatasetTorch(root=root, name=name, split=split).to(device).shuffle()
@@ -27,10 +28,10 @@ class LRGBDataset(BaseDataset):
             shuffle=True
         )
 
-        self.valid_tasks = {'node-c', }
+        self.task_name = 'node-c'
         self.num_features = train.num_features
         self.num_classes = train.num_classes
-        super(LRGBDataset, self).__init__(task_name)
+        super(LRGBDataset, self).__init__(self.task_name)
 
     def train(self, model: Model, optimizer: Optimizer):
 
@@ -46,7 +47,7 @@ class LRGBDataset(BaseDataset):
         train_metrics = self.compute_metrics()
         return train_metrics
     
-    @no_grad()
+    @torch.no_grad()
     def eval(self, model: Model) -> Dict[str, float]:
 
         model.eval()
@@ -65,5 +66,5 @@ class LRGBDataset(BaseDataset):
     
 
 class Pascal(LRGBDataset):
-    def __init__(self, task_name: str, device: Device):
-        super(Pascal, self).__init__(name='PascalVOC-SP', task_name=task_name, device=device)
+    def __init__(self, **kwargs):
+        super(Pascal, self).__init__(name='PascalVOC-SP', **kwargs)

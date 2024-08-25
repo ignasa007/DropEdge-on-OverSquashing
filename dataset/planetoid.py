@@ -1,5 +1,6 @@
 from typing import Tuple, Dict
-from torch import no_grad, device as Device
+
+import torch
 from torch_geometric.datasets import Planetoid as PlanetoidTorch
 from torch.optim import Optimizer
 
@@ -10,7 +11,7 @@ from model import Model
 
 class Planetoid(BaseDataset):
 
-    def __init__(self, name: str, task_name: str, device: Device):
+    def __init__(self, name: str, device: torch.device, **kwargs):
 
         dataset = PlanetoidTorch(root=f'{root}/Planetoid', name=name, split='full').to(device)
 
@@ -24,10 +25,10 @@ class Planetoid(BaseDataset):
         self.val_mask = dataset.val_mask
         self.test_mask = dataset.test_mask
 
-        self.valid_tasks = {'node-c', }
+        self.task_name = 'node-c'
         self.num_features = dataset.num_features
         self.num_classes = dataset.num_classes
-        super(Planetoid, self).__init__(task_name)
+        super(Planetoid, self).__init__(self.task_name)
 
     def train(self, model: Model, optimizer: Optimizer) -> Dict[str, float]:
 
@@ -42,7 +43,7 @@ class Planetoid(BaseDataset):
         train_metrics = self.compute_metrics()
         return train_metrics
     
-    @no_grad()
+    @torch.no_grad()
     def eval(self, model: Model) -> Tuple[Dict[str, float], Dict[str, float]]:
 
         model.eval()
@@ -57,15 +58,13 @@ class Planetoid(BaseDataset):
     
 
 class Cora(Planetoid):
-    def __init__(self, task_name: str, device: Device):
-        super(Cora, self).__init__(name='Cora', task_name=task_name, device=device)
-
+    def __init__(self, **kwargs):
+        super(Cora, self).__init__(name='Cora', **kwargs)
 
 class CiteSeer(Planetoid):
-    def __init__(self, task_name: str, device: Device):
-        super(CiteSeer, self).__init__(name='CiteSeer', task_name=task_name, device=device)
-
+    def __init__(self, **kwargs):
+        super(CiteSeer, self).__init__(name='CiteSeer', **kwargs)
 
 class PubMed(Planetoid):
-    def __init__(self, task_name: str, device: Device):
-        super(PubMed, self).__init__(name='PubMed', task_name=task_name, device=device)
+    def __init__(self, **kwargs):
+        super(PubMed, self).__init__(name='PubMed', **kwargs)

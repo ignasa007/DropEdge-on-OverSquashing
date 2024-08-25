@@ -1,4 +1,4 @@
-from torch import std_mean
+import torch
 from torch_geometric.loader import DataLoader
 
 from dataset.constants import Splits, batch_size
@@ -18,7 +18,7 @@ def normalize_features(train, *others):
 
     out = ()
 
-    std, mean = std_mean(train.x, dim=0, keepdim=True)
+    std, mean = torch.std_mean(train.x, dim=0, keepdim=True)
     train.x = (train.x - mean) / std
     out += (train,)
 
@@ -36,7 +36,7 @@ def normalize_labels(train, *others):
 
     out = ()
 
-    std, mean = std_mean(train.y, dim=0, keepdim=True)
+    std, mean = torch.std_mean(train.y, dim=0, keepdim=True)
     train.y = (train.y - mean) / std
     out += (train,)
 
