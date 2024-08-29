@@ -16,6 +16,9 @@ class Model(Module):
     def __init__(self, config: Namespace, others: Optional[Namespace] = None):
         
         super(Model, self).__init__()
+
+        if others is None:
+            others = config
         
         drop_strategy = get_dropout(config.dropout)(config.drop_p)
         activation = get_activation(config.gnn_activation)()
