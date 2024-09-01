@@ -54,6 +54,7 @@ def process_graph_datum(datum, config, Ps, new_implementation, use_commute_time)
         else:
             mask = torch.Tensor([True]*distances.size(0)).type(torch.bool)
         total_ct_or_er = torch.sum(ct_or_er[mask, source])
+
         x = torch.zeros_like(datum.x)
         x[source] = torch.randn_like(datum.x[source])
         x[source] = x[source].softmax(dim=-1)
@@ -67,18 +68,19 @@ def process_graph_datum(datum, config, Ps, new_implementation, use_commute_time)
             out = torch.mean(torch.stack([
                 model(datum.x, datum.edge_index).detach()
                 for _ in range(DROPEDGE_SAMPLES if P>0 else 1)
-            ]), dim=0)
+            ]), dim=0).detach()
             assert torch.all(out[~mask, :] == 0.)
             out = out[mask, :]
 
             if new_implementation:  # normalize over each feature dimension
-                out = (out.abs() / out.abs().sum(dim=0, keepdims=True))
+                out = out.abs() / out.abs().sum(dim=0, keepdims=True)
             else:                   # normalize over each node
-                out = (out / out.abs().sum(dim=1, keepdims=True))
+                out = out / out.abs().sum(dim=1, keepdims=True)
+                # out = out / out.sum()
             out = torch.nan_to_num(out, nan=0.0)
             propagation_distance = (out * distances[mask, source][:, None]).sum() \
                 / (out.size(1) * distances[mask, source].max())
-
+            
             pairs_runaway[P].append((total_ct_or_er, propagation_distance))
 
     # averaging over sampled source nodes
