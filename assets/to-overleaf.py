@@ -41,6 +41,10 @@ for dir in args.dirs:
     if dir in ('__pycache__', 'overleaf'):
         continue
 
+    if not os.path.isdir(dir):
+        print(f'Path {dir} not found.')
+        continue
+
     src_names = [
         f'{dirpath}/{f}'.replace('\\', '/')
         for (dirpath, _, filenames) in os.walk(dir) 
