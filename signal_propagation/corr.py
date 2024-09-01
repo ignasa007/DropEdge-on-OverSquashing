@@ -13,7 +13,7 @@ def main(dataset_name, results_dir, assets_dir):
     with open(f'{results_dir}/{dataset_name}.pkl', 'rb') as f:
         pairs = pickle.load(f)
 
-    Ps = np.arange(0.0, 1.0, 0.1)[::2]
+    Ps = np.arange(0.0, 1.0, 0.1)
     data = np.array([list(zip(*pairs[P]))[1] for P in Ps])
     corr = wilcoxon(np.expand_dims(data, 0) - np.expand_dims(data, 1), alternative='greater', zero_method='zsplit', axis=2)
 
