@@ -26,14 +26,14 @@ def main(results_dir, assets_dir, dataset_name, versus, halflife):
     with open(f'{results_dir}/{dataset_name}.pkl', 'rb') as f:
         pairs = pickle.load(f)
 
-    Ps = np.arange(0.0, 1.0, 0.1)
+    Ps = (0.0, 0.8)
     fig, ax = plt.subplots(1, 1)
     
-    for P in Ps[::8]:
+    for P in Ps:
         data = np.array(pairs[P]).T
         data = data[:, data[0].argsort()]
         data = (data - data.min(axis=1, keepdims=True)) / (data.max(axis=1, keepdims=True) - data.min(axis=1, keepdims=True))
-        smooth_plot(*(data[:, 1:]), ax=ax, label=f'P={P:.1f}', halflife=halflife)
+        smooth_plot(*data, ax=ax, label=f'P={P:.1f}', halflife=halflife)
 
     ax.set_xlabel(versus, fontsize=14)
     ax.set_ylabel('Signal Propagation', fontsize=14)
