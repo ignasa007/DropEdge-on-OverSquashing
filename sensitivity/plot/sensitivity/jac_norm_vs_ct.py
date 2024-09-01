@@ -18,8 +18,8 @@ args = parser.parse_args()
 args.dataset = format_dataset_name[args.dataset.lower()]
 
 L = 6
-models_dir = f'./results/sensitivity/model-store/{args.dataset}'
-jac_norms_dir = f'./results/sensitivity/jac-norms-store/{args.dataset}'
+models_dir = f'./results/sensitivity/model-store/{format_dataset_name[args.dataset.lower()]}'
+jac_norms_dir = f'./results/sensitivity/jac-norms-store/{format_dataset_name[args.dataset.lower()]}'
 
 for trained in ('untrained', 'trained'):
 
@@ -34,6 +34,9 @@ for trained in ('untrained', 'trained'):
         
         for timestamp in os.listdir(f'{models_dir}/{P_dir}'):
 
+            if not os.path.isfile(f'{models_dir}/{P_dir}/{timestamp}/indices.pkl'):
+                print(f'{models_dir}/{P_dir}/{timestamp}/indices.pkl')
+                continue
             with open(f'{models_dir}/{P_dir}/{timestamp}/indices.pkl', 'rb') as f:
                 indices = pickle.load(f)
 
@@ -73,7 +76,7 @@ for trained in ('untrained', 'trained'):
         x_ct, mean, std = map(lambda x: x[mask], (x_ct, mean, std))
         xlim = max(xlim, x_ct.max().item())
         p = ax.plot(x_ct, mean, label=f'P = {P}')
-        ax.fill_between(x_ct, mean-std, mean+std, alpha=0.2)
+        # ax.fill_between(x_ct, mean-std, mean+std, alpha=0.2)
 
     ax.set_xlim(xmax=min(600, xlim))
     ax.set_ylim(ymin=1e-6)
