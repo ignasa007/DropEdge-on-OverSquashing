@@ -75,7 +75,7 @@ for trained in ('untrained', 'trained'):
         mask = mean-std > 0
         x_ct, mean, std = map(lambda x: x[mask], (x_ct, mean, std))
         xlim = max(xlim, x_ct.max().item())
-        p = ax.plot(x_ct, mean, label=f'P = {P}')
+        p = ax.plot(x_ct, mean, label=f'q = {P}')
         # ax.fill_between(x_ct, mean-std, mean+std, alpha=0.2)
 
     ax.set_xlim(xmax=min(600, xlim))

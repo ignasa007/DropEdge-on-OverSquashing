@@ -58,7 +58,7 @@ for trained in ('untrained', 'trained'):
         else:
             std, mean = torch.std_mean(torch.stack(mean_jac_norms, dim=0), dim=0)
         x = torch.arange(mean.size(0))
-        p = ax.plot(x, mean, label=f'P = {P}')
+        p = ax.plot(x, mean, label=f'q = {P}')
         ax.fill_between(x, mean-std, mean+std, alpha=0.2)
 
     ax.set_xlabel('Shortest Distances')

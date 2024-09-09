@@ -53,10 +53,14 @@ for m in tqdm(range(MOLECULE_SAMPLES)):
         
         non_diag = non_diag.unsqueeze(dim=1).repeat(1, degrees.size(0)) * A
         diag = torch.diag(diag)
-        P_p = torch.where(diag>0., diag, non_diag)
-        P_p_L = torch.matrix_power(P_p, L).flatten()
+        P = torch.where(diag>0., diag, non_diag)
+        P_l = torch.eye(P.size(0))
+        P_L = P_l.clone()
+        for l in range(1, L+1):
+            P_l = P @ P_l
+            P_L += P_l
         
-        y_sd = bin_jac_norms(P_p_L, shortest_distances, x_sd, agg='mean')
+        y_sd = bin_jac_norms(P_L, shortest_distances, x_sd, agg='mean')
         sum_sensitivity[p][m, x_sd] += y_sd
         count_sensitivity[p][m, x_sd] += 1
 
@@ -70,13 +74,13 @@ for p in ps:
 
 ax.set_yscale('log')
 ax.set_xlabel('Shortest Distance', fontsize=14)
-ax.set_ylabel(rf'$\left(\mathbb{{E}}\left[\hat{{A}}^{{asym}}\right]^{{{L}}}\right)_{{ij}}$', fontsize=14)
+ax.set_ylabel(rf'$\sum_{{\ell=0}}^{{6}} \left(\mathbb{{E}}\left[\hat{{A}}^{{asym}}\right]^{{\ell}}\right)_{{ij}}$', fontsize=14)
 ax.set_title(args.dataset, fontsize=14)
 ax.grid()
 
 handles, labels = ax.get_legend_handles_labels()
 fig.legend(handles, labels, loc='lower center', ncol=5, bbox_to_anchor = (0, -0.07, 1, 1))
 fig.tight_layout()
-fn = f'./assets/linear-gcn/asymmetric/{args.dataset}.png'
+fn = f'./assets/linear-gcn/black_extension/{args.dataset}.png'
 os.makedirs(os.path.dirname(fn), exist_ok=True)
 plt.savefig(fn, bbox_inches='tight')

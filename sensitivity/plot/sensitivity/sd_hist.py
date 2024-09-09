@@ -53,7 +53,7 @@ for trained, ax in zip(('untrained', 'trained'), axs):
             delta = v / mean_jac_norms[0] - 1.
             delta[delta>1000.] = torch.nan
             x_sd, = torch.where(~delta.isnan())
-            ax.plot(x_sd, delta[x_sd], label=f'P = {k/100:.1f}')
+            ax.plot(x_sd, delta[x_sd], label=f'q = {k/100:.1f}')
 
     ax.set_xlabel('Shortest Distances')
     ax.set_ylabel('Sensitivity Change')

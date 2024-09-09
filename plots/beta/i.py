@@ -15,7 +15,7 @@ for degree, y in zip(degrees, ys):
 
 ax.set_yticks(yticks, yticks)
 ax.set_xlabel('DropEdge Probability', fontsize=14)
-ax.set_ylabel(r'$\beta_p^{(i)}$', fontsize=14)
+ax.set_ylabel(r'$\beta_i^{(q)}$', fontsize=14)
 ax.grid()
 ax.legend()
 
@@ -26,7 +26,7 @@ for degree, y in zip(degrees, ys-degrees[:,None]):
 yticks = yticks[:-1]
 ax.set_yticks(yticks, yticks)
 ax.set_xlabel('DropEdge Probability', fontsize=14)
-ax.set_ylabel(r'$\beta_p^{(i)}-\beta_0^{(i)}$', fontsize=14)
+ax.set_ylabel(r'$\beta_i^{(q)}-\beta_i^{(0)}$', fontsize=14)
 ax.grid()
 ax.legend()
 
@@ -36,7 +36,7 @@ for degree, y in zip(degrees, ys/degrees[:,None]):
 
 ax.set_yticks(yticks, yticks)
 ax.set_xlabel('DropEdge Probability', fontsize=14)
-ax.set_ylabel(r'$\beta_p^{(i)}/\beta_0^{(i)}$', fontsize=14)
+ax.set_ylabel(r'$\beta_i^{(q)}/\beta_i^{(0)}$', fontsize=14)
 ax.grid()
 ax.legend()
 

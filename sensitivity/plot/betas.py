@@ -14,11 +14,11 @@ for i, P in zip(indices, Ps):
     
     heights, bin_edges = torch.histogram(betas, bins=10)
     widths = torch.diff(bin_edges)
-    axs_bar.bar(bin_edges[:-1], heights, width=widths, edgecolor='black', align='edge', label=f'P = {P:.2f}')
+    axs_bar.bar(bin_edges[:-1], heights, width=widths, edgecolor='black', align='edge', label=f'q = {P:.2f}')
     
     bin_centers = bin_edges[:-1] + widths/2
     heights, bin_centers = map(lambda x: x[heights!=0.], (heights, bin_centers))
-    axs_plot.plot(bin_centers, heights, label=f'P = {P:.2f}')
+    axs_plot.plot(bin_centers, heights, label=f'q = {P:.2f}')
 
 for axs in (axs_bar, axs_plot):
     axs.set_xlabel(r'$\beta_P/\beta_0$')

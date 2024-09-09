@@ -71,7 +71,7 @@ for P_dir in tqdm(os.listdir(models_dir)):
             print(f'Skipping {metric_name} for P = {P}')
             continue
         mean, std = np.mean(ys[metric_name], axis=0), np.std(ys[metric_name], axis=0)
-        p = ax.plot(x, mean, label=f'P = {P}')
+        p = ax.plot(x, mean, label=f'q = {P}')
         ax.fill_between(x, mean-std, mean+std, color=p[-1].get_color(), alpha=0.2)
         # ax.scatter(x[markers], y[markers], color=p[-1].get_color())
         # ax.scatter(x[~markers], y[~markers], facecolors='none', edgecolors=p[-1].get_color())

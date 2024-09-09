@@ -35,10 +35,10 @@ for dataset_name, ax in zip(datasets, axs):
     for P, ratio in zip(Ps, ratios):
         counts, bin_edges = torch.histogram(ratio, bins=50, range=range)
         bin_mids = (bin_edges[:-1] + bin_edges[1:]) / 2
-        ax.bar(bin_mids, counts/len(ratio), width=bin_edges.diff(), label=f'P = {P}', alpha=0.8)
+        ax.bar(bin_mids, counts/len(ratio), width=bin_edges.diff(), label=f'q = {P}', alpha=0.8)
 
     ax.set_title(dataset_name.split('_')[0], fontsize=16)
-    ax.set_xlabel(r'$\beta_p/\beta_0$', fontsize=14)
+    ax.set_xlabel(r'$\beta^{\left(q\right)}/\beta^{\left(0\right)}$', fontsize=14)
     axs[0].set_ylabel('Proportion of Graphs', fontsize=14)
 
     ax.grid()

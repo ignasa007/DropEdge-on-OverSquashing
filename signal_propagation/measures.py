@@ -20,7 +20,7 @@ def initialize_architecture(config):
 
     model = Model(config)
     for mp_layer in model.message_passing:
-        mp_layer.lin.weight.data = 2*torch.ones_like(mp_layer.lin.weight.data)
+        mp_layer.lin.weight.data = torch.ones_like(mp_layer.lin.weight.data)
         mp_layer.bias = None
     model.eval()
     
@@ -73,11 +73,7 @@ def main(edge_index, source):
     config.gnn_layer_sizes = [x.size(1)] * 2
     config.task_name = 'Graph-C'
 
-    # print('Effective Resistances')
-    # print('Old Implementation')
     total_resistance, old_implementation = process_graph_datum(x, edge_index, source, config, False, False, False)
-    # print('Commute Times')
-    # print('New Implementation')
     total_commute_time, new_implementation = process_graph_datum(x, edge_index, source, config, True, True, False)
     print(f'Total resistance   = ${total_resistance:.2f}$ \\\\')
     print(f'Total commute time = ${total_commute_time:.2f}$ \\\\')
@@ -156,18 +152,14 @@ if __name__ == '__main__':
 
     print('4-cycle with a source connected to all nodes')
     edge_index = torch.tensor([
-        [1, 2, 2, 3, 3, 4, 4, 1,
-         0, 0, 0, 0, 1, 2, 3, 4],
-        [2, 1, 3, 2, 4, 3, 1, 4,
-         1, 2, 3, 4, 0, 0, 0, 0]
+        [0, 0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4],
+        [1, 2, 3, 4, 0, 2, 4, 0, 1, 3, 0, 2, 4, 0, 1, 3]
     ])
     main(edge_index, source=0)
 
     print('5-chain with the source connected to the corners')
     edge_index = torch.tensor([
-        [0, 1, 1, 2, 2, 3, 3, 4,
-         2, 0, 2, 4],
-        [1, 0, 2, 1, 3, 2, 4, 3,
-         0, 2, 4, 2]
+        [0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4],
+        [1, 2, 3, 4, 0, 2, 0, 1, 0, 4, 0, 3]
     ])
-    main(edge_index, source=2)
+    main(edge_index, source=0)

@@ -62,7 +62,7 @@ for trained, ax in zip(('untrained', 'trained'), axs):
         if k != 0.:
             delta = 100 * (v / mean_jac_norms[0] - 1.)
             delta[delta>1000.] = torch.nan
-            ax.plot(torch.arange(v.size(0))*BIN_SIZE, delta, label=f'P = {k/100:.1f}')
+            ax.plot(torch.arange(v.size(0))*BIN_SIZE, delta, label=f'q = {k/100:.1f}')
 
     ax.set_xlabel('Commute Times')
     ax.set_ylabel('Sensitivity Change (%)')

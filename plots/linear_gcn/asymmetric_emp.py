@@ -73,7 +73,7 @@ for p in ps:
     dim_to_keep = (count_sensitivity[p]>0).any(dim=0)
     x = torch.where(dim_to_keep)[0]
     y = sum_sensitivity[p][:, dim_to_keep].sum(dim=0) / count_sensitivity[p][:, dim_to_keep].sum(dim=0)
-    ax.plot(x, y, label=f'P = {p:.1f}')
+    ax.plot(x, y, label=f'q = {p:.1f}')
 
 ax.set_yscale('log')
 ax.set_xlabel('Shortest Distance', fontsize=14)
