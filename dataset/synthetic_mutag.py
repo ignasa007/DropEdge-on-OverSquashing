@@ -5,7 +5,7 @@ import torch
 from torch_geometric.datasets import TUDataset as TUDatasetTorch
 from torch.optim import Optimizer
 
-from dataset.constants import root, Splits, batch_size
+from dataset.constants import root, batch_size
 from dataset.base import BaseDataset
 from dataset.utils import split_dataset, create_loaders
 from model import Model
@@ -53,7 +53,7 @@ class SyntheticMUTAG(BaseDataset):
         dataset = dataset.shuffle()
 
         self.train_loader, self.val_loader, self.test_loader = create_loaders(
-            split_dataset(dataset, Splits.train_split, Splits.val_split, Splits.test_split),
+            split_dataset(dataset),
             batch_size=batch_size,
             shuffle=True
         )

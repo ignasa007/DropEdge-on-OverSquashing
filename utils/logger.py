@@ -22,7 +22,7 @@ class Logger:
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/synthetics/{config.dataset}_{others.gt_depth}/{config.gnn}/L={len(config.gnn_layer_sizes)}/P={config.drop_p:.1f}/{get_time()}'
+        self.exp_dir = f'./results/{config.dropout}/{config.dataset}/{config.gnn}/L={len(config.gnn_layer_sizes)}/P={config.drop_p:.1f}/{get_time()}'
         os.makedirs(self.exp_dir)
         
         self.log(''.join(f'{k} = {v}\n' for k, v in vars(config).items()), with_time=False)

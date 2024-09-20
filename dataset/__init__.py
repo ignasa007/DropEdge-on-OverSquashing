@@ -5,6 +5,9 @@ from dataset.tudataset import Proteins, PTC, MUTAG
 from dataset.lrgb import Pascal
 from dataset.synthetic_zinc import SyntheticZINC
 from dataset.synthetic_mutag import SyntheticMUTAG
+from dataset.twitch import TwitchDE
+from dataset.actor import Actor
+from dataset.wikipedia import Chameleon, Crocodile, Squirrel
 
 
 def get_dataset(dataset_name: str, **kwargs) -> BaseDataset:
@@ -20,6 +23,11 @@ def get_dataset(dataset_name: str, **kwargs) -> BaseDataset:
         'pascal': Pascal,
         'syntheticzinc': SyntheticZINC,
         'syntheticmutag': SyntheticMUTAG,
+        'twitchde': TwitchDE,
+        'actor': Actor,
+        'chameleon': Chameleon,
+        'crocodile': Crocodile,
+        'squirrel': Squirrel,
     }
     
     formatted_name = dataset_name.lower()

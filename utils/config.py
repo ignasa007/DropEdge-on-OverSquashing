@@ -25,7 +25,9 @@ def parse_arguments(return_others=False):
         choices=[
             'Cora', 'CiteSeer', 'PubMed',
             'Proteins', 'MUTAG', 'PTC', 'QM9',
-            'SyntheticZINC', 'SyntheticMUTAG', 'Pascal'
+            'SyntheticZINC', 'SyntheticMUTAG', 'Pascal',
+            'TwitchDE', 'Actor',
+            'Chameleon', 'Crocodile', 'Squirrel',
         ],
         help='The dataset to be trained on.'
     )
@@ -61,7 +63,7 @@ def parse_arguments(return_others=False):
     )
 
     parser.add_argument(
-        '--dropout', type=str, required=True, choices=['Dropout', 'DropEdge', 'DropNode', 'DropMessage', 'DropGNN'],
+        '--dropout', type=str, required=True, choices=['Dropout', 'DropEdge', 'DropNode', 'DropMessage', 'DropGNN', 'DropSens'],
         help='The dropping method.'
     )
     parser.add_argument(
@@ -134,9 +136,18 @@ def parse_arguments(return_others=False):
     
     others, unknown = parser.parse_known_args()
 
-    for i in range(0, len(unknown), 2):
-        key = unknown[i].lstrip('--')
-        value = unknown[i+1]
+    i = 0
+    while i < len(unknown):
+        assert unknown[i].startswith('--')
+        key = unknown[i].lstrip('--'); i += 1
+        if i == len(unknown):
+            value = None
+        else:
+            value = list()
+            while i < len(unknown) and not unknown[i].startswith('--'):
+                value.append(unknown[i]); i += 1
+            if len(value) == 0: value = None
+            elif len(value) == 1: value = value[0]
         if not hasattr(config, key):
             setattr(others, key, value)
     

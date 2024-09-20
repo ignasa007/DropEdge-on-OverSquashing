@@ -4,7 +4,7 @@ import torch
 from torch_geometric.datasets import QM9 as QM9Torch
 from torch.optim import Optimizer
 
-from dataset.constants import root, Splits, batch_size
+from dataset.constants import root, batch_size
 from dataset.base import BaseDataset
 from dataset.utils import split_dataset, normalize_features, normalize_labels, create_loaders
 from model import Model
@@ -18,7 +18,7 @@ class QM9(BaseDataset):
         dataset = dataset.shuffle()
 
         self.train_loader, self.val_loader, self.test_loader = create_loaders(
-            normalize_labels(*normalize_features(*split_dataset(dataset, Splits.train_split, Splits.val_split, Splits.test_split))),
+            normalize_labels(*normalize_features(*split_dataset(dataset))),
             batch_size=batch_size,
             shuffle=True
         )

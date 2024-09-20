@@ -9,6 +9,11 @@ format_dataset_name = {
     'pascal': 'Pascal',
     'syntheticzinc': 'SyntheticZINC',
     'syntheticmutag': 'SyntheticMUTAG',
+    'twitchde': 'TwitchDE',
+    'actor': 'Actor',
+    'chameleon': 'Chameleon',
+    'crocodile': 'Crocodile',
+    'squirrel': 'Squirrel',
 }
 
 format_task_name = {
@@ -30,6 +35,7 @@ format_dropout_name = {
     'drop-message': 'DropMessage', 'dropmessage': 'DropMessage',
     'drop-gnn': 'DropGNN', 'dropgnn': 'DropGNN',
     'drop-agg': 'DropAgg', 'dropagg': 'DropAgg',
+    'drop-sens': 'DropSens', 'dropsens': 'DropSens',
 }
 
 format_activation_name = {

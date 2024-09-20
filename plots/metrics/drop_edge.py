@@ -29,7 +29,7 @@ depths = range(args.min_depth, args.max_depth+1)
 ncol = np.ceil(len(depths)/1)
 ps = np.round(np.arange(0.1, 1, 0.1), decimals=1)
 
-results_dir = f'./results/drop-edge/model-store/{args.dataset}'
+results_dir = f'./results/drop-edge/{args.dataset}'
 exp_dir = results_dir + '/{gnn}/L={depth}/P={p}'
 assets_dir = results_dir.replace('results', 'assets')
 

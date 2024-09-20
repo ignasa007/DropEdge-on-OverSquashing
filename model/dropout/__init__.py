@@ -4,7 +4,7 @@ from model.dropout.drop_edge import DropEdge
 from model.dropout.drop_message import DropMessage
 from model.dropout.drop_gnn import DropGNN
 from model.dropout.drop_agg import DropAgg
-
+from model.dropout.drop_sens import DropSens
 
 def get_dropout(dropout_name: str):
 
@@ -15,6 +15,7 @@ def get_dropout(dropout_name: str):
         'dropmessage': DropMessage,
         'dropgnn': DropGNN,
         'dropagg': DropAgg,
+        'dropsens': DropSens,
     }
 
     formatted_name = dropout_name.replace('-', '').lower()
