@@ -24,9 +24,9 @@ class DropSens(BaseDropout):
 
         if not hasattr(self, 'q_d'):
             degrees = degree(edge_index[1])
-            self.q_d = self.dropout_prob ** (1/degrees[edge_index[1]])
-        # print(edge_index[1][:10], degrees[:10], degrees[edge_index[1]][:10], self.q_d[:10], sep='\n'); import sys; sys.exit()
-        edge_mask = torch.bernoulli(self.q_d).bool()
+            self.q_d = torch.clip(self.dropout_prob ** (1/degrees[edge_index[1]]), max=0.5)
+        
+        edge_mask = torch.rand(edge_index.size(1)) >= self.q_d
         edge_index = edge_index[:, edge_mask]
         edge_attr = edge_attr[edge_mask] if edge_attr is not None else None
 

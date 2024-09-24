@@ -22,13 +22,6 @@ def parse_arguments(return_others=False):
 
     parser.add_argument(
         '--dataset', type=str, required=True,
-        choices=[
-            'Cora', 'CiteSeer', 'PubMed',
-            'Proteins', 'MUTAG', 'PTC', 'QM9',
-            'SyntheticZINC', 'SyntheticMUTAG', 'Pascal',
-            'TwitchDE', 'Actor',
-            'Chameleon', 'Crocodile', 'Squirrel',
-        ],
         help='The dataset to be trained on.'
     )
     parser.add_argument(
@@ -41,7 +34,7 @@ def parse_arguments(return_others=False):
     )
 
     parser.add_argument(
-        '--gnn', type=str, required=True, choices=['GCN', 'GAT', 'APPNP'],
+        '--gnn', type=str, required=True,
         help='The backbone model.'
     )
     parser.add_argument(
@@ -49,7 +42,7 @@ def parse_arguments(return_others=False):
         help="Hidden layers' sizes for the GNN."
     )
     parser.add_argument(
-        '--gnn_activation', type=str, default='ReLU', choices=['Identity', 'ReLU', 'ELU', 'GeLU', 'Sigmoid', 'Tanh'],
+        '--gnn_activation', type=str, default='ReLU',
         help='The non-linearity to use for message-passing.'
     )
 
@@ -58,12 +51,12 @@ def parse_arguments(return_others=False):
         help="Hidden layers' sizes for the readout FFN."
     )
     parser.add_argument(
-        '--ffn_activation', type=str, default='ReLU', choices=['Identity', 'ReLU', 'ELU', 'GeLU', 'Sigmoid', 'Tanh'],
+        '--ffn_activation', type=str, default='ReLU',
         help='The non-linearity to use for readout.'
     )
 
     parser.add_argument(
-        '--dropout', type=str, required=True, choices=['Dropout', 'DropEdge', 'DropNode', 'DropMessage', 'DropGNN', 'DropSens'],
+        '--dropout', type=str, required=True,
         help='The dropping method.'
     )
     parser.add_argument(

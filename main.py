@@ -1,4 +1,4 @@
-from tqdm import tqdm
+from tqdm import tqdm, tqdm
 
 import torch
 from torch.optim import Adam
