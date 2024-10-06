@@ -107,7 +107,7 @@ def parse_arguments(return_others=False):
     )
     parser.add_argument(
         '--alpha', type=float,
-        help='Commute times percentile (in case dataset is SyntheticZINC).'
+        help='Commute times percentile (in case dataset is SyntheticZINC_CT).'
     )
 
     parser.add_argument(

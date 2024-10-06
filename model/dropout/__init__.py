@@ -1,3 +1,4 @@
+from model.dropout.base import BaseDropout
 from model.dropout.dropout import Dropout
 from model.dropout.drop_node import DropNode
 from model.dropout.drop_edge import DropEdge
@@ -9,6 +10,7 @@ from model.dropout.drop_sens import DropSens
 def get_dropout(dropout_name: str):
 
     dropout_map = {
+        'nodrop': BaseDropout,
         'dropout': Dropout,
         'dropnode': DropNode,
         'dropedge': DropEdge,

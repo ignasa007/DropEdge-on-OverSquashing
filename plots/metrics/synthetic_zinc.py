@@ -17,7 +17,7 @@ args.metric = f'Mean {args.metric} Error'
 ps = (0.0, 0.5)
 alphas = list(map(lambda x: round(x, 1), np.arange(0.0, 1.01, 0.1)))
 
-assets_dir = './assets/synthetics/SyntheticZINC'
+assets_dir = './assets/synthetics/SyntheticZINC_CT'
 exp_dir = assets_dir.replace('assets', 'results') + '/P={P}/alpha={alpha}'
 
 ### RETRIEVE METRICS ###

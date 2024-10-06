@@ -12,8 +12,8 @@ def parse_configs(fn):
                 continue
             elif 'Epoch' in line:
                 break
-            config, value = line.split(' = ')
-            configs[config] = value
+            key, value = line.split(' = ')
+            configs[key] = value
 
     return configs
 

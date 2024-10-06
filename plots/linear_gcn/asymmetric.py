@@ -19,15 +19,15 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--dataset', type=str, required=True, choices=['Proteins', 'MUTAG'])
 args = parser.parse_args()
 
-L = 6
+L = 6; ls = range(L+1)
 MOLECULE_SAMPLES = 100
 dataset = TUDataset(root='./data/TUDataset', name=args.dataset.upper(), use_node_attr=True)
 indices = np.where(np.array([molecule.num_nodes for molecule in dataset]) <= 60)[0]
-ps = np.arange(0, 1, 0.1)[::2]
+ps = np.arange(0, 1, 0.1)
 
 sum_sensitivity = {p: torch.zeros(MOLECULE_SAMPLES, L+1) for p in ps}
 count_sensitivity = {p: torch.zeros_like(sum_sensitivity[p]) for p in ps}
-fig, ax = plt.subplots(1, 1)
+fig, (axp, axl) = plt.subplots(1, 2, figsize=(12.8, 4.8))
 
 for m in tqdm(range(MOLECULE_SAMPLES)):
 
@@ -60,22 +60,33 @@ for m in tqdm(range(MOLECULE_SAMPLES)):
         sum_sensitivity[p][m, x_sd] += y_sd
         count_sensitivity[p][m, x_sd] += 1
 
-for p in ps:
+
+data = torch.nan * torch.zeros(len(ps), L+1)
+
+for i, p in enumerate(ps):
 
     # to avoid zero division error in case no graph hits shortest distance L
     dim_to_keep = (count_sensitivity[p]>0).any(dim=0)
     x = torch.where(dim_to_keep)[0]
     y = sum_sensitivity[p][:, dim_to_keep].sum(dim=0) / count_sensitivity[p][:, dim_to_keep].sum(dim=0)
-    ax.plot(x, y, label=f'q = {p:.1f}')
+    data[i, x] = y
 
-ax.set_yscale('log')
-ax.set_xlabel('Shortest Distance', fontsize=14)
-ax.set_ylabel(rf'$\left(\mathbb{{E}}\left[\hat{{A}}^{{asym}}\right]^{{{L}}}\right)_{{ij}}$', fontsize=14)
-ax.set_title(args.dataset, fontsize=14)
-ax.grid()
+for p, datap in list(zip(ps, data))[::2]:
+    axp.plot(ls, datap, label=f'q = {p:.1f}')
+axp.set_xlabel(rf'Shortest Distance, $d_{{\mathsf{{G}}}}(i,j)$', fontsize=20)
+axp.set_ylabel(rf'$\left(\mathbb{{E}}\left[\hat{{A}}^{{asym}}\right]^{{{L}}}\right)_{{ij}}$', fontsize=20)
+axp.set_yscale('log')
+axp.grid()
+axp.legend(loc='lower left', bbox_to_anchor=(0.05, 0.05), fontsize=18)
 
-handles, labels = ax.get_legend_handles_labels()
-fig.legend(handles, labels, loc='lower center', ncol=5, bbox_to_anchor = (0, -0.07, 1, 1))
+for l, datal in list(zip(ls, data.T))[::2]:
+    axl.plot(ps, datal, label=fr'$d_{{\mathsf{{G}}}}(i,j) = {l}$')
+axl.set_xlabel(r'DropEdge Probability, $q$', fontsize=20)
+axl.set_yscale('log')
+axl.grid()
+axl.legend(loc='lower left', bbox_to_anchor=(0.05, 0.05), fontsize=18)
+
+# fig.suptitle(args.dataset, fontsize=16)
 fig.tight_layout()
 fn = f'./assets/linear-gcn/asymmetric/{args.dataset}.png'
 os.makedirs(os.path.dirname(fn), exist_ok=True)
