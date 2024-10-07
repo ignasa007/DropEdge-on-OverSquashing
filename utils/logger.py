@@ -14,15 +14,14 @@ class Logger:
     def __init__(self, config: Namespace, others: Union[Namespace, None] = None):
 
         '''
-        Initialize the logging directory:
-            ./results/<dataset>/<gnn_layer>/<drop_strategy>/<datetime>/
+        Initialize the logging directory.
 
         Args:
             dataset (str): dataset name.
             model (str): model name.
         '''
         
-        self.exp_dir = f'./results/{config.dropout}/{config.dataset}/{config.gnn}/L={len(config.gnn_layer_sizes)}/P={round(config.drop_p, 6)}/{get_time()}'
+        self.exp_dir = f'./results/{get_time()}'
         os.makedirs(self.exp_dir)
         
         self.log(''.join(f'{k} = {v}\n' for k, v in vars(config).items()), with_time=False)
