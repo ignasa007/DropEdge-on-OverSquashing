@@ -41,13 +41,13 @@ To train a model, execute
 python -B main.py \
     --dataset $dataset \
     --gnn ${gnn} \
-    --gnn_layer_sizes 64*${depth}
+    --gnn_layer_sizes ${width}*${depth}
     --ffn_layer_sizes \
     --dropout ${dropout} \
     --drop_p ${drop_p} \
-    --n_epochs 300 \
-    --learning_rate 0.003 \
-    --weight_decay 0.0005 \
+    --n_epochs ${n_epochs} \
+    --learning_rate ${lr} \
+    --weight_decay ${weight_decay} \
     --test_every 1 \
     --save_every -1
 ```
