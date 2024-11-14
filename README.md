@@ -4,27 +4,27 @@ This is the official code repository for my MSc thesis at UCL: **On the Effects 
 
 ## Directory Structure
 
-- **assets** - plots and other images included in the thesis
-- **data** - root directory for saving raw (and transformed) datasets, eg. `./data/Planetoid/Cora/`
-- **dataset** - Python classes to handle different datasets, and make them suitable for training, eg. Cora
-- **metrics** - Python classes for storing and computing performance metrics, eg. classification
-- **model** - Python classes to initialize the model architectures
-    - **activation** - activation functions, eg. ReLU
-    - **dropout** - dropping methods, eg. DropEdge
-    - **message_passing** - message passing layers, eg. GCN
-    - **readout** - readout layer; task dependent, eg. node level or graph level task
-- **plots** - plotting experimental results
-    - **beta** - inspecting the scaling factor for commute times under a DropEdge random walk
-    - **linear_gcn** - empirical results accompanying the theoretical ones
-    - **metrics** - plots of the performance metrics
-- **results** - results of the different runs
+- `assets` - plots and other images included in the thesis
+- `data` - root directory for saving raw (and transformed) datasets, eg. `./data/Planetoid/Cora/`
+- `dataset` - Python classes to handle different datasets, and make them suitable for training, eg. Cora
+- `metrics` - Python classes for storing and computing performance metrics, eg. classification
+- `model` - Python classes to initialize the model architectures
+    - `activation` - activation functions, eg. ReLU
+    - `dropout` - dropping methods, eg. DropEdge
+    - `message_passing` - message passing layers, eg. GCN
+    - `readout` - readout layer; task dependent, eg. node level or graph level task
+- `plots` - plotting experimental results
+    - `beta` - inspecting the scaling factor for commute times under a DropEdge random walk
+    - `linear_gcn` - empirical results accompanying the theoretical ones
+    - `metrics` - plots of the performance metrics
+- `results` - results of the different runs
     - directory structure is not fixed, and can be set in `./utils/logger.py`
-- **sensitvity** - studying the raw sensitivity between nodes at different distances
-    - **log** - log the sensitivity measures (takes a while to run)
-    - **plot** - plot the sensitivity between nodes against eg. shortest distance
-    - **utils** - utility functions for these experiments, eg. `compute_shortest_distances`, `bin_jac_norms`
-- **signal_propagation** - signal propagation experiment, adapted from [Giovanni et al., 2023](https://proceedings.mlr.press/v202/di-giovanni23a).
-- **utils** - utility files for model training and logging
+- `sensitvity` - studying the raw sensitivity between nodes at different distances
+    - `log` - log the sensitivity measures (takes a while to run)
+    - `plot` - plot the sensitivity between nodes against eg. shortest distance
+    - `utils` - utility functions for these experiments, eg. `compute_shortest_distances`, `bin_jac_norms`
+- `signal_propagation` - signal propagation experiment, adapted from [Giovanni et al., 2023](https://proceedings.mlr.press/v202/di-giovanni23a).
+- `utils` - utility files for model training and logging
 
 ## Setup
 
