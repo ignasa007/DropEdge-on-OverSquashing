@@ -1,4 +1,4 @@
-# DropEdge on Over-squashing
+# DropEdge and Over-squashing
 
 This is the official code repository for my MSc thesis at UCL: **On the Effects of DropEdge on Over-squashing in GNNs**.
 
